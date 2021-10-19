@@ -63,8 +63,8 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
      */
     public static final String DB_SEP = "###";
 
-    public MultipleValuesCFType(final @JiraImport CustomFieldValuePersister customFieldValuePersister,
-                                final @JiraImport GenericConfigManager genericConfigManager) {
+    public MultipleValuesCFType( @JiraImport CustomFieldValuePersister customFieldValuePersister,
+                                 @JiraImport GenericConfigManager genericConfigManager) {
         this.persister = customFieldValuePersister;
         this.genericConfigManager = genericConfigManager;
     }
@@ -130,7 +130,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         else
         {
             // With JIRA 5.0 we should no longer need to test for this case
-            persister.createValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(EasyList.build(value)));
+            persister.createValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(Lists.newArrayList(value)));
         }
     }
 
@@ -215,13 +215,14 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
      * Clearing an amount removes the row.
      */
     public Collection<Carrier> getValueFromCustomFieldParams(CustomFieldParams parameters)
-            throws FieldValidationException {
+            throws FieldValidationException{
         log.debug("getValueFromCustomFieldParams: " + parameters.getKeysAndValues());
         // Strings in the order they appeared in the web page
-        final Collection values = parameters.getAllValues();
+        final Collection values = parameters.getValuesForNullKey();
         if ((values != null) && !values.isEmpty()) {
             Collection<Carrier> value = new ArrayList();
-            for (Iterator it = values.iterator(); it.hasNext(); ) {
+            Iterator it = values.iterator();
+            while ( it.hasNext() ) {
                 String dStr = (String)it.next();
                 // This won't be true if only one parameter is passed in a query
                 String s = (String)it.next();
@@ -239,11 +240,11 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                 s = s.replace(DB_SEP, "");
 
                 try {
-                    Double d = new Double(dStr);
+                    Double d =  Double.parseDouble(dStr);
                     value.add(new Carrier(d, s));
                 } catch (NumberFormatException nfe) {
                     // A value was provided but it was an invalid value
-                    throw new FieldValidationException(dStr + " is not a number");
+                    throw new FieldValidationException(dStr + " isn't a number");
                 }
             }
             return value;

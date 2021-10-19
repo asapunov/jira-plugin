@@ -25,10 +25,10 @@ public class Carrier {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Carrier object: ");
-        sb.append(amount);
-        sb.append(" and ");
-        sb.append(note);
+        //sb.append("Carrier object: ");
+        sb.append((amount));
+       // sb.append(" and ");
+        sb.append((note));
         return sb.toString();
     }
 

@@ -1,9 +1,9 @@
 #if ($value)
     #if ($value.size() > 0)
 
-    <table width="50%">
+    <table width="100%">
 
-        <tr width="15%">
+        <tr width="30%">
             <td>
                 Amount
             </td>

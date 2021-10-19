@@ -25,6 +25,7 @@
         <description>A text field only editable by those with admin permissions</description>
         <resource type="velocity" name="view" location="templates/view.vm"/>
         <resource type="velocity" name="edit" location="templates/edit.vm"/>
+        <resource type="velocity" name="xml" location="templates/xml.vm"/>
     </customfield-type>
 
 </atlassian-plugin>
