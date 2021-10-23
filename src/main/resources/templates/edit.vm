@@ -5,65 +5,163 @@
 
     #set ($field_uid = $customField.id)
 
-    <tr width="15%">
-        <td>
-            Amount
-        </td>
-        <td>
-            Note
-        </td>
-    </tr>
+#if ($value)
 
-    #if ($value)
-        #if ($issue.getKey())
-            ## issue exists and has a key so the value is a transport of string values,
-            ## not a transport object of the singular objects. We want more than just
-            ## strings so access the transport object directly from the customfield
+    #if ($issue.getKey())
+        ## issue exists and has a key so the value is a transport of string values,
+        ## not a transport object of the singular objects. We want more than just
+        ## strings so access the transport object directly from the customfield
 
-            #set ($carriers = $customField.getValue($issue))
-        #else
-            ## When this template is used to edit a default value then
-            ## issue is a dummy with no key. Access the transport object via
-            ## the configs variable.
+        #set ($carrier = $customField.getValue($issue))
+    #else
+        ## When this template is used to edit a default value then
+        ## issue is a dummy with no key. Access the transport object via
+        ## the configs variable.
 
-            #set ($carriers = $configs.get("default"))
-        #end
-
-        #foreach ($carrier in $carriers)
-            <tr width="15%">
-                <td>
-                    <input id="${field_uid}-amount-${velocityCount}"
-                           name="${field_uid}"
-                           type="text"
-                           value="$carrier.getAmount()" />
-                </td>
-
-                <td>
-                    <input id="${field_uid}-note-${velocityCount}"
-                           name="${field_uid}"
-                           type="text"
-                           value="$textutils.htmlEncode($carrier.getNote())" />
-                </td>
-            </tr>
-        #end
-
+        #set ($carrier = $configs.get("default"))
     #end
+    <tr width ="15%">
+        <td>
+            Сумма кредита
+        </td>
+        <td>
+            <input id="${field_uid}-full-amount"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getFullAmount()" />
+        </td>
+    </tr>
+    <tr width ="15%">
+        <td>
+            Ставка
+        </td>
+        <td>
+            <input id="${field_uid}-rate"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getRate()" />
+        </td>
+    </tr>
+    <tr width = 15%>
+        <td>
+
+        </td>
+        <td>
+            Сумма
+        </td>
+        <td>
+            Количество дней
+        </td>
+    </tr>
+    <tr width="15%">
+        <td>
+            Аванс
+        </td>
+        <td>
+            <input id="${field_uid}-advance"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getAdvance()" />
+        </td>
+        <td>
+            <input id="${field_uid}-days-advance"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getDaysAdvance()" />
+        </td>
+
+    </tr>
 
     <tr width="15%">
         <td>
-            <input id="${field_uid}-amount-new"
-                   name="${field_uid}"
-                   type="text"
-                   value="" />
+            Готовность
         </td>
-
         <td>
-            <input id="${field_uid}-note-new"
+            <input id="${field_uid}-willingness"
                    name="${field_uid}"
                    type="text"
-                   value="" />
-            &nbsp;Add a new value. Clearing an amount deletes a row.
+                   value="$carrier.getWillingness()" />
+        </td>
+        <td>
+            <input id="${field_uid}-days-willingness"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getDaysWillingness()" />
         </td>
     </tr>
+
+
+
+    #else
+        <tr width ="15%">
+            <td>
+                Сумма кредита
+            </td>
+            <td>
+                <input id="${field_uid}-full-amount"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+        </tr>
+        <tr width ="15%">
+            <td>
+                Ставка
+            </td>
+            <td>
+                <input id="${field_uid}-rate"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+        </tr>
+        <tr width = 15%>
+            <td>
+
+            </td>
+            <td>
+                Сумма
+            </td>
+            <td>
+                Количество дней
+            </td>
+        </tr>
+        <tr width="15%">
+            <td>
+                Аванс
+            </td>
+            <td>
+                <input id="${field_uid}-advance"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+            <td>
+                <input id="${field_uid}-days-advance"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+
+        </tr>
+
+        <tr width="15%">
+            <td>
+                Готовность
+            </td>
+            <td>
+                <input id="${field_uid}-willingness"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+            <td>
+                <input id="${field_uid}-days-willingness"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+        </tr>
+#end
 </table>
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)

@@ -1,40 +1,25 @@
 package com.plugins.customfield;
 
-
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
-import com.atlassian.core.util.collection.EasyList;
 import com.atlassian.jira.issue.customfields.persistence.PersistenceFieldType;
 import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.jira.issue.customfields.impl.FieldValidationException;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.customfields.converters.DoubleConverter;
-import com.atlassian.jira.issue.customfields.impl.AbstractCustomFieldType;
+import com.atlassian.jira.issue.customfields.impl.AbstractSingleFieldType;
 import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
 import com.atlassian.jira.issue.customfields.view.CustomFieldParams;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
-import com.atlassian.jira.issue.fields.config.FieldConfigItemType;
-import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
-import com.atlassian.jira.util.velocity.NumberTool;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Iterator;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 import org.apache.log4j.Logger;
-
-import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.Transformer;
-import org.apache.commons.collections.functors.NotNullPredicate;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
-import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
+
+import javax.annotation.Nonnull;
 
 /**
  * All the other Multi* classes refer to Users or Options. This class,
@@ -47,13 +32,11 @@ import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersist
  * More information can be found at
  * "https://developer.atlassian.com/display/JIRADEV/Java+API+Changes+in+JIRA+5.0#JavaAPIChangesinJIRA50-CustomFieldTypes
  */
-public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Carrier>, Carrier> {
+public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
 
     public static final Logger log = Logger.getLogger(MultipleValuesCFType.class);
-
     private final CustomFieldValuePersister persister;
     private final GenericConfigManager genericConfigManager;
-
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
 
@@ -62,40 +45,79 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
      * Treated as a regex when checking text input.
      */
     public static final String DB_SEP = "###";
-
-    public MultipleValuesCFType( @JiraImport CustomFieldValuePersister customFieldValuePersister,
-                                 @JiraImport GenericConfigManager genericConfigManager) {
+    protected MultipleValuesCFType(@JiraImport CustomFieldValuePersister customFieldValuePersister,
+                                   @JiraImport GenericConfigManager genericConfigManager) {
+        super(customFieldValuePersister, genericConfigManager);
         this.persister = customFieldValuePersister;
         this.genericConfigManager = genericConfigManager;
     }
 
-    /**
-     * Convert a database representation of a Carrier object into
-     * a Carrier object. This method is also used for bulk moves and imports.
-     */
-    public Carrier getSingularObjectFromString(String dbValue)
-            throws FieldValidationException {
+    @Nonnull
+    @Override
+    protected PersistenceFieldType getDatabaseType() {
+        return DB_TYPE;
+    }
+
+    @Override
+    protected Object getDbValueFromObject(Carrier carrier) {
+        log.debug("getDbValueFromObject: " + carrier);
+        if (carrier == null) {
+            return "";
+        }
+        //for (int i = 0; i < Carrier.NUMBER_OF_VALUES; i++)
+       // {
+        //}
+        return carrier.getFullAmount().toString() +
+                DB_SEP +
+                carrier.getRate().toString() +
+                DB_SEP +
+                carrier.getAdvance().toString() +
+                DB_SEP +
+                carrier.getDaysAdvance().toString() +
+                DB_SEP +
+                carrier.getWillingness().toString() +
+                DB_SEP +
+                carrier.getDaysWillingness().toString();
+    }
+
+    @Override
+    protected Carrier getObjectFromDbValue(@Nonnull Object databaseValue) throws FieldValidationException {
+         return getSingularObjectFromString((String) databaseValue);
+    }
+
+
+    @Override
+    public String getStringFromSingularObject(Carrier singularObject) {
+        return singularObject.toString();
+    }
+
+    @Override
+    public Carrier getSingularObjectFromString(String dbValue) throws FieldValidationException {
         log.debug("getSingularObjectFromString: " + dbValue);
         if (StringUtils.isEmpty(dbValue)) {
             return null;
         }
         String[] parts = dbValue.split(DB_SEP);
-        if (parts.length == 0 || parts.length > 2) {
+        if (parts.length == 0 || parts.length > Carrier.NUMBER_OF_VALUES) {
             log.warn("Invalid database value for MultipleValuesCFType ignored: " + dbValue);
             // If this should not be allowed, then throw a
             // FieldValidationException instead
             return null;
         }
-        Double d = new Double(parts[0]);
-        String s = "";
-        if (parts.length == 2) {
-            s = parts[1];
-        }
-        return new Carrier(d, s);
+        List<Double> values = new ArrayList<>();
+        for (String part : parts) values.add(Double.parseDouble(part));
+        return new Carrier(values.get(0), values.get(1), values.get(2), values.get(3), values.get(4), values.get(5));
+
+    }
+    @Override
+    public Object getStringValueFromCustomFieldParams(CustomFieldParams parameters) {
+        log.debug("getStringValueFromCustomFieldParams: " + parameters.getKeysAndValues());
+        return parameters.getAllValues();
     }
 
-    public Collection<Carrier> getValueFromIssue(CustomField field,
-                                                 Issue issue) {
+    @Override
+    public Carrier getValueFromIssue(CustomField field,
+                                     Issue issue) {
         // This is also called to display a default value in view.vm
         // in which case the issue is a dummy one with no key
         if (issue == null || issue.getKey() == null) {
@@ -104,101 +126,45 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         }
 
         // These are the database representation of the singular objects
-        final List<Object> values = persister.getValues(field, issue.getId(), DB_TYPE);
-        log.debug("getValueFromIssue entered with " + values);
-        if ((values != null) && !values.isEmpty()) {
-            List<Carrier> result = new ArrayList<Carrier>();
-            for (Iterator it = values.iterator(); it.hasNext(); ) {
-                String dbValue = (String)it.next();
-                Carrier carrier = getSingularObjectFromString(dbValue);
-                if (carrier == null) {
-                    continue;
-                }
-                result.add(carrier);
-            }
-            return result;
+        final List<Object> value = persister.getValues(field, issue.getId(), DB_TYPE);
+        log.debug("getValueFromIssue entered with " + value);
+        if ((value != null) && !value.isEmpty()) {
+            return getSingularObjectFromString((String)value.get(0));
         } else {
             return null;
         }
     }
-
-    public void createValue(CustomField field, Issue issue, Collection<Carrier> value) {
-        if (value instanceof Collection)
-        {
-            persister.createValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(value));
-        }
-        else
-        {
-            // With JIRA 5.0 we should no longer need to test for this case
-            persister.createValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(Lists.newArrayList(value)));
-        }
-    }
-
-    public void updateValue(CustomField field, Issue issue, Collection<Carrier> value) {
-        persister.updateValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(value));
-    }
-
-    /**
-     * For removing the field, not for removing one value
-     */
-    public Set<Long> remove(CustomField field) {
-        return persister.removeAllValues(field.getId());
-    }
-
-    /**
-     * Convert a transport object (a Collection of Carrier objects) to
-     * its database representation and store it in the database.
-     */
-    public void setDefaultValue(FieldConfig fieldConfig, Collection<Carrier> value) {
-        log.debug("setDefaultValue with object " + value);
-        Collection carrierStrings = getDbValueFromCollection(value);
-        if (carrierStrings != null) {
-            carrierStrings = new ArrayList(carrierStrings);
-            genericConfigManager.update(CustomFieldType.DEFAULT_VALUE_TYPE, fieldConfig.getId().toString(), carrierStrings);
-        }
-    }
-
-    /**
-     * Retrieve the stored default value (if any) from the database
-     * and convert it to a transport object (a Collection of Carrier
-     * objects).
-     */
-    public Collection<Carrier> getDefaultValue(FieldConfig fieldConfig) {
-        final Object o = genericConfigManager.retrieve(CustomFieldType.DEFAULT_VALUE_TYPE, fieldConfig.getId().toString());
-        log.debug("getDefaultValue with database value " + o);
-
-        Collection<Carrier> collectionOfCarriers = null;
-        if (o instanceof Collection) {
-            collectionOfCarriers = (Collection) o;
-        } else if (o instanceof Carrier) {
-            log.warn("Backwards compatible default value, should not occur");
-            collectionOfCarriers = Lists.newArrayList((Collection)o);
-        }
-
-        if (collectionOfCarriers == null) {
-            return null; // No default value exists
-        }
-
-        final Collection collection = CollectionUtils.collect(collectionOfCarriers, new Transformer() {
-            // Convert a database value (String) to a singular Object (Carrier)
-            public Object transform(final Object input) {
-                if (input == null) {
-                    return null;
+    public Carrier getValueFromCustomFieldParams(CustomFieldParams parameters)
+            throws FieldValidationException{
+        log.debug("getValueFromCustomFieldParams: " + parameters.getKeysAndValues());
+        // Strings in the order they appeared in the web page
+        final Collection values = parameters.getValuesForNullKey();
+        if ((values != null) && !values.isEmpty()) {
+            Iterator it = values.iterator();
+                String dStr1 = (String)it.next();
+                String dStr2 = (String)it.next();//сделать нормально
+                String dStr3 = (String)it.next();
+                String dStr4 = (String)it.next();
+                String dStr5 = (String)it.next();
+                String dStr6 = (String)it.next();
+                try {
+                    Double d1 =  Double.parseDouble(dStr1);
+                    Double d2 =  Double.parseDouble(dStr2);
+                    Double d3 =  Double.parseDouble(dStr3);
+                    Double d4 =  Double.parseDouble(dStr4);
+                    Double d5 =  Double.parseDouble(dStr5);
+                    Double d6 =  Double.parseDouble(dStr6);
+                    return new Carrier(d1, d2, d3, d4, d5, d6);
+                    }
+               catch (NumberFormatException nfe) {
+                    // A value was provided but it was an invalid value
+                    throw new FieldValidationException(dStr1 + dStr2+ dStr3+ dStr4+ dStr5+ dStr6 +" isn't a number");
                 }
-                String dbValue = (String)input;
-                return getSingularObjectFromString(dbValue);
-            }
-        });
-        CollectionUtils.filter(collection, NotNullPredicate.getInstance());
-        log.debug("getDefaultValue returning " + collection);
-        return collection;
+        } else
+            {
+            return null;
+        }
     }
-
-    /**
-     * Validate the input from the web pages, a Collection of Strings.
-     * Exceptions raised later on after this has passed appear as an
-     * ugly page.
-     */
     public void validateFromParams(CustomFieldParams relevantParams,
                                    ErrorCollection errorCollectionToAddTo,
                                    FieldConfig config) {
@@ -210,101 +176,63 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         }
     }
 
-    /**
-     * Extract a transport object from the string parameters,
-     * Clearing an amount removes the row.
-     */
-    public Collection<Carrier> getValueFromCustomFieldParams(CustomFieldParams parameters)
-            throws FieldValidationException{
-        log.debug("getValueFromCustomFieldParams: " + parameters.getKeysAndValues());
-        // Strings in the order they appeared in the web page
-        final Collection values = parameters.getValuesForNullKey();
-        if ((values != null) && !values.isEmpty()) {
-            Collection<Carrier> value = new ArrayList();
-            Iterator it = values.iterator();
-            while ( it.hasNext() ) {
-                String dStr = (String)it.next();
-                // This won't be true if only one parameter is passed in a query
-                String s = (String)it.next();
-                // Allow empty text but not empty amounts
-                if (dStr == null || dStr.equals("")) {
-                    log.debug("Ignoring text " + s + " because the amount is empty");
-                    // This is used to delete a row so do not throw a
-                    // FieldValidationException
-                    continue;
-                }
-                if (s == null) {
-                    s = "";
-                }
-                // Make sure the value can be stored safely later on
-                s = s.replace(DB_SEP, "");
+    public Carrier getDefaultValue(FieldConfig fieldConfig) {
+        final Object o = genericConfigManager.retrieve(CustomFieldType.DEFAULT_VALUE_TYPE, fieldConfig.getId().toString());
+        log.debug("getDefaultValue with database value " + o);
 
-                try {
-                    Double d =  Double.parseDouble(dStr);
-                    value.add(new Carrier(d, s));
-                } catch (NumberFormatException nfe) {
-                    // A value was provided but it was an invalid value
-                    throw new FieldValidationException(dStr + " isn't a number");
-                }
-            }
-            return value;
-        } else {
-            return null;
+        Carrier carrier = null;
+        if (o instanceof Carrier) {
+            carrier = (Carrier) o;
+        }
+
+        return carrier; // No default value exists
+    }
+    public void setDefaultValue(FieldConfig fieldConfig, Carrier value) {
+        log.debug("setDefaultValue with object " + value);
+        Object strings = getDbValueFromObject(value);
+            genericConfigManager.update(CustomFieldType.DEFAULT_VALUE_TYPE, fieldConfig.getId().toString(), strings);
+    }
+
+   /* public void createValue(CustomField field, Issue issue, Carrier value) {
+        List<Carrier> collection = new ArrayList<Carrier>();
+        collection.add(value);
+        if (value instanceof Collection)
+        {
+            persister.createValues(field, issue.getId(), DB_TYPE, collection);
+        }
+        else
+        {
+            // With JIRA 5.0 we should no longer need to test for this case
+            persister.createValues(field, issue.getId(), DB_TYPE, collection);
         }
     }
 
-    /**
-     * This method is used to create the $value object in Velocity templates.
-     */
-    public Object getStringValueFromCustomFieldParams(CustomFieldParams parameters) {
-        log.debug("getStringValueFromCustomFieldParams: " + parameters.getKeysAndValues());
-        return parameters.getAllValues();
+    public void updateValue(CustomField field, Issue issue, Carrier value) {
+        List<Carrier> collection = new ArrayList<Carrier>();
+        collection.add(value);
+        persister.updateValues(field, issue.getId(), DB_TYPE, collection);
     }
 
-    public String getStringFromSingularObject(Carrier singularObject) {
-        return singularObject.toString();
-    }
-
-    public String getChangelogValue(CustomField field, Collection<Carrier> value)  {
-        if (value == null) {
+   /* public Collection getDbValueFromCarrier(Carrier carrier) {
+        log.debug("getDbValueFromObject: " + carrier);
+        if (carrier == null) {
             return "";
         }
         StringBuffer sb = new StringBuffer();
-        Collection<Carrier> carriers = value;
-        for (Carrier carrier: carriers) {
-            sb.append(carrier.toString());
-            // Newlines are text not HTML here
-            sb.append(", ");
-
-        }
+        //for (int i = 0; i < Carrier.NUMBER_OF_VALUES; i++)
+        // {
+        sb.append(carrier.getFullAmount().toString());
+        sb.append(DB_SEP);
+        sb.append(carrier.getAdvance().toString());
+        sb.append(DB_SEP);
+        sb.append(carrier.getWillingness().toString());
+        sb.append(DB_SEP);
+        sb.append(carrier.getDaysAdvance().toString());
+        sb.append(DB_SEP);
+        sb.append(carrier.getDaysWillingness().toString());
+        sb.append(DB_SEP);
+        sb.append(carrier.getRate().toString());
+        //}
         return sb.toString();
-    }
-
-    // Helper Methods
-
-    /**
-     * Convert the Transport object to a collection of the
-     * representation used in the database.
-     */
-    private Collection getDbValueFromCollection(final Collection<Carrier> value)
-    {
-        log.debug("getDbValueFromCollection: " + value);
-        if (value == null) {
-            return Collections.EMPTY_LIST;
-        }
-        Collection<Carrier> carriers = value;
-        List<String> result = new ArrayList<String>();
-        for (Carrier carrier : carriers) {
-            if (carrier == null) {
-                continue;
-            }
-            StringBuffer sb = new StringBuffer();
-            sb.append(carrier.getAmount().toString());
-            sb.append(DB_SEP);
-            sb.append(carrier.getNote());
-            result.add(sb.toString());
-        }
-        return result;
-    }
-
+    }*/
 }
