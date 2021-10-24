@@ -1,5 +1,6 @@
 package com.plugins.customfield;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -9,10 +10,12 @@ import java.util.ArrayList;
  */
 public class Carrier {
 
-    private final Double fullAmount, advance, willingness,  daysAdvance, daysWillingness, rate ;
+    private final Double fullAmount, advance, willingness, rate ;
+    private final int  daysAdvance, daysWillingness;
     public static final int NUMBER_OF_VALUES = 6;
-
-    public Carrier( Double fullAmount, Double rate, Double advance, Double daysAdvance, Double willingness, Double daysWillingness) {
+    public static final int NUMBER_OF_INT_VALUES = 2;
+    public static final int NUMBER_OF_DOUBLE_VALUES = 4;
+    public Carrier( Double fullAmount, Double rate, Double advance,  Double willingness, int daysAdvance, int daysWillingness) {
         this.fullAmount = fullAmount;
         this.advance = advance;
         this.willingness = willingness;
@@ -29,9 +32,9 @@ public class Carrier {
                 //sb.append(" Доля готовности: ");
                 (advance) +
                 //sb.append(" Дней аванса: ");
-                (daysAdvance) +
+                (willingness) +
                 //sb.append(" Дней готовности: ");
-                willingness +
+                daysAdvance +
                 //sb.append(" Ставка: ");
                 daysWillingness;
         return sb;
@@ -50,11 +53,11 @@ public class Carrier {
         return willingness;
     }
 
-    public Double getDaysAdvance() {
+    public int getDaysAdvance() {
         return daysAdvance;
     }
 
-    public Double getDaysWillingness() {
+    public int getDaysWillingness() {
         return daysWillingness;
     }
 
@@ -62,13 +65,14 @@ public class Carrier {
         return rate;
     }
 
-    public Double getAnswer()
+    public String getAnswer()
     {
+        DecimalFormat dF = new DecimalFormat("#.##");
         Double ans= advance*rate/365*daysAdvance+willingness*rate/365*daysWillingness;
-        return ans;
+        return dF.format(ans);
     }
 
-    public ArrayList<Double> getCarrierValues(){
+   /* public ArrayList<Double> getCarrierValues(){
         ArrayList<Double> allValues = new ArrayList<Double>();
         allValues.add(fullAmount);
         allValues.add(advance);
@@ -76,5 +80,5 @@ public class Carrier {
         allValues.add(daysWillingness);
         allValues.add(rate);
         return allValues;
-    }
+    }*/
 }

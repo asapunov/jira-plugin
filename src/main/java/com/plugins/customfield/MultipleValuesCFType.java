@@ -73,11 +73,11 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 DB_SEP +
                 carrier.getAdvance().toString() +
                 DB_SEP +
-                carrier.getDaysAdvance().toString() +
+                carrier.getWillingness().toString()+
                 DB_SEP +
-                carrier.getWillingness().toString() +
+                carrier.getDaysAdvance() +
                 DB_SEP +
-                carrier.getDaysWillingness().toString();
+                carrier.getDaysWillingness();
     }
 
     @Override
@@ -104,9 +104,14 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
             // FieldValidationException instead
             return null;
         }
-        List<Double> values = new ArrayList<>();
-        for (String part : parts) values.add(Double.parseDouble(part));
-        return new Carrier(values.get(0), values.get(1), values.get(2), values.get(3), values.get(4), values.get(5));
+
+        List<Double> valuesD = new ArrayList<>();
+        for (int i = 0; i < Carrier.NUMBER_OF_DOUBLE_VALUES; i++)
+            valuesD.add(Double.parseDouble(parts[i]));
+        List<Integer> valuesI = new ArrayList<>();
+        for (int i = Carrier.NUMBER_OF_DOUBLE_VALUES; i < (Carrier.NUMBER_OF_DOUBLE_VALUES + Carrier.NUMBER_OF_INT_VALUES); i++)
+            valuesI.add(Integer.parseInt((parts[i])));
+        return new Carrier(valuesD.get(0), valuesD.get(1), valuesD.get(2), valuesD.get(3), valuesI.get(0), valuesI.get(1));
 
     }
     @Override
@@ -134,6 +139,7 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
             return null;
         }
     }
+
     public Carrier getValueFromCustomFieldParams(CustomFieldParams parameters)
             throws FieldValidationException{
         log.debug("getValueFromCustomFieldParams: " + parameters.getKeysAndValues());
@@ -141,30 +147,36 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         final Collection values = parameters.getValuesForNullKey();
         if ((values != null) && !values.isEmpty()) {
             Iterator it = values.iterator();
-                String dStr1 = (String)it.next();
-                String dStr2 = (String)it.next();//сделать нормально
-                String dStr3 = (String)it.next();
-                String dStr4 = (String)it.next();
-                String dStr5 = (String)it.next();
-                String dStr6 = (String)it.next();
+            List<String> dStr = new ArrayList<>();
+            for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++)
+                dStr.add((String)it.next());
+            String temp = dStr.get(3);//
+            dStr.set(3, dStr.get(4) );// костыль
+            dStr.set(4, temp);//
+            List<Double> dDbl = new ArrayList<>();
+            for(int i = 0;  i < Carrier.NUMBER_OF_DOUBLE_VALUES; i++) {
                 try {
-                    Double d1 =  Double.parseDouble(dStr1);
-                    Double d2 =  Double.parseDouble(dStr2);
-                    Double d3 =  Double.parseDouble(dStr3);
-                    Double d4 =  Double.parseDouble(dStr4);
-                    Double d5 =  Double.parseDouble(dStr5);
-                    Double d6 =  Double.parseDouble(dStr6);
-                    return new Carrier(d1, d2, d3, d4, d5, d6);
-                    }
-               catch (NumberFormatException nfe) {
-                    // A value was provided but it was an invalid value
-                    throw new FieldValidationException(dStr1 + dStr2+ dStr3+ dStr4+ dStr5+ dStr6 +" isn't a number");
+                    dDbl.add(Double.parseDouble(dStr.get(i)));
+                } catch (NumberFormatException nfe) {
+                    throw new FieldValidationException(dStr.get(i) + " должно быть числом");
                 }
+            }
+            List<Integer> dInt = new ArrayList<>();
+            for(int i = Carrier.NUMBER_OF_DOUBLE_VALUES;  i < (Carrier.NUMBER_OF_INT_VALUES+Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
+                try {
+                    dInt.add(Integer.parseInt(dStr.get(i)));
+                } catch (NumberFormatException nfe) {
+                    throw new FieldValidationException(dStr.get(i) + " Должно быть целочисленным числом");
+                }
+            }
+
+            return new Carrier(dDbl.get(0), dDbl.get(1), dDbl.get(2), dDbl.get(3), dInt.get(0), dInt.get(1));
         } else
             {
             return null;
         }
     }
+
     public void validateFromParams(CustomFieldParams relevantParams,
                                    ErrorCollection errorCollectionToAddTo,
                                    FieldConfig config) {

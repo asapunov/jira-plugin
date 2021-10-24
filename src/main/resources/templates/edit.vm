@@ -4,9 +4,6 @@
     ## $customField.id but each id should be unique
 
     #set ($field_uid = $customField.id)
-
-#if ($value)
-
     #if ($issue.getKey())
         ## issue exists and has a key so the value is a transport of string values,
         ## not a transport object of the singular objects. We want more than just
@@ -20,6 +17,9 @@
 
         #set ($carrier = $configs.get("default"))
     #end
+#if ($value && $carrier)
+
+
     <tr width ="15%">
         <td>
             Сумма кредита

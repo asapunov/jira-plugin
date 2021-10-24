@@ -22,7 +22,6 @@
     </web-resource>
 
     <customfield-type name="Multiple Values" i18n-name-key="jira-custom-field.name" key="multiple" class="com.plugins.customfield.MultipleValuesCFType">
-        <description>A text field only editable by those with admin permissions</description>
         <resource type="velocity" name="view" location="templates/view.vm"/>
         <resource type="velocity" name="edit" location="templates/edit.vm"/>
         <resource type="velocity" name="xml" location="templates/xml.vm"/>
