@@ -148,8 +148,11 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         if ((values != null) && !values.isEmpty()) {
             Iterator it = values.iterator();
             List<String> dStr = new ArrayList<>();
-            for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++)
-                dStr.add((String)it.next());
+            for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++) {
+                dStr.add((String) it.next());
+                String temp = dStr.get(i).replaceAll(",", ".");
+                dStr.set(i, temp);
+            }
             String temp = dStr.get(3);//
             dStr.set(3, dStr.get(4) );// костыль
             dStr.set(4, temp);//
@@ -161,6 +164,8 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                     throw new FieldValidationException(dStr.get(i) + " должно быть числом");
                 }
             }
+            if (dDbl.get(1) > 1 || dDbl.get(1) < 0)
+                throw new FieldValidationException(" Ставка не может быть больше 1");
             List<Integer> dInt = new ArrayList<>();
             for(int i = Carrier.NUMBER_OF_DOUBLE_VALUES;  i < (Carrier.NUMBER_OF_INT_VALUES+Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
                 try {
