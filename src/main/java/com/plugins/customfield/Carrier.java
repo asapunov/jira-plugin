@@ -10,40 +10,50 @@ import java.util.ArrayList;
  */
 public class Carrier {
 
-    private final Double fullAmount, advance, willingness, rate ;
-    private final int  daysAdvance, daysWillingness;
-    public static final int NUMBER_OF_VALUES = 6;
-    public static final int NUMBER_OF_INT_VALUES = 2;
-    public static final int NUMBER_OF_DOUBLE_VALUES = 4;
-    public Carrier( Double fullAmount, Double rate, Double advance,  Double willingness, int daysAdvance, int daysWillingness) {
-        this.fullAmount = fullAmount;
+    private final Double advance;
+    private final Double willingness;
+    private final Double rate;
+    private final Double prepayment;
+    private final Double postpaid;
+    private final int  daysAdvance;
+    private final int  daysWillingness;
+    private final int  daysPrepayment;
+    private final int  daysPostpaid;
+    public static final int NUMBER_OF_VALUES = 9;
+    public static final int NUMBER_OF_INT_VALUES = 4;
+    public static final int NUMBER_OF_DOUBLE_VALUES = 5;
+    public Carrier( Double rate, Double prepayment, Double advance,  Double willingness,
+                    Double postpaid, int daysPrepayment, int daysAdvance, int daysWillingness, int daysPostpaid) {
         this.advance = advance;
         this.willingness = willingness;
         this.daysAdvance = daysAdvance;
         this.daysWillingness = daysWillingness;
         this.rate = rate;
+        this.prepayment = prepayment;
+        this.postpaid = postpaid;
+        this.daysPrepayment = daysPrepayment;
+        this.daysPostpaid = daysPostpaid;
     }
 
     public String toString() {
         //sb.append("Сумма кредита: ");
-        String sb = String.valueOf(fullAmount) +
-                //sb.append(" Доля аванса: ");
-                (rate) +
-                //sb.append(" Доля готовности: ");
+        String sb = String.valueOf(rate) +
+                prepayment +
                 (advance) +
-                //sb.append(" Дней аванса: ");
                 (willingness) +
-                //sb.append(" Дней готовности: ");
+                postpaid +
+                daysPrepayment +
                 daysAdvance +
-                //sb.append(" Ставка: ");
-                daysWillingness;
+                daysWillingness +
+                daysPostpaid;
         return sb;
     }
 
 
-    public Double getFullAmount() {
-        return fullAmount;
-    }
+    //public Double getFullAmount() {
+    //return fullAmount;
+    // }
+    public Double getPrepayment() { return prepayment;}
 
     public Double getAdvance() {
         return advance;
@@ -51,6 +61,12 @@ public class Carrier {
 
     public Double getWillingness() {
         return willingness;
+    }
+
+    public Double getPostpaid() { return postpaid;}
+
+    public int getDaysPrepayment() {
+        return daysPrepayment;
     }
 
     public int getDaysAdvance() {
@@ -61,6 +77,10 @@ public class Carrier {
         return daysWillingness;
     }
 
+    public int getDaysPostpaid() {
+        return daysPostpaid;
+    }
+
     public Double getRate() {
         return rate;
     }
@@ -68,7 +88,10 @@ public class Carrier {
     public String getAnswer()
     {
         DecimalFormat dF = new DecimalFormat("#.##");
-        Double ans= advance*rate/365*daysAdvance+willingness*rate/365*daysWillingness;
+        Double ans = prepayment * rate / 36500 * daysPrepayment +
+                advance * rate / 36500 * daysAdvance +
+                willingness * rate / 36500 * daysWillingness +
+                postpaid * rate / 36500 * daysPostpaid;
         return dF.format(ans);
     }
 
