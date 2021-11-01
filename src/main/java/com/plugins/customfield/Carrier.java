@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * for comments about the the amount.
  */
 public class Carrier {
-
+    DecimalFormat dF = new DecimalFormat("#.##"); //формат вывода
     private final Double advance;
     private final Double willingness;
     private final Double rate;
@@ -50,9 +50,6 @@ public class Carrier {
     }
 
 
-    //public Double getFullAmount() {
-    //return fullAmount;
-    // }
     public Double getPrepayment() { return prepayment;}
 
     public Double getAdvance() {
@@ -85,14 +82,31 @@ public class Carrier {
         return rate;
     }
 
-    public String getAnswer()
+    public String getAnswer() //метод для расета итогового значения
     {
-        DecimalFormat dF = new DecimalFormat("#.##");
         Double ans = prepayment * rate / 36500 * daysPrepayment +
                 advance * rate / 36500 * daysAdvance +
                 willingness * rate / 36500 * daysWillingness +
                 postpaid * rate / 36500 * daysPostpaid;
         return dF.format(ans);
+    }
+
+//Методы для форматированного вывода
+    public String getFormatPrepayment() { return dF.format(prepayment);}
+
+    public String getFormatAdvance() {
+        return dF.format(advance);
+    }
+
+    public String getFormatWillingness() {
+        return dF.format(willingness);
+    }
+
+    public String getFormatPostpaid() {
+        return dF.format(postpaid);}
+
+    public String getFormatRate() {
+        return dF.format(rate);
     }
 
    /* public ArrayList<Double> getCarrierValues(){

@@ -19,6 +19,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
 
+
 import javax.annotation.Nonnull;
 
 /**
