@@ -19,7 +19,6 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
 
-
 import javax.annotation.Nonnull;
 
 /**
@@ -65,9 +64,6 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         if (carrier == null) {
             return "";
         }
-        //for (int i = 0; i < Carrier.NUMBER_OF_VALUES; i++)
-       // {
-        //}
         return  carrier.getRate().toString() +
                 DB_SEP +
                 carrier.getPrepayment().toString() +
@@ -90,7 +86,7 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
 
     @Override
     protected Carrier getObjectFromDbValue(@Nonnull Object databaseValue) throws FieldValidationException {
-         return getSingularObjectFromString((String) databaseValue);
+        return getSingularObjectFromString((String) databaseValue);
     }
 
 
@@ -118,7 +114,8 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
             valuesD.add(Double.parseDouble(parts[i]));
         List<Integer> valuesI = new ArrayList<>();
         for (int i = Carrier.NUMBER_OF_DOUBLE_VALUES; i < (Carrier.NUMBER_OF_DOUBLE_VALUES + Carrier.NUMBER_OF_INT_VALUES); i++)
-            valuesI.add(Integer.parseInt((parts[i])));
+            valuesI.add(Integer.parseInt(parts[i]));
+
         return new Carrier(valuesD.get(0), valuesD.get(1), valuesD.get(2),
                 valuesD.get(3), valuesD.get(4), valuesI.get(0),
                 valuesI.get(1), valuesI.get(2), valuesI.get(3));
@@ -158,11 +155,22 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         if ((values != null) && !values.isEmpty()) {
             Iterator it = values.iterator();
             List<String> dStr = new ArrayList<>();
+            int count = 0; // количетсво незаполненных полей
             for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++) {
                 dStr.add((String) it.next());
+                if (StringUtils.isEmpty(dStr.get(i)))
+                {
+                    String temp2 = dStr.get(i).replaceAll("", "0");
+                    dStr.set(i, temp2);
+                    count++;
+                }
                 String temp = dStr.get(i).replaceAll(",", ".");
                 dStr.set(i, temp);
             }
+            if (StringUtils.isEmpty(dStr.get(0)) || dStr.get(0).equals("0"))
+                throw new FieldValidationException("Поле \"ставка\" не может быть пустым");
+            if (count >= 5)
+                throw new FieldValidationException("Необходимо заполнить хотя бы одну строку");
             for (int j = 2; j <= 4; j++) {
                 for (int i = j; i < Carrier.NUMBER_OF_VALUES - j; i = i + 2) {
                     String temp = dStr.get(i);// так как параметры передают значения в порядке
@@ -175,11 +183,11 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 try {
                     dDbl.add(Double.parseDouble(dStr.get(i)));
                 } catch (NumberFormatException nfe) {
-                    throw new FieldValidationException(dStr.get(i) + " должно быть числом");
+                    throw new FieldValidationException(dStr.get(i) + " Должно быть числом");
                 }
             }
             List<Integer> dInt = new ArrayList<>();
-            for(int i = Carrier.NUMBER_OF_DOUBLE_VALUES;  i < (Carrier.NUMBER_OF_INT_VALUES+Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
+            for(int i = Carrier.NUMBER_OF_DOUBLE_VALUES;  i < (Carrier.NUMBER_OF_INT_VALUES + Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
                 try {
                     dInt.add(Integer.parseInt(dStr.get(i)));
                 } catch (NumberFormatException nfe) {
@@ -187,9 +195,9 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 }
             }
             return new Carrier(dDbl.get(0), dDbl.get(1), dDbl.get(2), dDbl.get(3),dDbl.get(4),
-                     dInt.get(0), dInt.get(1), dInt.get(2), dInt.get(3));
+                    dInt.get(0), dInt.get(1), dInt.get(2), dInt.get(3));
         } else
-            {
+        {
             return null;
         }
     }
@@ -219,7 +227,7 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
     public void setDefaultValue(FieldConfig fieldConfig, Carrier value) {
         log.debug("setDefaultValue with object " + value);
         Object strings = getDbValueFromObject(value);
-            genericConfigManager.update(CustomFieldType.DEFAULT_VALUE_TYPE, fieldConfig.getId().toString(), strings);
+        genericConfigManager.update(CustomFieldType.DEFAULT_VALUE_TYPE, fieldConfig.getId().toString(), strings);
     }
 
    /* public void createValue(CustomField field, Issue issue, Carrier value) {

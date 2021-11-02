@@ -55,7 +55,7 @@
             <input id="${field_uid}-days-prepayment"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getDaysPrepayment()" />
+                   value="$carrier.getFormatDaysPrepayment()" />
         </td>
 
     </tr>
@@ -73,7 +73,7 @@
             <input id="${field_uid}-days-advance"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getDaysAdvance()" />
+                   value="$carrier.getFormatDaysAdvance()" />
         </td>
 
     </tr>
@@ -92,7 +92,7 @@
             <input id="${field_uid}-days-willingness"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getDaysWillingness()" />
+                   value="$carrier.getFormatDaysWillingness()" />
         </td>
     </tr>
     <tr width="15%">
@@ -109,7 +109,7 @@
             <input id="${field_uid}-days-postpaid"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getDaysPostpaid()" />
+                   value="$carrier.getFormatDaysPostpaid()" />
         </td>
 
     </tr>

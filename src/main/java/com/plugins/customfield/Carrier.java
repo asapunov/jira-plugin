@@ -1,6 +1,7 @@
 package com.plugins.customfield;
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 
 /**
  * This is the singular object for this custom field type.
@@ -8,34 +9,23 @@ import java.text.DecimalFormat;
  * for comments about the the amount.
  */
 public class Carrier {
-<<<<<<< HEAD
-
-    public static final int NUMBER_OF_VALUES = 6;
-    public static final int NUMBER_OF_INT_VALUES = 2;
-    public static final int NUMBER_OF_DOUBLE_VALUES = 4;
-
-    private final Double fullAmount, advance, willingness, rate;
-    private final int daysAdvance, daysWillingness;
-
-    public Carrier(Double fullAmount, Double rate, Double advance, Double willingness, int daysAdvance, int daysWillingness) {
-        this.fullAmount = fullAmount;
-=======
-    DecimalFormat dF = new DecimalFormat("#.##"); //формат вывода
-    private final Double advance;
-    private final Double willingness;
-    private final Double rate;
-    private final Double prepayment;
-    private final Double postpaid;
-    private final int  daysAdvance;
-    private final int  daysWillingness;
-    private final int  daysPrepayment;
-    private final int  daysPostpaid;
+    DecimalFormat dF = new DecimalFormat("###,###,###.##"); //формат вывода
+    private final Double advance; /** Аванс */
+    private final Double willingness; /** Уведомление по готовности */
+    private final Double rate; /** Ставка */
+    private final Double prepayment; /** Предоплата */
+    private final Double postpaid; /** Постоплата */
+    private final int  daysAdvance; /** Количество календарных дней выплаты аванса */
+    private final int  daysWillingness; /** Количество календарных дней выплаты по готовности */
+    private final int  daysPrepayment; /** Количество календарных дней выплаты предоплаты */
+    private final int  daysPostpaid; /** количество календарных дней выплаты постоплаты */
+    private static final String PATTERN_FOR_DOUBLE = "{0,choice,-1<{0,number,'#.##'}|0#|0<{0,number,'###,###,###.##'}}";
+    private static final String PATTERN_FOR_INT = "{0,choice,-1<{0,integer,'#.##'}|0#|0<{0,number,integer}}";
     public static final int NUMBER_OF_VALUES = 9;
     public static final int NUMBER_OF_INT_VALUES = 4;
     public static final int NUMBER_OF_DOUBLE_VALUES = 5;
     public Carrier( Double rate, Double prepayment, Double advance,  Double willingness,
                     Double postpaid, int daysPrepayment, int daysAdvance, int daysWillingness, int daysPostpaid) {
->>>>>>> 73a081e9a5989eeba5c731bf4b27c8aa96a6af37
         this.advance = advance;
         this.willingness = willingness;
         this.daysAdvance = daysAdvance;
@@ -48,17 +38,17 @@ public class Carrier {
     }
 
     public String toString() {
-        //sb.append("Сумма кредита: ");
-        String sb = String.valueOf(rate) +
-                prepayment +
-                (advance) +
-                (willingness) +
-                postpaid +
-                daysPrepayment +
-                daysAdvance +
-                daysWillingness +
-                daysPostpaid;
-        return sb;
+        StringBuffer sb = new StringBuffer();
+        sb.append(rate);
+        sb.append(prepayment);
+        sb.append(advance);
+        sb.append(willingness);
+        sb.append(postpaid);
+        sb.append(daysPrepayment);
+        sb.append(daysAdvance);
+        sb.append(daysWillingness);
+        sb.append(daysPostpaid);
+        return sb.toString();
     }
 
 
@@ -94,49 +84,46 @@ public class Carrier {
         return rate;
     }
 
-<<<<<<< HEAD
-    public String getAnswer() {
-        DecimalFormat dF = new DecimalFormat("#.##");
-        Double ans = advance * rate / 365 * daysAdvance + willingness * rate / 365 * daysWillingness;
-        return dF.format(ans);
-    }
-
-=======
-    public String getAnswer() //метод для расета итогового значения
+    /**
+     * Метод для расчета итогового значения
+     */
+    public String getAnswer()
     {
-        Double ans = prepayment * rate / 36500 * daysPrepayment +
-                advance * rate / 36500 * daysAdvance +
-                willingness * rate / 36500 * daysWillingness +
-                postpaid * rate / 36500 * daysPostpaid;
+        Double rateF = rate / 36500;
+        Double ans = prepayment * rateF * daysPrepayment +
+                advance * rateF * daysAdvance +
+                willingness * rateF * daysWillingness +
+                postpaid * rateF * daysPostpaid;
         return dF.format(ans);
     }
 
-//Методы для форматированного вывода
-    public String getFormatPrepayment() { return dF.format(prepayment);}
+    /**
+     * Методы для форматированного вывода
+     */
+    public String getFormatPrepayment() { return MessageFormat.format(PATTERN_FOR_DOUBLE, prepayment); }
 
-    public String getFormatAdvance() {
-        return dF.format(advance);
+    public String getFormatAdvance() { return MessageFormat.format(PATTERN_FOR_DOUBLE, advance); }
+
+    public String getFormatWillingness() { return MessageFormat.format(PATTERN_FOR_DOUBLE, willingness); }
+
+    public String getFormatPostpaid() { return MessageFormat.format(PATTERN_FOR_DOUBLE, postpaid);}
+
+    public String getFormatRate() { return MessageFormat.format(PATTERN_FOR_DOUBLE, rate); }
+
+    public String getFormatDaysPrepayment() {
+        return MessageFormat.format(PATTERN_FOR_INT, daysPrepayment);
     }
 
-    public String getFormatWillingness() {
-        return dF.format(willingness);
+    public String getFormatDaysAdvance() {
+        return MessageFormat.format(PATTERN_FOR_INT, daysAdvance);
     }
 
-    public String getFormatPostpaid() {
-        return dF.format(postpaid);}
-
-    public String getFormatRate() {
-        return dF.format(rate);
+    public String getFormatDaysWillingness() {
+        return MessageFormat.format(PATTERN_FOR_INT, daysWillingness);
     }
 
-   /* public ArrayList<Double> getCarrierValues(){
-        ArrayList<Double> allValues = new ArrayList<Double>();
-        allValues.add(fullAmount);
-        allValues.add(advance);
-        allValues.add(daysAdvance);
-        allValues.add(daysWillingness);
-        allValues.add(rate);
-        return allValues;
-    }*/
->>>>>>> 73a081e9a5989eeba5c731bf4b27c8aa96a6af37
+    public String getFormatDaysPostpaid() {
+        return MessageFormat.format(PATTERN_FOR_INT, daysPostpaid);
+    }
+
 }
