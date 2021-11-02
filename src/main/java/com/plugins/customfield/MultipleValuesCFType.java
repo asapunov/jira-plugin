@@ -19,6 +19,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
 
+
 import javax.annotation.Nonnull;
 
 /**
@@ -67,17 +68,24 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         //for (int i = 0; i < Carrier.NUMBER_OF_VALUES; i++)
        // {
         //}
-        return carrier.getFullAmount().toString() +
+        return  carrier.getRate().toString() +
                 DB_SEP +
-                carrier.getRate().toString() +
+                carrier.getPrepayment().toString() +
                 DB_SEP +
                 carrier.getAdvance().toString() +
                 DB_SEP +
                 carrier.getWillingness().toString()+
                 DB_SEP +
+                carrier.getPostpaid().toString() +
+                DB_SEP +
+                carrier.getDaysPrepayment() +
+                DB_SEP +
                 carrier.getDaysAdvance() +
                 DB_SEP +
-                carrier.getDaysWillingness();
+                carrier.getDaysWillingness() +
+                DB_SEP +
+                carrier.getDaysPostpaid() +
+                DB_SEP;
     }
 
     @Override
@@ -111,7 +119,9 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         List<Integer> valuesI = new ArrayList<>();
         for (int i = Carrier.NUMBER_OF_DOUBLE_VALUES; i < (Carrier.NUMBER_OF_DOUBLE_VALUES + Carrier.NUMBER_OF_INT_VALUES); i++)
             valuesI.add(Integer.parseInt((parts[i])));
-        return new Carrier(valuesD.get(0), valuesD.get(1), valuesD.get(2), valuesD.get(3), valuesI.get(0), valuesI.get(1));
+        return new Carrier(valuesD.get(0), valuesD.get(1), valuesD.get(2),
+                valuesD.get(3), valuesD.get(4), valuesI.get(0),
+                valuesI.get(1), valuesI.get(2), valuesI.get(3));
 
     }
     @Override
@@ -153,9 +163,13 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 String temp = dStr.get(i).replaceAll(",", ".");
                 dStr.set(i, temp);
             }
-            String temp = dStr.get(3);//
-            dStr.set(3, dStr.get(4) );// костыль
-            dStr.set(4, temp);//
+            for (int j = 2; j <= 4; j++) {
+                for (int i = j; i < Carrier.NUMBER_OF_VALUES - j; i = i + 2) {
+                    String temp = dStr.get(i);// так как параметры передают значения в порядке
+                    dStr.set(i, dStr.get(i + 1));// расположения полей этот цикл ставит сначала
+                    dStr.set(i + 1, temp);// переменные типа double, затем int, для упрощения проверок
+                }
+            }
             List<Double> dDbl = new ArrayList<>();
             for(int i = 0;  i < Carrier.NUMBER_OF_DOUBLE_VALUES; i++) {
                 try {
@@ -164,8 +178,6 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                     throw new FieldValidationException(dStr.get(i) + " должно быть числом");
                 }
             }
-            if (dDbl.get(1) > 1 || dDbl.get(1) < 0)
-                throw new FieldValidationException(" Ставка не может быть больше 1");
             List<Integer> dInt = new ArrayList<>();
             for(int i = Carrier.NUMBER_OF_DOUBLE_VALUES;  i < (Carrier.NUMBER_OF_INT_VALUES+Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
                 try {
@@ -174,8 +186,8 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                     throw new FieldValidationException(dStr.get(i) + " Должно быть целочисленным числом");
                 }
             }
-
-            return new Carrier(dDbl.get(0), dDbl.get(1), dDbl.get(2), dDbl.get(3), dInt.get(0), dInt.get(1));
+            return new Carrier(dDbl.get(0), dDbl.get(1), dDbl.get(2), dDbl.get(3),dDbl.get(4),
+                     dInt.get(0), dInt.get(1), dInt.get(2), dInt.get(3));
         } else
             {
             return null;

@@ -19,27 +19,15 @@
     #end
 #if ($value && $carrier)
 
-
     <tr width ="15%">
         <td>
-            Сумма кредита
-        </td>
-        <td>
-            <input id="${field_uid}-full-amount"
-                   name="${field_uid}"
-                   type="text"
-                   value="$carrier.getFullAmount()" />
-        </td>
-    </tr>
-    <tr width ="15%">
-        <td>
-            Ставка
+            Ставка, %
         </td>
         <td>
             <input id="${field_uid}-rate"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getRate()" />
+                   value="$carrier.getFormatRate()" />
         </td>
     </tr>
     <tr width = 15%>
@@ -55,13 +43,31 @@
     </tr>
     <tr width="15%">
         <td>
+            Предоплата
+        </td>
+        <td>
+            <input id="${field_uid}-prepayment"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getFormatPrepayment()" />
+        </td>
+        <td>
+            <input id="${field_uid}-days-prepayment"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getDaysPrepayment()" />
+        </td>
+
+    </tr>
+    <tr width="15%">
+        <td>
             Аванс
         </td>
         <td>
             <input id="${field_uid}-advance"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getAdvance()" />
+                   value="$carrier.getFormatAdvance()" />
         </td>
         <td>
             <input id="${field_uid}-days-advance"
@@ -80,7 +86,7 @@
             <input id="${field_uid}-willingness"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getWillingness()" />
+                   value="$carrier.getFormatWillingness()" />
         </td>
         <td>
             <input id="${field_uid}-days-willingness"
@@ -89,24 +95,30 @@
                    value="$carrier.getDaysWillingness()" />
         </td>
     </tr>
+    <tr width="15%">
+        <td>
+            Постоплата
+        </td>
+        <td>
+            <input id="${field_uid}-postpaid"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getFormatPostpaid()" />
+        </td>
+        <td>
+            <input id="${field_uid}-days-postpaid"
+                   name="${field_uid}"
+                   type="text"
+                   value="$carrier.getDaysPostpaid()" />
+        </td>
 
+    </tr>
 
 
     #else
         <tr width ="15%">
             <td>
-                Сумма кредита
-            </td>
-            <td>
-                <input id="${field_uid}-full-amount"
-                       name="${field_uid}"
-                       type="text"
-                       value="" />
-            </td>
-        </tr>
-        <tr width ="15%">
-            <td>
-                Ставка
+                Ставка, %
             </td>
             <td>
                 <input id="${field_uid}-rate"
@@ -125,6 +137,24 @@
             <td>
                 Количество дней
             </td>
+        </tr>
+        <tr width="15%">
+            <td>
+                Предоплата
+            </td>
+            <td>
+                <input id="${field_uid}-prepayment"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+            <td>
+                <input id="${field_uid}-days-prepayment"
+                       name="${field_uid}"
+                       type="text"
+                       value="" />
+            </td>
+
         </tr>
         <tr width="15%">
             <td>
@@ -162,6 +192,22 @@
                        value="" />
             </td>
         </tr>
+    <tr width="15%">
+        <td>
+            Постоплата
+        </td>
+        <td>
+            <input id="${field_uid}-postpaid"
+                   name="${field_uid}"
+                   type="text"
+                   value="" />
+        </td>
+        <td>
+            <input id="${field_uid}-days-postpaid"
+                   name="${field_uid}"
+                   type="text"
+                   value="" />
+        </td>
 #end
 </table>
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
