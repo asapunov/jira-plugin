@@ -52,7 +52,9 @@ public class Carrier {
     }
 
 
-    public Double getPrepayment() { return prepayment;}
+    public Double getPrepayment() {
+        return prepayment;
+    }
 
     public Double getAdvance() {
         return advance;
@@ -62,7 +64,9 @@ public class Carrier {
         return willingness;
     }
 
-    public Double getPostpaid() { return postpaid;}
+    public Double getPostpaid() {
+        return postpaid;
+    }
 
     public int getDaysPrepayment() {
         return daysPrepayment;
