@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.plugins.customfield</groupId>
     <artifactId>jira-custom-field</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <organization>
         <name>Example Company</name>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-api</artifactId>
-            <version>${jira.version}</version>
+            <version>8.4.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- Add dependency on jira-core if you want access to JIRA implementation classes as well as the sanctioned API. -->
@@ -150,7 +150,7 @@
     </build>
 
     <properties>
-        <jira.version>7.13.0</jira.version>
+        <jira.version>8.14.0</jira.version>
         <amps.version>8.1.2</amps.version>
         <plugin.testrunner.version>2.0.2</plugin.testrunner.version>
         <atlassian.spring.scanner.version>2.1.7</atlassian.spring.scanner.version>

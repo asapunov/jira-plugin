@@ -17,9 +17,10 @@
 
         #set ($carrier = $configs.get("default"))
     #end
+
 #if ($value && $carrier)
 
-    <tr width ="15%">
+    <tr >
         <td>
             Ставка, %
         </td>
@@ -27,10 +28,10 @@
             <input id="${field_uid}-rate"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatRate()" />
+                   value="$carrier.getFormatRate()"/>
         </td>
     </tr>
-    <tr width = 15%>
+    <tr>
         <td>
 
         </td>
@@ -41,7 +42,7 @@
             Количество дней
         </td>
     </tr>
-    <tr width="15%">
+    <tr>
         <td>
             Предоплата
         </td>
@@ -51,6 +52,7 @@
                    type="text"
                    value="$carrier.getFormatPrepayment()" />
         </td>
+
         <td>
             <input id="${field_uid}-days-prepayment"
                    name="${field_uid}"
@@ -59,7 +61,7 @@
         </td>
 
     </tr>
-    <tr width="15%">
+    <tr>
         <td>
             Аванс
         </td>
@@ -78,7 +80,7 @@
 
     </tr>
 
-    <tr width="15%">
+    <tr>
         <td>
             Готовность
         </td>
@@ -95,7 +97,7 @@
                    value="$carrier.getFormatDaysWillingness()" />
         </td>
     </tr>
-    <tr width="15%">
+    <tr width>
         <td>
             Постоплата
         </td>
@@ -116,7 +118,7 @@
 
 
     #else
-        <tr width ="15%">
+        <tr>
             <td>
                 Ставка, %
             </td>
@@ -127,7 +129,7 @@
                        value="" />
             </td>
         </tr>
-        <tr width = 15%>
+        <tr>
             <td>
 
             </td>
@@ -138,7 +140,7 @@
                 Количество дней
             </td>
         </tr>
-        <tr width="15%">
+        <tr>
             <td>
                 Предоплата
             </td>
@@ -156,7 +158,7 @@
             </td>
 
         </tr>
-        <tr width="15%">
+        <tr>
             <td>
                 Аванс
             </td>
@@ -175,7 +177,7 @@
 
         </tr>
 
-        <tr width="15%">
+        <tr>
             <td>
                 Готовность
             </td>
@@ -192,7 +194,7 @@
                        value="" />
             </td>
         </tr>
-    <tr width="15%">
+    <tr>
         <td>
             Постоплата
         </td>
@@ -207,7 +209,28 @@
                    name="${field_uid}"
                    type="text"
                    value="" />
+       #end
         </td>
-#end
+    </tr>
 </table>
+
+<style>
+
+   form.ajs-dirty-warning-exempt.aui {
+       display: flex!important;
+        flex-direction: row;
+       align-items: flex-start;
+   }
+
+   div.save-options{
+       position: relative!important;
+       align-self: end;
+       margin-left: 8px;
+       width: fit-content;
+       height: min-content;
+   }
+
+</style>
+
+
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)

@@ -158,18 +158,20 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
             int count = 0; // количетсво незаполненных полей
             for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++) {
                 dStr.add((String) it.next());
-                if (StringUtils.isEmpty(dStr.get(i)))
+                if (StringUtils.isEmpty(dStr.get(i)) || dStr.get(0).equals("0"))
                 {
                     String temp2 = dStr.get(i).replaceAll("", "0");
                     dStr.set(i, temp2);
                     count++;
                 }
-                String temp = dStr.get(i).replaceAll(",", ".");
+                String temp = dStr.get(i).replaceAll("\\s+", "");
+                dStr.set(i, temp);
+                temp = dStr.get(i).replaceAll(",", ".");
                 dStr.set(i, temp);
             }
             if (StringUtils.isEmpty(dStr.get(0)) || dStr.get(0).equals("0"))
                 throw new FieldValidationException("Поле \"ставка\" не может быть пустым");
-            if (count >= 5)
+            if (count > 6)
                 throw new FieldValidationException("Необходимо заполнить хотя бы одну строку");
             for (int j = 2; j <= 4; j++) {
                 for (int i = j; i < Carrier.NUMBER_OF_VALUES - j; i = i + 2) {
