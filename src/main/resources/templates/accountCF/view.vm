@@ -1,0 +1,59 @@
+#if ($value)
+    #if ($value.size() > 0)
+
+    <table>
+
+        <tr>
+            <td align="center">
+                Дата
+            </td>
+            <td>
+
+            </td>
+            <td align="center">
+                Проценты
+            </td>
+            <td>
+
+            </td>
+            <td align="center">
+                Сумма
+            </td>
+        </tr>
+
+        #if ($!issue)
+            ## issue exists so the value is a transport of string values,
+            ## not a transport object of the singular objects. We want more than just
+            ## strings so access the transport object directly from the customfield
+
+            #set ($carriers = $customField.getValue($issue))
+        #else
+            ## issue does not exist because we are displaying a default value
+            ## and so value is a Collection of Carrier objects.
+
+            #set ($carriers = $value)
+        #end
+
+        #foreach ($carrier in $carriers)
+            <tr width =100%>
+                <td align="center">
+                    $!carrier.getStringDate()
+                </td>
+                <td align="center">
+
+                </td>
+                <td align="center" >
+                    $!carrier.getStringPercent()
+                </td>
+                <td>
+
+                </td>
+                <td align="center">
+                    $!carrier.getStringAmount()
+                </td>
+            </tr>
+        #end
+
+    </table>
+    #end
+#end

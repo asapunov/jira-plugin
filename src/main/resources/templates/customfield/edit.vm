@@ -209,9 +209,9 @@
                    name="${field_uid}"
                    type="text"
                    value="" />
-       #end
+
         </td>
-    </tr>
+#end
 </table>
 
 <style>
@@ -232,5 +232,5 @@
 
 </style>
 
-
+##чтоб таблица норм была,  (по id поля можно менять поля)
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)

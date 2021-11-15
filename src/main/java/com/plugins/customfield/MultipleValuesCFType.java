@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.Collection;
 import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -164,20 +163,20 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                     dStr.set(i, temp2);
                     count++;
                 }
-                String temp = dStr.get(i).replaceAll("\\s+", "");
+                String temp = dStr.get(i).replaceAll("\\s+", ""); //убрать пробелы
                 dStr.set(i, temp);
                 temp = dStr.get(i).replaceAll(",", ".");
                 dStr.set(i, temp);
             }
             if (StringUtils.isEmpty(dStr.get(0)) || dStr.get(0).equals("0"))
-                throw new FieldValidationException("Поле \"ставка\" не может быть пустым");
+                throw new FieldValidationException("Поле \"Ставка\" не может быть пустым");
             if (count > 6)
                 throw new FieldValidationException("Необходимо заполнить хотя бы одну строку");
-            for (int j = 2; j <= 4; j++) {
+            for (int j = 2; j <= (Carrier.NUMBER_OF_VALUES - 1) / 2; j++) {
                 for (int i = j; i < Carrier.NUMBER_OF_VALUES - j; i = i + 2) {
-                    String temp = dStr.get(i);// так как параметры передают значения в порядке
-                    dStr.set(i, dStr.get(i + 1));// расположения полей этот цикл ставит сначала
-                    dStr.set(i + 1, temp);// переменные типа double, затем int, для упрощения проверок
+                    String temp = dStr.get(i); //данный цикл выставляет полученный значения по порядку:
+                    dStr.set(i, dStr.get(i + 1));//сначала double, затем if
+                    dStr.set(i + 1, temp);
                 }
             }
             List<Double> dDbl = new ArrayList<>();

@@ -22,10 +22,16 @@
     </web-resource>
 
     <customfield-type name="Multiple Values" i18n-name-key="jira-custom-field.name" key="multiple" class="com.plugins.customfield.MultipleValuesCFType">
-        <resource type="velocity" name="view" location="templates/view.vm"/>
-        <resource type="velocity" name="edit" location="templates/edit.vm"/>
-        <resource type="velocity" name="xml" location="templates/xml.vm"/>
+        <resource type="velocity" name="view" location="templates/customfield/view.vm"/>
+        <resource type="velocity" name="edit" location="templates/customfield/edit.vm"/>
+        <resource type="velocity" name="xml" location="templates/customfield/xml.vm"/>
         <resource type="download" name="edit" location="/css/jira-custom-field.css"/>
+    </customfield-type>
+
+    <customfield-type name="Account" i18n-name-key="jira-cf-account.name" key="account" class="com.plugins.accountCF.MultipleValuesCFType">
+        <resource type="velocity" name="view" location="templates/accountCF/view.vm"/>
+        <resource type="velocity" name="edit" location="templates/accountCF/edit.vm"/>
+        <resource type="velocity" name="xml" location="templates/accountCF/xml.vm"/>
     </customfield-type>
 
 </atlassian-plugin>
