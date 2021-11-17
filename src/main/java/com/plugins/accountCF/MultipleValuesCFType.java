@@ -19,7 +19,9 @@ import org.apache.commons.collections.functors.NotNullPredicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.impl.DateCFType;
-
+import com.atlassian.jira.issue.customfields.converters.DatePickerConverter;
+import com.atlassian.jira.datetime.DateTimeFormatterFactory;
+import com.atlassian.jira.util.DateFieldFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -41,7 +43,10 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
 
     private final CustomFieldValuePersister persister;
     private final GenericConfigManager genericConfigManager;
-    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    private final DatePickerConverter datePickerConverter;
+    private final DateTimeFormatterFactory dateTimeFormatterFactory;
+    private final DateFieldFormat dateFieldFormat ;
+    private  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
 
@@ -52,9 +57,15 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     public static final String DB_SEP = "###";
 
     public MultipleValuesCFType( @JiraImport CustomFieldValuePersister customFieldValuePersister,
-                                 @JiraImport GenericConfigManager genericConfigManager) {
+                                 @JiraImport GenericConfigManager genericConfigManager,
+                                 @JiraImport DatePickerConverter datePickerConverter,
+                                 @JiraImport DateTimeFormatterFactory dateTimeFormatterFactory,
+                                 @JiraImport DateFieldFormat dateFieldFormat) {
         this.persister = customFieldValuePersister;
         this.genericConfigManager = genericConfigManager;
+        this.datePickerConverter = datePickerConverter;
+        this.dateTimeFormatterFactory = dateTimeFormatterFactory;
+        this.dateFieldFormat = dateFieldFormat;
     }
 
     /**
@@ -81,6 +92,9 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        DateCFType date = new DateCFType(persister, datePickerConverter, genericConfigManager,
+                null, dateFieldFormat, dateTimeFormatterFactory, null );
+        Date oDate = date.getSingularObjectFromString(parts[0]);
         Double p = new Double(parts[1]);
         Double a = new Double(parts[2]);
         return new Carrier(d, p, a);

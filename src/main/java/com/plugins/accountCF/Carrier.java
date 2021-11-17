@@ -17,7 +17,7 @@ public class Carrier {
     private Double amount; /**Сумма */
     private Double percent; /**Прцоенты */
     private Date date; /**Дата оплаты */
-    private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
     public Carrier(  Date date, Double percent, Double amount) {
         this.amount = amount;
         this.percent = percent;
