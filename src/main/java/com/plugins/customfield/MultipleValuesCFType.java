@@ -157,13 +157,13 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
             int count = 0; // количетсво незаполненных полей
             for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++) {
                 dStr.add((String) it.next());
-                if (StringUtils.isEmpty(dStr.get(i)) || dStr.get(0).equals("0"))
+                if (StringUtils.isEmpty(dStr.get(i)) || dStr.get(i).equals("0"))
                 {
                     String temp2 = dStr.get(i).replaceAll("", "0");
                     dStr.set(i, temp2);
                     count++;
                 }
-                String temp = dStr.get(i).replaceAll("\\s+", ""); //убрать пробелы
+                String temp = dStr.get(i).replaceAll(" ", ""); //убрать пробелы
                 dStr.set(i, temp);
                 temp = dStr.get(i).replaceAll(",", ".");
                 dStr.set(i, temp);

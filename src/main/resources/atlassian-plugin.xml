@@ -13,11 +13,7 @@
     <!-- add our web resources -->
     <web-resource key="jira-custom-field-resources" name="jira-custom-field Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-
-        <resource type="download" name="jira-custom-field.css" location="/css/jira-custom-field.css"/>
-        <resource type="download" name="jira-custom-field.js" location="/js/jira-custom-field.js"/>
         <resource type="download" name="images/" location="/images"/>
-
         <context>jira-custom-field</context>
     </web-resource>
 
@@ -25,7 +21,6 @@
         <resource type="velocity" name="view" location="templates/customfield/view.vm"/>
         <resource type="velocity" name="edit" location="templates/customfield/edit.vm"/>
         <resource type="velocity" name="xml" location="templates/customfield/xml.vm"/>
-        <resource type="download" name="edit" location="/css/jira-custom-field.css"/>
     </customfield-type>
 
     <customfield-type name="Account" i18n-name-key="jira-cf-account.name" key="account" class="com.plugins.accountCF.MultipleValuesCFType">
@@ -33,5 +28,11 @@
         <resource type="velocity" name="edit" location="templates/accountCF/edit.vm"/>
         <resource type="velocity" name="xml" location="templates/accountCF/xml.vm"/>
     </customfield-type>
+
+    <web-resource key="jira-accountCF-resources" name="jira-account Web Resources">
+        <resource type="download" name="jira-custom-field.js" location="/js/accountCF/jira-custom-field.js"/>
+        <resource type="download" name="jira-custom-field.css" location="/css/jira-custom-field.css"/>
+        <context>atl.general</context>
+    </web-resource>
 
 </atlassian-plugin>

@@ -1,27 +1,9 @@
 #if ($value)
     #if ($value.size() > 0)
 
-    <table>
+        <table>
 
-        <tr>
-            <td align="center">
-                Дата
-            </td>
-            <td>
-
-            </td>
-            <td align="center">
-                Проценты
-            </td>
-            <td>
-
-            </td>
-            <td align="center">
-                Сумма
-            </td>
-        </tr>
-
-        #if ($!issue)
+            #if ($!issue)
             ## issue exists so the value is a transport of string values,
             ## not a transport object of the singular objects. We want more than just
             ## strings so access the transport object directly from the customfield
@@ -33,27 +15,57 @@
 
             #set ($carriers = $value)
         #end
-
-        #foreach ($carrier in $carriers)
-            <tr width =100%>
-                <td align="center">
-                    $!carrier.getStringDate()
-                </td>
-                <td align="center">
-
-                </td>
-                <td align="center" >
-                    $!carrier.getStringPercent()
+            <tr>
+                <td>
+                    Полная сумма счета
                 </td>
                 <td>
-
-                </td>
-                <td align="center">
-                    $!carrier.getStringAmount()
+                    $carriers.get(0).getStringFullAmount()
                 </td>
             </tr>
-        #end
 
-    </table>
+            <tr>
+                <td align="center">
+                    Дата
+                </td>
+                <td align="center">
+                    Проценты
+                </td>
+                <td align="center">
+                    Сумма
+                </td>
+                <td align="center">
+                    Дата реальной оплаты
+                </td>
+                <td align="center">
+                    Pеальная сумма оплаты
+                </td>
+            </tr>
+            #set($i = 0)
+            #foreach ($carrier in $carriers)
+                #if($i > 0)
+                    <tr>
+                        <td align="center">
+                            $!carrier.getStringDate()
+                        </td>
+                        <td align="center" >
+                            #set($percent = $!carrier.getAmount() / $!carriers.get(0).getFullAmount() * 100)
+                            $!percent
+                        </td>
+                        <td align="center">
+                            $!carrier.getStringAmount()
+                        </td>
+                        <td align = "center">
+                            $!carrier.getStringDatePost()
+                        </td>
+                        <td align = "center">
+                            $!carrier.getStringAmountPost()
+                        </td>
+                    </tr>
+                #end
+                #set($i = ($i + 1))
+            #end
+
+        </table>
     #end
 #end

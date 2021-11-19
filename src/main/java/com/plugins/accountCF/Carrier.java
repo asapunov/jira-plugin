@@ -1,6 +1,8 @@
 package com.plugins.accountCF;
 import com.atlassian.jira.issue.customfields.impl.DateCFType;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,34 +16,58 @@ public class Carrier {
 
     private static final String PATTERN_FOR_DOUBLE = "{0,choice,-1<{0,number,'#.##'}|0#|0<{0,number,'###,###,###.##'}}";
     private static final String PATTERN_FOR_INT = "{0,choice,-1<{0,integer,'#.##'}|0#|0<{0,number,integer}}";
-    private Double amount; /**Сумма */
-    private Double percent; /**Прцоенты */
-    private Date date; /**Дата оплаты */
-    private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
-    public Carrier(  Date date, Double percent, Double amount) {
+    private Double fullAmount; /**Полная сумма счета */
+    private Double amount; /**Сумма каждой части счета */
+    private Date date; /**Дата предположительной оплаты */
+    private Double amountPost; /**Сумма релаьной оплаты */
+    private Date datePost; /**Дата релаьной оплаты */
+    private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
+    public Carrier(Date date, Double amount, Date datePost, Double amountPost) {
         this.amount = amount;
-        this.percent = percent;
         this.date = date;
+        this.datePost = datePost;
+        this.amountPost = amountPost;
+    }
+    public Carrier (Double fullAmount){
+        this.fullAmount = fullAmount;
+    }
+
+    public Double getFullAmount(){
+        return fullAmount;
+    }
+
+    public String getStringFullAmount() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, fullAmount);
     }
 
     public Double getAmount() {
         return amount;
     }
 
-    public Double getPercent() {
-        return percent;
-    }
-
     public String getStringAmount() {
         return MessageFormat.format(PATTERN_FOR_DOUBLE, amount);
     }
 
-    public String getStringPercent() {
+    /** Высчитывает проценты от суммы */
+    public @NotNull String getStringPercent() {
+        Double percent =  amount / fullAmount * 100;
         return MessageFormat.format(PATTERN_FOR_DOUBLE, percent) + "%";
+    }
+
+    public Double getAmountPost() {
+        return amountPost;
+    }
+
+    public String getStringAmountPost() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, amountPost);
     }
 
     public String getStringDate() {
         return format.format(date);
+    }
+
+    public String getStringDatePost() {
+        return format.format(datePost);
     }
 
     public String toString() {
@@ -49,8 +75,9 @@ public class Carrier {
         //sb.append("Carrier object: ");
         sb.append((date));
        // sb.append(" and ");
-        sb.append((percent));
         sb.append((amount));
+        sb.append(amountPost);
+        sb.append(datePost);
         return sb.toString();
     }
 

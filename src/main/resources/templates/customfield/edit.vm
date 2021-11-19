@@ -214,23 +214,6 @@
 #end
 </table>
 
-<style>
-
-   form.ajs-dirty-warning-exempt.aui {
-       display: flex!important;
-        flex-direction: row;
-       align-items: flex-start;
-   }
-
-   div.save-options{
-       position: relative!important;
-       align-self: end;
-       margin-left: 8px;
-       width: fit-content;
-       height: min-content;
-   }
-
-</style>
 
 ##чтоб таблица норм была,  (по id поля можно менять поля)
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)

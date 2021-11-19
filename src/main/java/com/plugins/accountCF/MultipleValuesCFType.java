@@ -21,7 +21,10 @@ import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.impl.DateCFType;
 import com.atlassian.jira.issue.customfields.converters.DatePickerConverter;
 import com.atlassian.jira.datetime.DateTimeFormatterFactory;
+import com.atlassian.jira.issue.customfields.converters.DateConverter;
 import com.atlassian.jira.util.DateFieldFormat;
+import com.atlassian.jira.datetime.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,7 +49,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     private final DatePickerConverter datePickerConverter;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
     private final DateFieldFormat dateFieldFormat ;
-    private  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy");
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
 
@@ -79,25 +82,31 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
             return null;
         }
         String[] parts = dbValue.split(DB_SEP);
-        if (parts.length == 0 || parts.length > 3) {
+        if (parts.length == 1) {
             log.warn("Invalid database value for MultipleValuesCFType ignored: " + dbValue);
+            Double fA = Double.parseDouble(parts[0]);
             // If this should not be allowed, then throw a
             // FieldValidationException instead
-            return null;
+            return new Carrier(fA);
         }
 
         Date d = null;
+        Date dP = null;
         try {
             d = sdf.parse(parts[0]);
+            dP = sdf.parse(parts[2]);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         DateCFType date = new DateCFType(persister, datePickerConverter, genericConfigManager,
                 null, dateFieldFormat, dateTimeFormatterFactory, null );
+        parts[0] = dateFieldFormat.format(d);
+        parts[2] = dateFieldFormat.format(dP);
         Date oDate = date.getSingularObjectFromString(parts[0]);
-        Double p = new Double(parts[1]);
-        Double a = new Double(parts[2]);
-        return new Carrier(d, p, a);
+        Double p = Double.parseDouble(parts[1]);
+        Date pDate = date.getSingularObjectFromString(parts[2]);
+        Double a = Double.parseDouble(parts[3]);
+        return new Carrier(oDate, p, pDate, a );
     }
 
     public Collection<Carrier> getValueFromIssue(CustomField field,
@@ -228,35 +237,42 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         if ((values != null) && !values.isEmpty()) {
             Collection<Carrier> value = new ArrayList();
             Iterator it = values.iterator();
+            String fStr = (String)it.next();
+            try {
+                Double f =  Double.parseDouble(fStr);
+                value.add(new Carrier(f));
+            } catch (NumberFormatException nfe) {
+                // A value was provided but it was an invalid value
+                throw new FieldValidationException("Введите число");
+            }
             while ( it.hasNext() ) {
                 String dStr = (String)it.next();
                 // This won't be true if only one parameter is passed in a query
-                String pStr = (String)it.next();
-                pStr = pStr.replaceAll("%", "");
+                String pStr = ((String)it.next()).replaceAll("\\s+", "");
                 // Allow empty text but not empty amounts
-                String aStr = ((String)it.next()).replaceAll("\\s+", "");;
+                String dpStr = (String)it.next();
+                String aStr = ((String)it.next()).replaceAll("\\s+", "");
                 if (dStr == null || dStr.equals("")) {
                     log.debug("Ignoring text " + pStr + " because the amount is empty");
                     // This is used to delete a row so do not throw a
                     // FieldValidationException
                     continue;
                 }
-                if (pStr == null) {
-                    pStr = "";
-                }
                 // Make sure the value can be stored safely later on
                 pStr = pStr.replace(DB_SEP, "");
 
                 Date d = null;
+                Date dP = null;
                 try {
                     d = sdf.parse(dStr);
+                    dP = sdf.parse(dpStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 try {
                     Double p =  Double.parseDouble(pStr);
                     Double a =  Double.parseDouble(aStr);
-                    value.add(new Carrier(d, p, a));
+                    value.add(new Carrier(d, p, dP, a ));
                 } catch (NumberFormatException nfe) {
                     // A value was provided but it was an invalid value
                     throw new FieldValidationException("Введите числа");
@@ -309,17 +325,26 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         }
         Collection<Carrier> carriers = value;
         List<String> result = new ArrayList<String>();
+        int i = 0;
         for (Carrier carrier : carriers) {
             if (carrier == null) {
                 continue;
             }
             StringBuffer sb = new StringBuffer();
-            sb.append(carrier.getStringDate());
-            sb.append(DB_SEP);
-            sb.append(carrier.getPercent().toString());
-            sb.append(DB_SEP);
-            sb.append(carrier.getAmount());
-            result.add(sb.toString());
+            if (i == 0) {
+                sb.append(carrier.getFullAmount());
+                result.add(sb.toString());
+            } else {
+                sb.append(carrier.getStringDate());
+                sb.append(DB_SEP);
+                sb.append(carrier.getAmount());
+                sb.append(DB_SEP);
+                sb.append(carrier.getStringDatePost());
+                sb.append(DB_SEP);
+                sb.append(carrier.getAmountPost());
+                result.add(sb.toString());
+            }
+            i++;
         }
         return result;
     }

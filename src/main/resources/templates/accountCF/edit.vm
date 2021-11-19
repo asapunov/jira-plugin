@@ -4,34 +4,49 @@
     ## All input elements for this custom field should have a name of
     ## $customField.id but each id should be unique
 
+    #if ($issue.getKey())
+        ## issue exists and has a key so the value is a transport of string values,
+        ## not a transport object of the singular objects. We want more than just
+        ## strings so access the transport object directly from the customfield
+
+        #set ($carriers = $customField.getValue($issue))
+    #else
+        ## When this template is used to edit a default value then
+        ## issue is a dummy with no key. Access the transport object via
+        ## the configs variable.
+
+        #set ($carriers = $configs.get("default"))
+    #end
+    <tr>
+        <td>
+            Полная сумма счета
+        </td>
+         <td>
+            <input id="${field_uid}-full-amount"
+            name="${field_uid}"
+            type="text"
+            value="$carriers.get(0).getStringFullAmount()" />
+        </td>
+    </tr>
     <tr width="15%">
         <td>
-            Дата
+            Дата оплаты счета
         </td>
         <td>
-            Проценты
+            Сумма к оплате
         </td>
         <td>
-            Сумма
+            Дата релаьной оплаты
+        </td>
+        <td>
+            Реальная сумма оплаты
         </td>
     </tr>
 
     #if ($value)
-        #if ($issue.getKey())
-            ## issue exists and has a key so the value is a transport of string values,
-            ## not a transport object of the singular objects. We want more than just
-            ## strings so access the transport object directly from the customfield
-
-            #set ($carriers = $customField.getValue($issue))
-        #else
-            ## When this template is used to edit a default value then
-            ## issue is a dummy with no key. Access the transport object via
-            ## the configs variable.
-
-            #set ($carriers = $configs.get("default"))
-        #end
-
+        #set ($i = 0)
         #foreach ($carrier in $carriers)
+            #if ($i > 0)
             <tr >
                 <td>
                     <input id="${field_uid}-date-${velocityCount}"
@@ -41,21 +56,30 @@
                 </td>
 
                 <td>
-                    <input id="${field_uid}-percent-${velocityCount}"
-                           name="${field_uid}"
-                           type="text"
-                           value="$carrier.getStringPercent()" />
-                </td>
-                <td>
                     <input id="${field_uid}-amount-${velocityCount}"
                            name="${field_uid}"
                            type="text"
                            value="$carrier.getStringAmount()" />
                 </td>
+                <td>
+                    <input id = "${field_uid}-datePost-${velocityCount}"
+                           name = "${field_uid}"
+                           type - "text"
+                           value = "$carrier.getStringDatePost()" />
+                </td>
+                <td>
+                    <input id = "${field_uid}-amountPost-${velocityCount}"
+                    name = "${field_uid}"
+                    type - "text"
+                    value = "$carrier.getStringAmountPost()" />
+                </td>
             </tr>
+            #end
+            #set($i = ($i + 1))
         #end
 
     #end
+
 
     <tr>
         <td>
@@ -66,51 +90,31 @@
         </td>
 
         <td>
-            <input id="${field_uid}-new-percent"
-                   name="${field_uid}"
-                   type="text"
-                   value="" />
-        </td>
-        <td>
             <input id="${field_uid}-new-amount"
                    name="${field_uid}"
                    type="text"
                    value="" />
         </td>
+        <td>
+            <input id="${field_uid}-new-datePost"
+                   name="${field_uid}"
+                   type="text"
+                   value="" />
+        </td>
+
+        <td>
+            <input id="${field_uid}-new-amountPost"
+            name="${field_uid}"
+            type="text"
+            value="" />
+        </td>
+
     </tr>
 
 </table>
 <input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
 
-<script>
-    let i = 1;
-    function createInput(){
-        let a = "${field_uid}";
-        i++;
-        var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "  +
-                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_s" + i + "\" /> " +
-                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> "+ "</tr>");
-            $input.appendTo('#mainTab');
-    }
-</script>
 
-<style>
-
-    form.ajs-dirty-warning-exempt.aui {
-        display: flex!important;
-        flex-direction: row;
-        align-items: flex-start;
-    }
-
-    div.save-options{
-        position: relative!important;
-        align-self: end;
-        margin-left: 8px;
-        width: fit-content;
-        height: min-content;
-    }
-
-</style>
 
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 
