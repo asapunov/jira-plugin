@@ -1,5 +1,6 @@
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
+
 <table id='mainTab'>
     ## All input elements for this custom field should have a name of
     ## $customField.id but each id should be unique
@@ -17,17 +18,7 @@
 
         #set ($carriers = $configs.get("default"))
     #end
-    <tr>
-        <td>
-            Полная сумма счета
-        </td>
-         <td>
-            <input id="${field_uid}-full-amount"
-            name="${field_uid}"
-            type="text"
-            value="$carriers.get(0).getStringFullAmount()" />
-        </td>
-    </tr>
+
     <tr width="15%">
         <td>
             Дата оплаты счета
@@ -44,6 +35,17 @@
     </tr>
 
     #if ($value)
+    <tr>
+        <td>
+            Полная сумма счета
+        </td>
+        <td>
+            <input id="${field_uid}-full-amount"
+            name="${field_uid}"
+            type="text"
+            value="$carriers.get(0).getStringFullAmount()" />
+            </td>
+    </tr>
         #set ($i = 0)
         #foreach ($carrier in $carriers)
             #if ($i > 0)
@@ -59,7 +61,7 @@
                     <input id="${field_uid}-amount-${velocityCount}"
                            name="${field_uid}"
                            type="text"
-                           value="$carrier.getStringAmount()" />
+                           value="$number.format("currency", $carrier.getAmount())" />
                 </td>
                 <td>
                     <input id = "${field_uid}-datePost-${velocityCount}"

@@ -11,6 +11,7 @@ import com.atlassian.jira.issue.customfields.view.CustomFieldParams;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.util.ErrorCollection;
+import com.atlassian.jira.util.velocity.NumberTool;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,6 +25,8 @@ import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.issue.customfields.converters.DateConverter;
 import com.atlassian.jira.util.DateFieldFormat;
 import com.atlassian.jira.datetime.DateTimeFormatter;
+import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
+import java.sql.Timestamp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -347,6 +350,16 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
             i++;
         }
         return result;
+    }
+    public Map<String, Object> getVelocityParameters(final Issue issue,
+                                                     final CustomField field,
+                                                     final FieldLayoutItem fieldLayoutItem)
+    {
+        final Map<String, Object> map = super.getVelocityParameters(issue, field,
+                fieldLayoutItem);
+        NumberTool numberTool = new NumberTool();
+        map.put("number", numberTool);
+        return map;
     }
 
 }

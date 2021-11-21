@@ -1,9 +1,6 @@
 #if ($value)
     #if ($value.size() > 0)
-
-        <table>
-
-            #if ($!issue)
+        #if ($!issue)
             ## issue exists so the value is a transport of string values,
             ## not a transport object of the singular objects. We want more than just
             ## strings so access the transport object directly from the customfield
@@ -15,6 +12,8 @@
 
             #set ($carriers = $value)
         #end
+        <table>
+
             <tr>
                 <td>
                     Полная сумма счета
@@ -46,17 +45,17 @@
                 #if($i > 0)
                     <tr>
                         <td align="center">
-                            $!carrier.getStringDate()
+                            $carrier.getStringDate()
                         </td>
                         <td align="center" >
                             #set($percent = $!carrier.getAmount() / $!carriers.get(0).getFullAmount() * 100)
-                            $!percent
+                            $number.format($percent)
                         </td>
                         <td align="center">
-                            $!carrier.getStringAmount()
+                            $number.format("currency", $!carrier.Amount())
                         </td>
                         <td align = "center">
-                            $!carrier.getStringDatePost()
+                            $number.format("currency", $!carrier.Amount())!carrier.getStringDatePost()
                         </td>
                         <td align = "center">
                             $!carrier.getStringAmountPost()
