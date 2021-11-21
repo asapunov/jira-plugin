@@ -19,24 +19,24 @@
                     Полная сумма счета
                 </td>
                 <td>
-                    $carriers.get(0).getStringFullAmount()
+                    $number.format("currency",$carriers.get(0).getFullAmount())
                 </td>
             </tr>
 
             <tr>
-                <td align="center">
+                <td>
                     Дата
                 </td>
-                <td align="center">
+                <td>
                     Проценты
                 </td>
-                <td align="center">
+                <td>
                     Сумма
                 </td>
-                <td align="center">
+                <td>
                     Дата реальной оплаты
                 </td>
-                <td align="center">
+                <td>
                     Pеальная сумма оплаты
                 </td>
             </tr>
@@ -44,21 +44,21 @@
             #foreach ($carrier in $carriers)
                 #if($i > 0)
                     <tr>
-                        <td align="center">
+                        <td>
                             $carrier.getStringDate()
                         </td>
-                        <td align="center" >
+                        <td>
                             #set($percent = $!carrier.getAmount() / $!carriers.get(0).getFullAmount() * 100)
-                            $number.format($percent)
+                            $number.format($percent)%
                         </td>
-                        <td align="center">
-                            $number.format("currency", $!carrier.Amount())
+                        <td>
+                            $number.format("currency", $!carrier.getAmount())
                         </td>
-                        <td align = "center">
-                            $number.format("currency", $!carrier.Amount())!carrier.getStringDatePost()
+                        <td>
+                            $!carrier.getStringDatePost()
                         </td>
-                        <td align = "center">
-                            $!carrier.getStringAmountPost()
+                        <td>
+                            $number.format("currency", $!carrier.getAmountPost())
                         </td>
                     </tr>
                 #end

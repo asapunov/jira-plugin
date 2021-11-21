@@ -18,7 +18,19 @@
 
         #set ($carriers = $configs.get("default"))
     #end
-
+    #if (!$value)
+        <tr>
+            <td>
+                Полная сумма счета
+            </td>
+            <td>
+                <input id="${field_uid}-full-amount"
+                name="${field_uid}"
+                type="text"
+                value="" />
+            </td>
+        </tr>
+#end
     <tr width="15%">
         <td>
             Дата оплаты счета
@@ -43,7 +55,7 @@
             <input id="${field_uid}-full-amount"
             name="${field_uid}"
             type="text"
-            value="$carriers.get(0).getStringFullAmount()" />
+            value="$number.format($carriers.get(0).getFullAmount())" />
             </td>
     </tr>
         #set ($i = 0)
@@ -53,27 +65,29 @@
                 <td>
                     <input id="${field_uid}-date-${velocityCount}"
                            name="${field_uid}"
-                           type="text"
-                           value="$carrier.getStringDate()" />
+                           type="date"
+                           value="$carrier.getStringDate()"
+                           class = "datepicker-here" />
                 </td>
 
                 <td>
                     <input id="${field_uid}-amount-${velocityCount}"
                            name="${field_uid}"
                            type="text"
-                           value="$number.format("currency", $carrier.getAmount())" />
+                           value="$number.format($carrier.getAmount())" />
                 </td>
                 <td>
                     <input id = "${field_uid}-datePost-${velocityCount}"
                            name = "${field_uid}"
-                           type - "text"
-                           value = "$carrier.getStringDatePost()" />
+                           type = "date"
+                           value = "$carrier.getStringDatePost()"
+                           class = "datepicker-here" />
                 </td>
                 <td>
                     <input id = "${field_uid}-amountPost-${velocityCount}"
                     name = "${field_uid}"
                     type - "text"
-                    value = "$carrier.getStringAmountPost()" />
+                    value = "$number.format($carrier.getAmountPost())" />
                 </td>
             </tr>
             #end
@@ -82,13 +96,13 @@
 
     #end
 
-
     <tr>
         <td>
-            <input id="${field_uid}-new-date"
-                   name="${field_uid}"
-                   type="text"
-                   value="" />
+            <input id = "${field_uid}-new-date"
+                   name ="${field_uid}"
+                   type ="text"
+                   value =""
+                   class = "datepicker-here" />
         </td>
 
         <td>
@@ -101,7 +115,8 @@
             <input id="${field_uid}-new-datePost"
                    name="${field_uid}"
                    type="text"
-                   value="" />
+                   value=""
+                   class = "datepicker-here" />
         </td>
 
         <td>
@@ -114,7 +129,11 @@
     </tr>
 
 </table>
+
+
 <input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
+
+
 
 
 

@@ -35,4 +35,11 @@
         <context>atl.general</context>
     </web-resource>
 
+    <web-resource key="jira-datepicker-resources" name="jira-datepicker Web Resources">
+        <resource type="download" name="datepicker.min.js" location="templates/datepicker/js/datepicker.min.js"/>
+        <resource type="download" name="datepicker.min.css" location="templates/datepicker/css/datepicker.min.css"/>
+        <resource type="download" name="datepicker.en.js" location="templates/datepicker/i18n/datepicker.en.js"/>
+        <context>atl.general</context>
+    </web-resource>
+
 </atlassian-plugin>

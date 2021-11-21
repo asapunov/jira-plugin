@@ -52,7 +52,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     private final DatePickerConverter datePickerConverter;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
     private final DateFieldFormat dateFieldFormat ;
-    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy");
+    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
 
@@ -101,15 +101,9 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DateCFType date = new DateCFType(persister, datePickerConverter, genericConfigManager,
-                null, dateFieldFormat, dateTimeFormatterFactory, null );
-        parts[0] = dateFieldFormat.format(d);
-        parts[2] = dateFieldFormat.format(dP);
-        Date oDate = date.getSingularObjectFromString(parts[0]);
         Double p = Double.parseDouble(parts[1]);
-        Date pDate = date.getSingularObjectFromString(parts[2]);
         Double a = Double.parseDouble(parts[3]);
-        return new Carrier(oDate, p, pDate, a );
+        return new Carrier(d, p, dP, a);
     }
 
     public Collection<Carrier> getValueFromIssue(CustomField field,
@@ -246,15 +240,17 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                 value.add(new Carrier(f));
             } catch (NumberFormatException nfe) {
                 // A value was provided but it was an invalid value
-                throw new FieldValidationException("Введите число");
+                throw new FieldValidationException("Полная сумма счета должны быть числом");
             }
             while ( it.hasNext() ) {
                 String dStr = (String)it.next();
+                String temp = (String)it.next();
                 // This won't be true if only one parameter is passed in a query
-                String pStr = ((String)it.next()).replaceAll("\\s+", "");
+                String pStr = temp.replaceAll("\\s+", "");
                 // Allow empty text but not empty amounts
                 String dpStr = (String)it.next();
-                String aStr = ((String)it.next()).replaceAll("\\s+", "");
+                temp = (String)it.next();
+                String aStr = temp.replaceAll("\\s+", "");
                 if (dStr == null || dStr.equals("")) {
                     log.debug("Ignoring text " + pStr + " because the amount is empty");
                     // This is used to delete a row so do not throw a
@@ -271,15 +267,18 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                     dP = sdf.parse(dpStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    throw new FieldValidationException("Введите поэалуйста дату в формате дд.мм.гггг");
                 }
+                Double p = null;
+                Double a = null;
                 try {
-                    Double p =  Double.parseDouble(pStr);
-                    Double a =  Double.parseDouble(aStr);
-                    value.add(new Carrier(d, p, dP, a ));
+                    p =  Double.parseDouble(pStr);
+                    a =  Double.parseDouble(aStr);
                 } catch (NumberFormatException nfe) {
                     // A value was provided but it was an invalid value
-                    throw new FieldValidationException("Введите числа");
+                    throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
                 }
+                value.add(new Carrier(d, p, dP, a ));
             }
             return value;
         } else {

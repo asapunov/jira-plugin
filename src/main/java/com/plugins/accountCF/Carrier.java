@@ -14,14 +14,12 @@ import java.util.Date;
  */
 public class Carrier {
 
-    private static final String PATTERN_FOR_DOUBLE = "{0,choice,-1<{0,number,'#.##'}|0#|0<{0,number,'###,###,###.##'}}";
-    private static final String PATTERN_FOR_INT = "{0,choice,-1<{0,integer,'#.##'}|0#|0<{0,number,integer}}";
     private Double fullAmount; /**Полная сумма счета */
     private Double amount; /**Сумма каждой части счета */
     private Date date; /**Дата предположительной оплаты */
     private Double amountPost; /**Сумма релаьной оплаты */
     private Date datePost; /**Дата релаьной оплаты */
-    private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
+    private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
     public Carrier(Date date, Double amount, Date datePost, Double amountPost) {
         this.amount = amount;
         this.date = date;
@@ -36,30 +34,12 @@ public class Carrier {
         return fullAmount;
     }
 
-    public String getStringFullAmount() {
-        return MessageFormat.format(PATTERN_FOR_DOUBLE, fullAmount);
-    }
-
     public Double getAmount() {
         return amount;
     }
 
-    public String getStringAmount() {
-        return MessageFormat.format(PATTERN_FOR_DOUBLE, amount);
-    }
-
-    /** Высчитывает проценты от суммы */
-    public @NotNull String getStringPercent() {
-        Double percent =  amount / fullAmount * 100;
-        return MessageFormat.format(PATTERN_FOR_DOUBLE, percent) + "%";
-    }
-
     public Double getAmountPost() {
         return amountPost;
-    }
-
-    public String getStringAmountPost() {
-        return MessageFormat.format(PATTERN_FOR_DOUBLE, amountPost);
     }
 
     public String getStringDate() {
@@ -72,9 +52,7 @@ public class Carrier {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        //sb.append("Carrier object: ");
         sb.append((date));
-       // sb.append(" and ");
         sb.append((amount));
         sb.append(amountPost);
         sb.append(datePost);
