@@ -1,3 +1,4 @@
+import datepicker from 'js-datepicker'
 let i = 1;
 function createInput(){
     let a = "${field_uid}";
@@ -8,3 +9,4 @@ function createInput(){
         "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
     $input.appendTo('#mainTab');
 }
+export const picker = datepicker("#datepicker")

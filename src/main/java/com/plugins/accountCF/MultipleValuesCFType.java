@@ -350,12 +350,20 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         }
         return result;
     }
+
+@Override
     public Map<String, Object> getVelocityParameters(final Issue issue,
                                                      final CustomField field,
                                                      final FieldLayoutItem fieldLayoutItem)
     {
-        final Map<String, Object> map = super.getVelocityParameters(issue, field,
-                fieldLayoutItem);
+
+
+        //NumberTool numberTool = new NumberTool();
+        //map.put("number", numberTool);
+        //$dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar
+        DateCFType dateCFType = new DateCFType(persister, datePickerConverter, genericConfigManager, null, dateFieldFormat,
+                dateTimeFormatterFactory, null );
+        final Map<String, Object> map = dateCFType.getVelocityParameters(issue, field, fieldLayoutItem);
         NumberTool numberTool = new NumberTool();
         map.put("number", numberTool);
         return map;

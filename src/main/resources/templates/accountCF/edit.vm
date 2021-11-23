@@ -1,6 +1,9 @@
+#disable_html_escaping()
+$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
 
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
 <table id='mainTab'>
     ## All input elements for this custom field should have a name of
     ## $customField.id but each id should be unique
@@ -65,7 +68,7 @@
                 <td>
                     <input id="${field_uid}-date-${velocityCount}"
                            name="${field_uid}"
-                           type="date"
+                           type="text"
                            value="$carrier.getStringDate()"
                            class = "datepicker-here" />
                 </td>
@@ -79,14 +82,14 @@
                 <td>
                     <input id = "${field_uid}-datePost-${velocityCount}"
                            name = "${field_uid}"
-                           type = "date"
+                           type = "text"
                            value = "$carrier.getStringDatePost()"
                            class = "datepicker-here" />
                 </td>
                 <td>
                     <input id = "${field_uid}-amountPost-${velocityCount}"
                     name = "${field_uid}"
-                    type - "text"
+                    type = "text"
                     value = "$number.format($carrier.getAmountPost())" />
                 </td>
             </tr>
@@ -112,15 +115,19 @@
                    value="" />
         </td>
         <td>
-            <input id="${field_uid}-new-datePost"
-                   name="${field_uid}"
-                   type="text"
-                   value=""
-                   class = "datepicker-here" />
+            ##<input id="${field_uid}-new-datePost"
+            ##       name="${field_uid}"
+            ##       type="text"
+             ##      value=""/>
+            <input class="text medium-field datepicker-input" id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off" />
+            <a href="#" id="${customField.id}-trigger" title="$i18n.getText('date.picker.select.date')">
+                <span class="icon-default aui-icon aui-icon-small aui-iconfont-calendar">$i18n.getText('date.picker.select.date')</span>
+            </a>
+            #datePopup("${field_uid}-new-datePost" "${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
         </td>
 
         <td>
-            <input id="${field_uid}-new-amountPost"
+            <input id="datepicker"
             name="${field_uid}"
             type="text"
             value="" />
@@ -130,12 +137,7 @@
 
 </table>
 
-
 <input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
 
-
-
-
-
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
-
+$!{auiparams.clear()}
