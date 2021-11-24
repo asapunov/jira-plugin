@@ -250,7 +250,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                 // This won't be true if only one parameter is passed in a query
                 String aStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
                 // Allow empty text but not empty amounts
-                String dpStr = ((String)it.next()).replaceAll("0", "");;
+                String dpStr = (String)it.next();
                 String apStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
                 if (dStr == null || dStr.equals("")) {
                     log.debug("Ignoring text " + aStr + " because the amount is empty");
@@ -262,7 +262,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
 
                 Date d = null;
                 Date dP = null;
-                if (!(StringUtils.isEmpty(dStr))&& (StringUtils.isEmpty(dpStr) ||  dpStr == "null"))
+                if (!(StringUtils.isEmpty(dStr)) && (StringUtils.isEmpty(dpStr) ||  dpStr.equals("null")))
                 {
                     try {
                         d = sdf.parse(dStr);
@@ -278,8 +278,8 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                         dP = sdf.parse(dpStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"d/MMM/yy\", " +
-                                "например. \"24.11.21\"");
+                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"dd.MM/yyyy\", " +
+                                "например. \"24.11.2021\"");
                     }
 
                 Double a = null;

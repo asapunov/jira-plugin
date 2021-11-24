@@ -132,7 +132,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
     </tr>
 
 </table>
-<input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
+<input value="Добавить оплату" id = "buttonAdd" onclick="createInput()" type="button">
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
 

@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.plugins.customfield</groupId>
     <artifactId>jira-custom-field</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 
     <organization>
         <name>Example Company</name>
@@ -117,12 +117,12 @@
                             com.plugins.customfield.api,
                         </Export-Package>
 
-                        <!-- Add package import here -->
+                        <!-- Add package import here
                         <Import-Package>
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
                             *
-                        </Import-Package>
+                        </Import-Package>-->
 
                         <!-- Ensure plugin is spring powered -->
                         <Spring-Context>*</Spring-Context>
