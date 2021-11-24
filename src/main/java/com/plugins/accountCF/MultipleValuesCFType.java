@@ -53,7 +53,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     private final DatePickerConverter datePickerConverter;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
     private final DateFieldFormat dateFieldFormat ;
-    private  SimpleDateFormat sdf = new SimpleDateFormat("d/MMM/yy");
+    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
 
@@ -103,7 +103,9 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
             e.printStackTrace();
         }
         Double p = Double.parseDouble(parts[1]);
-        Double a = Double.parseDouble(parts[3]);
+        Double a = null;
+        if (!parts[3].equals("null"))
+             a = Double.parseDouble(parts[3]);
         return new Carrier(d, p, dP, a);
     }
 
@@ -260,14 +262,14 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
 
                 Date d = null;
                 Date dP = null;
-                if (!(StringUtils.isEmpty(dStr)) && (StringUtils.isEmpty(dpStr)))
+                if (!(StringUtils.isEmpty(dStr))&& (StringUtils.isEmpty(dpStr) ||  dpStr == "null"))
                 {
                     try {
                         d = sdf.parse(dStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"d/MMM/yy\", " +
-                                "например. \"24/ноя/21\"");
+                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"dd.MM.yyyy\", " +
+                                "например. \"24.11.2021\"");
                     }
                 }
                 else
@@ -277,12 +279,12 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                     } catch (ParseException e) {
                         e.printStackTrace();
                         throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"d/MMM/yy\", " +
-                                "например. \"24/ноя/21\"");
+                                "например. \"24.11.21\"");
                     }
 
                 Double a = null;
                 Double aP = null;
-                if (!(StringUtils.isEmpty(aStr)) && (StringUtils.isEmpty(apStr)))
+                if (!(StringUtils.isEmpty(aStr)) && (StringUtils.isEmpty(apStr)) ||  apStr == null)
                     try {
                     a =  Double.parseDouble(aStr);
                     } catch (NumberFormatException nfe) {

@@ -1,7 +1,5 @@
 #disable_html_escaping()
 $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
-$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
-$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
 
@@ -73,28 +71,29 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                     <input id="${field_uid}-date-${velocityCount}"
                            name="${field_uid}"
                            type="text"
-                           value="$carrier.getStringDate()"
+                           value="$!date.format('dd.MM.yyyy',$!carrier.getDate())"
                            class = "datepicker-here" />
                 </td>
 
                 <td>
+
                     <input id="${field_uid}-amount-${velocityCount}"
                            name="${field_uid}"
                            type="text"
                            value="$number.format($carrier.getAmount())" />
                 </td>
                 <td>
+
                     <input id = "${field_uid}-datePost-${velocityCount}"
                            name = "${field_uid}"
                            type = "text"
-                           value = "$carrier.getStringDatePost()"
-                           class = "datepicker-here" />
+                           value = "$!date.format('dd.MM.yyyy',$!carrier.getDatePost())"/>
                 </td>
                 <td>
                     <input id = "${field_uid}-amountPost-${velocityCount}"
                     name = "${field_uid}"
                     type = "text"
-                    value = "$number.format($carrier.getAmountPost())" />
+                    value = "$!number.format($!carrier.getAmountPost())" />
                 </td>
             </tr>
             #end
@@ -119,13 +118,8 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                    value="" />
         </td>
         <td>
-            ##<input id="${field_uid}-new-datePost"
-            ##       name="${field_uid}"
-            ##       type="text"
-             ##      value=""/>
             <input id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off"
-
-            onclick=""/>
+            />
          </td>
 
         <td>
@@ -138,9 +132,19 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
     </tr>
 
 </table>
-
 <input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
-
-#datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
+
+<script>
+    let i = 1;
+    function createInput(){
+        let a = "${field_uid}";
+        i++;
+        var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "  +
+                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_s" + i + "\" /> " +
+                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> " +
+                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
+            $input.appendTo('#mainTab');
+    }
+</script>

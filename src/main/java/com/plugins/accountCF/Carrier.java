@@ -15,7 +15,7 @@ public class Carrier {
     private Date date; /**Дата предположительной оплаты */
     private Double amountPost; /**Сумма релаьной оплаты */
     private Date datePost; /**Дата релаьной оплаты */
-    private final SimpleDateFormat format = new SimpleDateFormat("d/MMM/yy");
+    private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
     public Carrier(Date date, Double amount, Date datePost, Double amountPost) {
         this.amount = amount;
         this.date = date;
@@ -38,29 +38,29 @@ public class Carrier {
         if (amountPost != null)
             return amountPost;
         else
-            return 0.0;
+            return null;
     }
     /**
-     Возвращает дату планирующейся оплаты в формате, который принят в Jira по умолчанию (d/MMM/yy)
+     Возвращает дату планирующейся оплаты в формате dd.MM.yyyy
      */
     public String getStringDate() {
         return format.format(date);
     }
     /**
-     Возвращает дату рельаной оплаты в формате, который принят в Jira по умолчанию (d/MMM/yy)
+     Возвращает дату рельаной оплаты в формате dd.MM.yyyy
      */
     public String getStringDatePost() {
         if (datePost != null)
             return format.format(datePost);
         else
-            return "0";
+            return null;
     }
     public Date getDate() {
         return date;
     }
 
     public Date getDatePost() {
-        return date;
+        return datePost;
     }
 
     public String toString() {

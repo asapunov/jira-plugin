@@ -55,13 +55,11 @@
                             $number.format("currency", $!carrier.getAmount())
                         </td>
                         <td>
-                            #if($!carrier.getStringDatePost() != "0")
-                                $date.format('dd.MM.yyyy',$!carrier.getDatePost())
-                            #end
+                            $!date.format('dd.MM.yyyy',$!carrier.getDatePost())
                         </td>
                         <td>
                             #if($!carrier.getAmountPost() != 0.0)
-                                $number.format("currency", $!carrier.getAmountPost())
+                                $!number.format("currency", $!carrier.getAmountPost())
                             #end
                         </td>
                     </tr>
