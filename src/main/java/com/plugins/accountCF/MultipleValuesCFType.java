@@ -27,6 +27,7 @@ import com.atlassian.jira.util.DateFieldFormat;
 import com.atlassian.jira.datetime.DateTimeFormatter;
 import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
 import java.sql.Timestamp;
+import org.apache.velocity.tools.generic.DateTool;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,7 +53,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     private final DatePickerConverter datePickerConverter;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
     private final DateFieldFormat dateFieldFormat ;
-    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    private  SimpleDateFormat sdf = new SimpleDateFormat("d/MMM/yy");
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
 
@@ -234,51 +235,69 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         if ((values != null) && !values.isEmpty()) {
             Collection<Carrier> value = new ArrayList();
             Iterator it = values.iterator();
-            String fStr = (String)it.next();
+            String fStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
             try {
                 Double f =  Double.parseDouble(fStr);
                 value.add(new Carrier(f));
             } catch (NumberFormatException nfe) {
                 // A value was provided but it was an invalid value
-                throw new FieldValidationException("Полная сумма счета должны быть числом");
+                throw new FieldValidationException("Полная сумма счета должна быть числом");
             }
             while ( it.hasNext() ) {
                 String dStr = (String)it.next();
-                String temp = (String)it.next();
                 // This won't be true if only one parameter is passed in a query
-                String pStr = temp.replaceAll("\\s+", "");
+                String aStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
                 // Allow empty text but not empty amounts
-                String dpStr = (String)it.next();
-                temp = (String)it.next();
-                String aStr = temp.replaceAll("\\s+", "");
+                String dpStr = ((String)it.next()).replaceAll("0", "");;
+                String apStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
                 if (dStr == null || dStr.equals("")) {
-                    log.debug("Ignoring text " + pStr + " because the amount is empty");
+                    log.debug("Ignoring text " + aStr + " because the amount is empty");
                     // This is used to delete a row so do not throw a
                     // FieldValidationException
                     continue;
                 }
                 // Make sure the value can be stored safely later on
-                pStr = pStr.replace(DB_SEP, "");
 
                 Date d = null;
                 Date dP = null;
-                try {
-                    d = sdf.parse(dStr);
-                    dP = sdf.parse(dpStr);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    throw new FieldValidationException("Введите поэалуйста дату в формате дд.мм.гггг");
+                if (!(StringUtils.isEmpty(dStr)) && (StringUtils.isEmpty(dpStr)))
+                {
+                    try {
+                        d = sdf.parse(dStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"d/MMM/yy\", " +
+                                "например. \"24/ноя/21\"");
+                    }
                 }
-                Double p = null;
+                else
+                    try {
+                        d = sdf.parse(dStr);
+                        dP = sdf.parse(dpStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"d/MMM/yy\", " +
+                                "например. \"24/ноя/21\"");
+                    }
+
                 Double a = null;
-                try {
-                    p =  Double.parseDouble(pStr);
+                Double aP = null;
+                if (!(StringUtils.isEmpty(aStr)) && (StringUtils.isEmpty(apStr)))
+                    try {
                     a =  Double.parseDouble(aStr);
-                } catch (NumberFormatException nfe) {
+                    } catch (NumberFormatException nfe) {
                     // A value was provided but it was an invalid value
-                    throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
-                }
-                value.add(new Carrier(d, p, dP, a ));
+                        throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
+                    }
+                else
+                    try {
+                        a =  Double.parseDouble(aStr);
+                        aP =  Double.parseDouble(apStr);
+                    } catch (NumberFormatException nfe) {
+                        // A value was provided but it was an invalid value
+                        throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
+                    }
+                value.add(new Carrier(d, a, dP, aP ));
             }
             return value;
         } else {
@@ -366,6 +385,8 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         final Map<String, Object> map = dateCFType.getVelocityParameters(issue, field, fieldLayoutItem);
         NumberTool numberTool = new NumberTool();
         map.put("number", numberTool);
+        DateTool dateTool = new DateTool();
+        map.put("date", dateTool);
         return map;
     }
 

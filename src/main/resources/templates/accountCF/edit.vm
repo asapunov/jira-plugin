@@ -1,5 +1,5 @@
 #disable_html_escaping()
-$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
+
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
 
@@ -33,6 +33,18 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                 value="" />
             </td>
         </tr>
+    #else
+        <tr>
+            <td>
+            Полная сумма счета
+            </td>
+            <td>
+                <input id="${field_uid}-full-amount"
+                name="${field_uid}"
+                type="text"
+                value="$number.format($carriers.get(0).getFullAmount())" />
+            </td>
+        </tr>
 #end
     <tr width="15%">
         <td>
@@ -50,17 +62,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
     </tr>
 
     #if ($value)
-    <tr>
-        <td>
-            Полная сумма счета
-        </td>
-        <td>
-            <input id="${field_uid}-full-amount"
-            name="${field_uid}"
-            type="text"
-            value="$number.format($carriers.get(0).getFullAmount())" />
-            </td>
-    </tr>
+
         #set ($i = 0)
         #foreach ($carrier in $carriers)
             #if ($i > 0)
@@ -93,6 +95,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                     value = "$number.format($carrier.getAmountPost())" />
                 </td>
             </tr>
+                $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
             #end
             #set($i = ($i + 1))
         #end
@@ -105,7 +108,10 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                    name ="${field_uid}"
                    type ="text"
                    value =""
-                   class = "datepicker-here" />
+                   autocomplete="off" />
+                                       <a href="#" id="uniqueDateId_trigger" title="Выберите дату">
+                                                                                             <span class="icon-default aui-icon aui-icon-small aui-iconfont-calendar">Выберите дату</span>
+                                                                                                                                                                                     </a>            ##datePopup("${field_uid}-new-date"  $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
         </td>
 
         <td>
@@ -119,12 +125,8 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
             ##       name="${field_uid}"
             ##       type="text"
              ##      value=""/>
-            <input class="text medium-field datepicker-input" id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off" />
-            <a href="#" id="${customField.id}-trigger" title="$i18n.getText('date.picker.select.date')">
-                <span class="icon-default aui-icon aui-icon-small aui-iconfont-calendar">$i18n.getText('date.picker.select.date')</span>
-            </a>
-            #datePopup("${field_uid}-new-datePost" "${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
-        </td>
+            <input id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off" />
+         </td>
 
         <td>
             <input id="datepicker"
@@ -138,6 +140,23 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 </table>
 
 <input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
+
+#macro(datePopup2 $inputId $inputButton $dateFormat)
+<script language="javascript" >
+                              Calendar.setup({
+    firstDay : 1,
+    inputField : '$inputId',
+    button : '$inputButton',
+    align : 'Br',
+    singleClick : true,
+    showsTime : false,
+    useISO8601WeekNumbers : false,
+    ifFormat : '$dateFormat'
+});
+</script>
+#end
+#datePopup2("${field_uid}-new-date" "uniqueDateId_trigger" $dateFormat)
+##datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
 
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}

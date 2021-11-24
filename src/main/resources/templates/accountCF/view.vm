@@ -45,7 +45,7 @@
                 #if($i > 0)
                     <tr>
                         <td>
-                            $carrier.getStringDate()
+                    $date.format('dd.MM.yyyy',$!carrier.getDate())
                         </td>
                         <td>
                             #set($percent = $!carrier.getAmount() / $!carriers.get(0).getFullAmount() * 100)
@@ -55,10 +55,14 @@
                             $number.format("currency", $!carrier.getAmount())
                         </td>
                         <td>
-                            $!carrier.getStringDatePost()
+                            #if($!carrier.getStringDatePost() != "0")
+                                $date.format('dd.MM.yyyy',$!carrier.getDatePost())
+                            #end
                         </td>
                         <td>
-                            $number.format("currency", $!carrier.getAmountPost())
+                            #if($!carrier.getAmountPost() != 0.0)
+                                $number.format("currency", $!carrier.getAmountPost())
+                            #end
                         </td>
                     </tr>
                 #end

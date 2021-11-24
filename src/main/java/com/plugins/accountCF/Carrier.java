@@ -1,9 +1,5 @@
 package com.plugins.accountCF;
-import com.atlassian.jira.issue.customfields.impl.DateCFType;
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-import javax.validation.constraints.NotNull;
-import java.text.MessageFormat;
+import com.atlassian.jira.util.DateFieldFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,7 +15,7 @@ public class Carrier {
     private Date date; /**Дата предположительной оплаты */
     private Double amountPost; /**Сумма релаьной оплаты */
     private Date datePost; /**Дата релаьной оплаты */
-    private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat format = new SimpleDateFormat("d/MMM/yy");
     public Carrier(Date date, Double amount, Date datePost, Double amountPost) {
         this.amount = amount;
         this.date = date;
@@ -39,15 +35,32 @@ public class Carrier {
     }
 
     public Double getAmountPost() {
-        return amountPost;
+        if (amountPost != null)
+            return amountPost;
+        else
+            return 0.0;
     }
-
+    /**
+     Возвращает дату планирующейся оплаты в формате, который принят в Jira по умолчанию (d/MMM/yy)
+     */
     public String getStringDate() {
         return format.format(date);
     }
-
+    /**
+     Возвращает дату рельаной оплаты в формате, который принят в Jira по умолчанию (d/MMM/yy)
+     */
     public String getStringDatePost() {
-        return format.format(datePost);
+        if (datePost != null)
+            return format.format(datePost);
+        else
+            return "0";
+    }
+    public Date getDate() {
+        return date;
+    }
+
+    public Date getDatePost() {
+        return date;
     }
 
     public String toString() {
