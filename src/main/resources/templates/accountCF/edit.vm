@@ -1,5 +1,7 @@
 #disable_html_escaping()
-
+$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
+$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
+$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
 
@@ -95,7 +97,6 @@
                     value = "$number.format($carrier.getAmountPost())" />
                 </td>
             </tr>
-                $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
             #end
             #set($i = ($i + 1))
         #end
@@ -122,11 +123,13 @@
             ##       name="${field_uid}"
             ##       type="text"
              ##      value=""/>
-            <input id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off" />
+            <input id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off"
+
+            onclick=""/>
          </td>
 
         <td>
-            <input id="datepicker"
+            <input id="${field_uid}-new-amountPost"
             name="${field_uid}"
             type="text"
             value="" />
@@ -138,22 +141,6 @@
 
 <input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
 
-#macro(datePopup2 $inputId $inputButton $dateFormat)
-<script language="javascript" >
-                              Calendar.setup({
-    firstDay : 1,
-    inputField : '$inputId',
-    button : '$inputButton',
-    align : 'Br',
-    singleClick : true,
-    showsTime : false,
-    useISO8601WeekNumbers : false,
-    ifFormat : '$dateFormat'
-});
-</script>
-#end
-#datePopup2("${field_uid}-new-date" "uniqueDateId_trigger" $dateFormat)
 #datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
-
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
