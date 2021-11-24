@@ -109,10 +109,7 @@
                    type ="text"
                    value =""
                    autocomplete="off" />
-                                       <a href="#" id="uniqueDateId_trigger" title="Выберите дату">
-                                                                                             <span class="icon-default aui-icon aui-icon-small aui-iconfont-calendar">Выберите дату</span>
-                                                                                                                                                                                     </a>            ##datePopup("${field_uid}-new-date"  $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
-        </td>
+                                      </td>
 
         <td>
             <input id="${field_uid}-new-amount"
@@ -156,7 +153,7 @@
 </script>
 #end
 #datePopup2("${field_uid}-new-date" "uniqueDateId_trigger" $dateFormat)
-##datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
+#datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
 
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
