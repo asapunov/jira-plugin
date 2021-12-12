@@ -1,10 +1,9 @@
-#disable_html_escaping()
-$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
+##disable_html_escaping()
+##$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
 
-<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
-<table id='mainTab'>
+<table id='mainTab' width="80%">
     ## All input elements for this custom field should have a name of
     ## $customField.id but each id should be unique
 
@@ -22,7 +21,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
         #set ($carriers = $configs.get("default"))
     #end
     #if (!$value)
-        <tr>
+        <tr width="80%">
             <td>
                 Полная сумма счета
             </td>
@@ -34,7 +33,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
             </td>
         </tr>
     #else
-        <tr>
+        <tr width="80%">
             <td>
             Полная сумма счета
             </td>
@@ -42,11 +41,11 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                 <input id="${field_uid}-full-amount"
                 name="${field_uid}"
                 type="text"
-                value="$number.format($carriers.get(0).getFullAmount())" />
+                value="$!number.format($carriers.get(0).getFullAmount())" />
             </td>
         </tr>
 #end
-    <tr width="15%">
+    <tr width="80%">
         <td>
             Дата оплаты счета
         </td>
@@ -54,7 +53,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
             Сумма к оплате
         </td>
         <td>
-            Дата релаьной оплаты
+            Дата реальной оплаты
         </td>
         <td>
             Реальная сумма оплаты
@@ -66,13 +65,13 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
         #set ($i = 0)
         #foreach ($carrier in $carriers)
             #if ($i > 0)
-            <tr >
+            <tr width="80%">
                 <td>
                     <input id="${field_uid}-date-${velocityCount}"
                            name="${field_uid}"
                            type="text"
                            value="$!date.format('dd.MM.yyyy',$!carrier.getDate())"
-                           class = "datepicker-here" />
+                           />
                 </td>
 
                 <td>
@@ -102,7 +101,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 
     #end
 
-    <tr>
+    <tr width="80%">
         <td>
             <input id = "${field_uid}-new-date"
                    name ="${field_uid}"
@@ -132,13 +131,15 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
     </tr>
 
 </table>
-<input value="Добавить поле" id = "buttonAdd" onclick="createInput()" type="button">
+<input value="Добавить строку" id = "buttonAdd" onclick="createInput()" type="button">
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
 
 <script>
     let i = 1;
+
     function createInput(){
+        if (i<=15){
         let a = "${field_uid}";
         i++;
         var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "  +
@@ -146,5 +147,5 @@ $!{auiparams.clear()}
                 "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> " +
                 "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
             $input.appendTo('#mainTab');
-    }
+    }}
 </script>

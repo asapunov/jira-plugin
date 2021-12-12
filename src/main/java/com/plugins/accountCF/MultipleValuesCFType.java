@@ -250,7 +250,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                 // This won't be true if only one parameter is passed in a query
                 String aStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
                 // Allow empty text but not empty amounts
-                String dpStr = ((String)it.next()).replaceAll("0", "");;
+                String dpStr = (String)it.next();
                 String apStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
                 if (dStr == null || dStr.equals("")) {
                     log.debug("Ignoring text " + aStr + " because the amount is empty");
