@@ -238,6 +238,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
             Collection<Carrier> value = new ArrayList();
             Iterator it = values.iterator();
             String fStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
+            fStr = fStr.replaceAll(",", "." );
             try {
                 Double f =  Double.parseDouble(fStr);
                 value.add(new Carrier(f));
@@ -249,9 +250,11 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                 String dStr = (String)it.next();
                 // This won't be true if only one parameter is passed in a query
                 String aStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
+                aStr = aStr.replaceAll(",", "." );
                 // Allow empty text but not empty amounts
                 String dpStr = (String)it.next();
                 String apStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
+                apStr = apStr.replaceAll(",", "." );
                 if (dStr == null || dStr.equals("")) {
                     log.debug("Ignoring text " + aStr + " because the amount is empty");
                     // This is used to delete a row so do not throw a
@@ -385,7 +388,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         DateCFType dateCFType = new DateCFType(persister, datePickerConverter, genericConfigManager, null, dateFieldFormat,
                 dateTimeFormatterFactory, null );
         final Map<String, Object> map = dateCFType.getVelocityParameters(issue, field, fieldLayoutItem);
-        NumberTool numberTool = new NumberTool();
+        NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
         map.put("number", numberTool);
         DateTool dateTool = new DateTool();
         map.put("date", dateTool);

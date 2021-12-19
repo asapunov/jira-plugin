@@ -29,7 +29,8 @@
                 <input id="${field_uid}-full-amount"
                 name="${field_uid}"
                 type="text"
-                value="" />
+                value=""
+                class = "text long-field"/>
             </td>
         </tr>
     #else
@@ -41,7 +42,8 @@
                 <input id="${field_uid}-full-amount"
                 name="${field_uid}"
                 type="text"
-                value="$!number.format($carriers.get(0).getFullAmount())" />
+                value="$!number.format($carriers.get(0).getFullAmount())"
+                class = "text long-field"/>
             </td>
         </tr>
 #end
@@ -71,6 +73,7 @@
                            name="${field_uid}"
                            type="text"
                            value="$!date.format('dd.MM.yyyy',$!carrier.getDate())"
+                           class = "text long-field"
                            />
                 </td>
 
@@ -79,20 +82,23 @@
                     <input id="${field_uid}-amount-${velocityCount}"
                            name="${field_uid}"
                            type="text"
-                           value="$number.format($carrier.getAmount())" />
+                           value="$number.format($carrier.getAmount())"
+                           class = "text long-field"/>
                 </td>
                 <td>
 
                     <input id = "${field_uid}-datePost-${velocityCount}"
                            name = "${field_uid}"
                            type = "text"
-                           value = "$!date.format('dd.MM.yyyy',$!carrier.getDatePost())"/>
+                           value = "$!date.format('dd.MM.yyyy',$!carrier.getDatePost())"
+                           class = "text long-field"/>
                 </td>
                 <td>
                     <input id = "${field_uid}-amountPost-${velocityCount}"
                     name = "${field_uid}"
                     type = "text"
-                    value = "$!number.format($!carrier.getAmountPost())" />
+                    value = "$!number.format($!carrier.getAmountPost())"
+                    class = "text long-field"/>
                 </td>
             </tr>
             #end
@@ -107,17 +113,24 @@
                    name ="${field_uid}"
                    type ="text"
                    value =""
-                   autocomplete="off" />
+                   autocomplete="off"
+                   class = "text long-field"/>
                                       </td>
 
         <td>
             <input id="${field_uid}-new-amount"
                    name="${field_uid}"
                    type="text"
-                   value="" />
+                   value=""
+                   class = "text long-field"/>
         </td>
         <td>
-            <input id="${field_uid}-new-datePost" name="$customField.id" type="text" value="" autocomplete="off"
+            <input id="${field_uid}-new-datePost"
+                name="$customField.id"
+                type="text"
+                value=""
+                autocomplete="off"
+                class = "text long-field"
             />
          </td>
 
@@ -125,13 +138,14 @@
             <input id="${field_uid}-new-amountPost"
             name="${field_uid}"
             type="text"
-            value="" />
+            value=""
+            class = "text long-field"/>
         </td>
 
     </tr>
 
 </table>
-<input value="Добавить строку" id = "buttonAdd" onclick="createInput()" type="button">
+<input value="Добавить строку" id = "buttonAdd" onclick="createInput()" type="button" class="aui-button">
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
 
@@ -142,10 +156,10 @@ $!{auiparams.clear()}
         if (i<=15){
         let a = "${field_uid}";
         i++;
-        var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "  +
-                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_s" + i + "\" /> " +
-                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> " +
-                "<td>" + "<input  type=\"text\" value=\"\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
+        var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\"  /> "  +
+                "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_s" + i + "\" /> " +
+                "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> " +
+                "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
             $input.appendTo('#mainTab');
     }}
 </script>
