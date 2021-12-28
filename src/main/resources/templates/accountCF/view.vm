@@ -16,7 +16,7 @@
 
             <tr>
                 <td>
-                    Полная сумма счета
+                    Полная сумма счета:
                 </td>
                 <td>
                     $number.format($carriers.get(0).getFullAmount())
@@ -34,12 +34,12 @@
                     Сумма к оплате
                 </td>
                 <td>
-                    #if ($!carriers.get(0).getDatePost())
+                    #if ($!carriers.get(1).getDatePost())
                         Дата реальной оплаты
                     #end
                 </td>
                 <td>
-                    #if ($!carriers.get(0).getAmountPost())
+                    #if ($!carriers.get(1).getAmountPost())
                         Pеальная сумма оплаты
                     #end
                 </td>
@@ -71,6 +71,22 @@
                 #set($i = ($i + 1))
             #end
 
+            #set($ost = $!carriers.get(0).getFullAmount())
+            #set ($index = $i - 1)
+            #if ($index > 0)
+                #foreach ($a in [1..$index])
+                    #set($ost = $ost - ($!carriers.get($a).getAmountPost()))
+                #end
+            #end
+
+                <tr>
+                    <td>
+                        Остаток:
+                    </td>
+                    <td>
+                        $!number.format($ost)
+                    </td>
+                </tr>
         </table>
     #end
 #end

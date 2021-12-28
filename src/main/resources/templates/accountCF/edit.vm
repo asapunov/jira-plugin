@@ -1,5 +1,5 @@
 ##disable_html_escaping()
-##$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
+$!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
 
@@ -114,7 +114,7 @@
                    type ="text"
                    value =""
                    autocomplete="off"
-                   class = "text long-field"/>
+                   class = "text medium-field datepicker-input"/>
                                       </td>
 
         <td>
@@ -130,7 +130,7 @@
                 type="text"
                 value=""
                 autocomplete="off"
-                class = "text long-field"
+                class = "text medium-field datepicker-input"
             />
          </td>
 
@@ -145,6 +145,9 @@
     </tr>
 
 </table>
+#set ($labelText = $i18n.getText('date.picker.config.default.date'))
+#datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
+#datePopup("${field_uid}-new-date" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
 <input value="Добавить строку" id = "buttonAdd" onclick="createInput()" type="button" class="aui-button">
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}

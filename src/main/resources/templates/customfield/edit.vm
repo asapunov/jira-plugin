@@ -28,7 +28,8 @@
             <input id="${field_uid}-rate"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatRate()"/>
+                   value="$carrier.getFormatRate()"
+                   class = "text long-field"/>
         </td>
     </tr>
     <tr>
@@ -50,14 +51,16 @@
             <input id="${field_uid}-prepayment"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatPrepayment()" />
+                   value="$carrier.getFormatPrepayment()"
+                   class = "text long-field"/>
         </td>
 
         <td>
             <input id="${field_uid}-days-prepayment"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatDaysPrepayment()" />
+                   value="$carrier.getFormatDaysPrepayment()"
+                   class = "text long-field"/>
         </td>
 
     </tr>
@@ -69,13 +72,15 @@
             <input id="${field_uid}-advance"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatAdvance()" />
+                   value="$carrier.getFormatAdvance()"
+                   class = "text long-field"/>
         </td>
         <td>
             <input id="${field_uid}-days-advance"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatDaysAdvance()" />
+                   value="$carrier.getFormatDaysAdvance()"
+                   class = "text long-field"/>
         </td>
 
     </tr>
@@ -88,13 +93,15 @@
             <input id="${field_uid}-willingness"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatWillingness()" />
+                   value="$carrier.getFormatWillingness()"
+                   class = "text long-field"/>
         </td>
         <td>
             <input id="${field_uid}-days-willingness"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatDaysWillingness()" />
+                   value="$carrier.getFormatDaysWillingness()"
+                   class = "text long-field"/>
         </td>
     </tr>
     <tr width>
@@ -105,13 +112,15 @@
             <input id="${field_uid}-postpaid"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatPostpaid()" />
+                   value="$carrier.getFormatPostpaid()"
+                   class = "text long-field"/>
         </td>
         <td>
             <input id="${field_uid}-days-postpaid"
                    name="${field_uid}"
                    type="text"
-                   value="$carrier.getFormatDaysPostpaid()" />
+                   value="$carrier.getFormatDaysPostpaid()"
+                   class = "text long-field"/>
         </td>
 
     </tr>
@@ -126,7 +135,8 @@
                 <input id="${field_uid}-rate"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
         </tr>
         <tr>
@@ -148,13 +158,15 @@
                 <input id="${field_uid}-prepayment"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
             <td>
                 <input id="${field_uid}-days-prepayment"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
 
         </tr>
@@ -166,13 +178,15 @@
                 <input id="${field_uid}-advance"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
             <td>
                 <input id="${field_uid}-days-advance"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
 
         </tr>
@@ -185,13 +199,15 @@
                 <input id="${field_uid}-willingness"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
             <td>
                 <input id="${field_uid}-days-willingness"
                        name="${field_uid}"
                        type="text"
-                       value="" />
+                       value=""
+                       class = "text long-field"/>
             </td>
         </tr>
     <tr>
@@ -202,13 +218,15 @@
             <input id="${field_uid}-postpaid"
                    name="${field_uid}"
                    type="text"
-                   value="" />
+                   value=""
+                   class = "text long-field"/>
         </td>
         <td>
             <input id="${field_uid}-days-postpaid"
                    name="${field_uid}"
                    type="text"
-                   value="" />
+                   value=""
+                   class = "text long-field"/>
 
         </td>
 #end
