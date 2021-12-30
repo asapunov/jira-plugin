@@ -304,6 +304,10 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                     }
                 value.add(new Carrier(d, a, dP, aP ));
             }
+            if (value.size() < 2)
+            {
+                throw new FieldValidationException("Необходимо заполнить хоть одну строчку с датой выплат");
+            }
             return value;
         } else {
             return null;
