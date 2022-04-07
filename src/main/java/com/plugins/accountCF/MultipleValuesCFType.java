@@ -77,7 +77,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
 
     /**
      * Convert a database representation of a Carrier object into
-     * a Carrier object. This method is also used for bulk moves and imports.
+     * a Carrier object.
      */
     public Carrier getSingularObjectFromString(String dbValue)
             throws FieldValidationException {
