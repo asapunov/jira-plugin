@@ -7,11 +7,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.plugins.customfield</groupId>
     <artifactId>jira-custom-field</artifactId>
-    <version>1.1.5</version>
+    <version>1.2.0-a</version>
 
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Enviogroup</name>
+        <url>http://www.enviogroup.ru/</url>
     </organization>
 
     <name>jira-custom-field</name>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-core</artifactId>
-            <version>7.13.0</version>
+            <version>${jira.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -53,16 +53,6 @@
             <version>1</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>5.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.2</version>
-        </dependency>
         <!-- WIRED TEST RUNNER DEPENDENCIES -->
         <dependency>
             <groupId>com.atlassian.plugins</groupId>
@@ -80,6 +70,12 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.2-atlassian-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.2.22.RELEASE</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
@@ -104,6 +100,7 @@
                 <configuration>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
+                    <log4jProperties>src/aps/log4j.properties</log4jProperties>
                     <!-- Uncomment to install TestKit backdoor in JIRA. -->
                     <!--
                     <pluginArtifacts>
@@ -126,12 +123,12 @@
                             com.plugins.customfield.api,
                         </Export-Package>
 
-                        <!-- Add package import here
+                        <!-- Add package import here-->
                         <Import-Package>
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
                             *
-                        </Import-Package>-->
+                        </Import-Package>
 
                         <!-- Ensure plugin is spring powered -->
                         <Spring-Context>*</Spring-Context>
