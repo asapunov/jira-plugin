@@ -1,2 +1,15 @@
-<p>Issue number: $issueKey</p>
-<p>Value of cf_10000: $value10000 </p>
+#if ($issueKey)
+    <p>Issue number: $issueKey</p>
+    #if($customfield_10000)
+        <p>Value of cf_10000: $number.format($customfield_10000) </p>
+    #end
+    #if($customfield_10100)
+        <p>Value of cf_10100: $customfield_10100 </p>
+    #end
+    #if($customfield_10200)
+    <p>Ключ договора: $customfield_10200 </p>
+    #end
+    #if($customfield_10000Doc)
+    <p>Сумма договора: $number.format($customfield_10000Doc) </p>
+    #end
+#end
