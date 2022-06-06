@@ -8,7 +8,9 @@ import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.plugin.webfragment.contextproviders.AbstractJiraContextProvider;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.util.DefaultBaseUrl;
 import com.atlassian.jira.util.velocity.NumberTool;
+import com.atlassian.jira.util.velocity.VelocityRequestContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,6 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
     private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
-
     @Override
     public Map<String, Object> getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
         Map<String, Object> contextMap = new HashMap<>();
@@ -36,6 +37,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("customfield_10200", getCfValue("customfield_10200", issue));
         contextMap.put("customfield_10000Doc", getCfValue("customfield_10000", issueDoc));
         contextMap.put("number", numberTool);
+        contextMap.put("baseURL", getjiraURL());
         return contextMap;
     }
 
@@ -50,6 +52,10 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
             log.warn("Field is empty");
             return null;
         }
+    }
+
+    private String getjiraURL() {
+        return ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
     }
 
 }

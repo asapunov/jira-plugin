@@ -5,8 +5,6 @@ import java.util.Date;
 
 /**
  * This is the singular object for this custom field type.
- * It has a Double field for amounts and a String field
- * for comments about the the amount.
  */
 public class Carrier {
 

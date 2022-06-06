@@ -1,15 +1,39 @@
 #if ($issueKey)
+
     <p>Issue number: $issueKey</p>
-    #if($customfield_10000)
-        <p>Value of cf_10000: $number.format($customfield_10000) </p>
-    #end
-    #if($customfield_10100)
-        <p>Value of cf_10100: $customfield_10100 </p>
-    #end
-    #if($customfield_10200)
-    <p>Ключ договора: $customfield_10200 </p>
-    #end
-    #if($customfield_10000Doc)
-    <p>Сумма договора: $number.format($customfield_10000Doc) </p>
-    #end
+    <ol>
+        <li>
+            Текущая задача
+            <ol>
+                #if($customfield_10000)
+                <li>
+                    <p>Value of cf_10000: $number.format($customfield_10000) </p>
+                </li>
+                #end
+                #if($customfield_10100)
+                <li>
+                    <p>Value of cf_10100: $customfield_10100 </p>
+                </li>
+                #end
+            </ol>
+        </li>
+        <li>
+            #if($customfield_10200)
+            Смежная задача
+            <ol>
+
+                <li>
+                    <a href="$baseURL/browse/$customfield_10200">$customfield_10200 </a>
+                </li>
+
+                #if($customfield_10000Doc)
+                <li>
+                    <p>Сумма договора: $number.format($customfield_10000Doc) </p>
+                </li>
+                #end
+            </ol>
+        #end
+        </li>
+    </ol>
+
 #end
