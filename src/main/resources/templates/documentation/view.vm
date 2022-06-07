@@ -1,34 +1,34 @@
-#if ($issueKey)
-
+#if ($issue)
+    #set($cf_10200 = $customFieldManager.getCustomFieldObject('customfield_10200'))
+    #set($cf_10100 = $customFieldManager.getCustomFieldObject('customfield_10100'))
+    #set($cf_10000 = $customFieldManager.getCustomFieldObject('customfield_10000'))
+    #set($issueDocKey = $cf_10200.getValue($issue))
+    #set($issueDoc = $issueManager.getIssueObject($issueDocKey))
     <p>Issue number: $issueKey</p>
     <ol>
         <li>
             Текущая задача
             <ol>
-                #if($customfield_10000)
                 <li>
-                    <p>Value of cf_10000: $number.format($customfield_10000) </p>
+                    <p>Value of cf_10000: $number.format($cf_10000.getValue($issue).toString()) </p>
                 </li>
-                #end
-                #if($customfield_10100)
+                #if($cf_10100.getValue($issue).toString())
                 <li>
-                    <p>Value of cf_10100: $customfield_10100 </p>
+                    <p>Value of cf_10100: $number.format($cf_10100.getValue($issue).toString()) </p>
                 </li>
                 #end
             </ol>
         </li>
+        #if($issueDocKey)
         <li>
-            #if($customfield_10200)
             Смежная задача
             <ol>
-
                 <li>
-                    <a href="$baseURL/browse/$customfield_10200">$customfield_10200 </a>
+                    <a href="$baseURL/browse/$issueDocKey"> $issueDocKey </a>
                 </li>
-
-                #if($customfield_10000Doc)
+                #if($cf_10000.getValue($issueDoc))
                 <li>
-                    <p>Сумма договора: $number.format($customfield_10000Doc) </p>
+                    <p>Сумма договора: $number.format($cf_10000.getValue($issueDoc).toString()) </p>
                 </li>
                 #end
             </ol>
