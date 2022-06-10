@@ -1,7 +1,9 @@
 #if ($issue)
-    #set($cf_10200 = $customFieldManager.getCustomFieldObject('customfield_10200'))
-    #set($cf_10100 = $customFieldManager.getCustomFieldObject('customfield_10100'))
-    #set($cf_10000 = $customFieldManager.getCustomFieldObject('customfield_10000'))
+    #set($NMC = $customFieldManager.getCustomFieldObject('customfield_10519')) ## Сумма НМЦ в руб
+    #set($KP = $customFieldManager.getCustomFieldObject('customfield_10518')) ## Сумма КП в руб
+    #set($procurement = $customFieldManager.getCustomFieldObject('customfield_10522')) ## Сумма закупки в руб
+    #set($margin = $customFieldManager.getCustomFieldObject('customfield_10540')) ## Маржа в руб
+    #set($marginPercent = $customFieldManager.getCustomFieldObject('customfield_11310')) ## Маржа в %
     #set($issueDocKey = $cf_10200.getValue($issue))
     #set($issueDoc = $issueManager.getIssueObject($issueDocKey))
     <p>Issue number: $issueKey</p>
@@ -10,7 +12,7 @@
             Текущая задача
             <ol>
                 <li>
-                    <p>Value of cf_10000: $number.format($cf_10000.getValue($issue).toString()) </p>
+                    <p>$cf_10200.getName(): $number.format($cf_10000.getValue($issue).toString()) </p>
                 </li>
                 #if($cf_10100.getValue($issue).toString())
                 <li>
