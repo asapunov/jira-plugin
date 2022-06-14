@@ -1,38 +1,33 @@
 #if ($issue)
-    #set($NMC = $customFieldManager.getCustomFieldObject('customfield_10519')) ## Сумма НМЦ в руб
-    #set($KP = $customFieldManager.getCustomFieldObject('customfield_10518')) ## Сумма КП в руб
-    #set($procurement = $customFieldManager.getCustomFieldObject('customfield_10522')) ## Сумма закупки в руб
-    #set($margin = $customFieldManager.getCustomFieldObject('customfield_10540')) ## Маржа в руб
-    #set($marginPercent = $customFieldManager.getCustomFieldObject('customfield_11310')) ## Маржа в %
+    #set($NMC = $customFieldManager.getCustomFieldObjectByName('Сумма НМЦ в руб')) ## Сумма НМЦ в руб
+    #set($KP = $customFieldManager.getCustomFieldObjectByName('Сумма КП в руб')) ## Сумма КП в руб
+    #set($procurement = $customFieldManager.getCustomFieldObjectByName('Сумма закупки в руб')) ## Сумма закупки в руб
+    #set($margin = $customFieldManager.getCustomFieldObjectByName('Маржа в руб')) ## Маржа в руб
+    #set($marginPercent = $customFieldManager.getCustomFieldObjectByName('Маржа в %')) ## Маржа в %
     #set($issueDocKey = $cf_10200.getValue($issue))
     #set($issueDoc = $issueManager.getIssueObject($issueDocKey))
-    <p>Issue number: $issueKey</p>
+    <p>Issue number: $issue</p>
     <ol>
         <li>
             Текущая задача
             <ol>
                 <li>
-                    <p>$cf_10200.getName(): $number.format($cf_10000.getValue($issue).toString()) </p>
+                    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
                 </li>
-                #if($cf_10100.getValue($issue).toString())
+                #if($KP.getValue($issue).toString())
                 <li>
-                    <p>Value of cf_10100: $number.format($cf_10100.getValue($issue).toString()) </p>
+                    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
                 </li>
                 #end
             </ol>
         </li>
-        #if($issueDocKey)
+        #if($margin.getValue($issue).toString())
         <li>
-            Смежная задача
+            Маржа
             <ol>
                 <li>
-                    <a href="$baseURL/browse/$issueDocKey"> $issueDocKey </a>
+                    <a href="$baseURL/browse/$issueDocKey"> $number.format($margin.getValue($issue).toString()) </a>
                 </li>
-                #if($cf_10000.getValue($issueDoc))
-                <li>
-                    <p>Сумма договора: $number.format($cf_10000.getValue($issueDoc).toString()) </p>
-                </li>
-                #end
             </ol>
         #end
         </li>

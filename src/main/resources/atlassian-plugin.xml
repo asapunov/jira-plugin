@@ -36,9 +36,6 @@
     </web-resource>
 
     <web-panel key="document" name="document" location="atl.jira.view.issue.left.context" weight = "110">
-        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
-            <param name="permission">admin</param>
-        </condition>
         <context-provider class = "com.plugins.documentation.DocumentationModuleValue"/>
         <resource type="velocity" name="view" location="templates/documentation/view.vm"/>
         <label key="Документация"/>
