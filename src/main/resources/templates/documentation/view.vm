@@ -16,8 +16,8 @@
     #mac($KP, $issue)
     #mac($procurement, $issue)
     #if($margin.getValue($issue).toString())
-    <p>Маржа: $margin.format($margin.getValue($issue).toString()) руб.
-        $marginPercent.format($marginPercent.getValue($issue).toString())%
+    <p>Маржа: $number.format($margin.getValue($issue).toString()) руб.
+        $number.format($marginPercent.getValue($issue).toString())%
     </p>
     #end
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
