@@ -6,31 +6,32 @@
     #set($marginPercent = $customFieldManager.getCustomFieldObjectByName('Маржа в %')) ## Маржа в %
     #set($issueDocKey = $cf_10200.getValue($issue))
     #set($issueDoc = $issueManager.getIssueObject($issueDocKey))
-    <p>Issue number: $issue</p>
-    <ol>
-        <li>
-            Текущая задача
-            <ol>
-                <li>
-                    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
-                </li>
-                #if($KP.getValue($issue).toString())
-                <li>
-                    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
-                </li>
-                #end
-            </ol>
-        </li>
-        #if($margin.getValue($issue).toString())
-        <li>
-            Маржа
-            <ol>
-                <li>
-                    <a href="$baseURL/browse/$issueDocKey"> $number.format($margin.getValue($issue).toString()) </a>
-                </li>
-            </ol>
+    #macro (mac $field, $issue)
+        #if($field.getValue($issue).toString())
+            <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
         #end
-        </li>
-    </ol>
+    #end
+
+    #mac($NMC, $issue)
+    #mac($KP, $issue)
+    #mac($procurement, $issue)
+    #if($margin.getValue($issue).toString())
+    <p>Маржа: $margin.format($margin.getValue($issue).toString()) руб.
+        $marginPercent.format($marginPercent.getValue($issue).toString())%
+    </p>
+    #end
+##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
+##    #if($KP.getValue($issue).toString())
+##    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
+##    #end
+##    #if($procurement.getValue($issue).toString())
+##    <p> $number.format($procurement.getValue($issue).toString())</p>
+##    #end
+##    #if($margin.getValue($issue).toString())
+##    <p> Маржа: $number.format($margin.getValue($issue).toString())</p>
+##    #end
+##    #if($marginPercent.getValue($issue).toString())
+##    <p> $number.format($marginPercent.getValue($issue).toString())</p>
+##    #end
 
 #end
