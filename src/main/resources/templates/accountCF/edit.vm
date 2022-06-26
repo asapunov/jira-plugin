@@ -115,7 +115,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                    value =""
                    autocomplete="off"
                    class = "text medium-field datepicker-input"/>
-                                      </td>
+        </td>
 
         <td>
             <input id="${field_uid}-new-amount"

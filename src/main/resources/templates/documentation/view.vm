@@ -20,6 +20,9 @@
         $number.format($marginPercent.getValue($issue).toString())%
     </p>
     #end
+    #foreach($so in $supplierOffers)
+        <p><a href="$baseURL/browse/$so.getKey()"> $so.getKey() </a> $so.getSummary()  <input value="Согласовать" id = "button$so.getKey()" type="button" class="aui-button"></p>
+    #end
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
 ##    #if($KP.getValue($issue).toString())
 ##    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
