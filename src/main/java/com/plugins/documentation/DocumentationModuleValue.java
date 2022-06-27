@@ -31,7 +31,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getjiraURL());
         contextMap.put("supplierOffers", getSupplierOffers(issue));
-        contextMap.put("DocumentationModuleValue", DocumentationModuleValue.this);
+        contextMap.put("documentationModuleValue", DocumentationModuleValue.this.validation(issue, 4));
         return contextMap;
     }
 
