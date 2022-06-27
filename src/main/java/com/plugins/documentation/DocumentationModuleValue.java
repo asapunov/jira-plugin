@@ -31,10 +31,11 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getjiraURL());
         contextMap.put("supplierOffers", getSupplierOffers(issue));
+        contextMap.put("DocumentationModuleValue", DocumentationModuleValue.this);
         return contextMap;
     }
 
-    private IssueService.IssueResult validation(Issue issue, int actionId){
+    public IssueService.IssueResult validation(Issue issue, int actionId){
         IssueService.TransitionValidationResult transitionValidationResult = issueService.validateTransition(currentUser, issue.getId(), actionId, new IssueInputParametersImpl());
         if (transitionValidationResult.isValid()) {
             IssueService.IssueResult transitionResult = issueService.transition(currentUser, transitionValidationResult);

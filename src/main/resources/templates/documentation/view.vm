@@ -4,8 +4,6 @@
     #set($procurement = $customFieldManager.getCustomFieldObjectByName('Сумма закупки в руб')) ## Сумма закупки в руб
     #set($margin = $customFieldManager.getCustomFieldObjectByName('Маржа в руб')) ## Маржа в руб
     #set($marginPercent = $customFieldManager.getCustomFieldObjectByName('Маржа в %')) ## Маржа в %
-    #set($issueDocKey = $cf_10200.getValue($issue))
-    #set($issueDoc = $issueManager.getIssueObject($issueDocKey))
     #macro (mac $field, $issue)
         #if($field.getValue($issue).toString())
             <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
@@ -21,8 +19,9 @@
     </p>
     #end
     #foreach($so in $supplierOffers)
-        <p><a href="$baseURL/browse/$so.getKey()"> $so.getKey() </a> $so.getSummary()  <input value="Согласовать" id = "button$so.getKey()" type="button" class="aui-button"></p>
+        <p><a href="$baseURL/browse/$so.getKey()"> $so.getKey() </a> $so.getSummary()  <input value="Согласовать" id = "button$so.getKey()" onclick="$DocumentationModuleValue.validation($so, 3)" type="button" class="aui-button"></p>
     #end
+
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
 ##    #if($KP.getValue($issue).toString())
 ##    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
