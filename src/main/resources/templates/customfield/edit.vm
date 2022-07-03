@@ -233,5 +233,4 @@
 </table>
 
 
-##чтоб таблица норм была,  (по id поля можно менять поля)
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)

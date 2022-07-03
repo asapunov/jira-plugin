@@ -11,6 +11,7 @@ import com.atlassian.jira.util.velocity.NumberTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.util.*;
 
 public class DocumentationModuleValue extends AbstractJiraContextProvider {
@@ -31,32 +32,14 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getjiraURL());
         contextMap.put("supplierOffers", getSupplierOffers(issue));
-        contextMap.put("documentationModuleValue", DocumentationModuleValue.this.validation(issue, 4));
         return contextMap;
     }
 
-    public IssueService.IssueResult validation(Issue issue, int actionId){
-        IssueService.TransitionValidationResult transitionValidationResult = issueService.validateTransition(currentUser, issue.getId(), actionId, new IssueInputParametersImpl());
-        if (transitionValidationResult.isValid()) {
-            IssueService.IssueResult transitionResult = issueService.transition(currentUser, transitionValidationResult);
-            if (transitionResult.isValid())
-                log.debug("Transitioned issue" + issue + "through action $actionId");
-            else
-                log.debug("Transition result is not valid");
-            return transitionResult;
-        }
-        else {
-            log.debug("The transitionValidation is not valid");
-            return null;
-        }
-
-    }
-
-    private ArrayList<Issue> getSupplierOffers(Issue issue){
+    private ArrayList<MutableIssue> getSupplierOffers(Issue issue){
         String supplierOffers = getCfValue("Предложения поставщиков", issue);
         assert supplierOffers != null;
         String[] offers = supplierOffers.split(",");
-        ArrayList<Issue> issuesSO = new ArrayList<>();
+        ArrayList<MutableIssue> issuesSO = new ArrayList<>();
         for (String issues: offers){
             issues = issues.trim();
             issuesSO.add(issueManager.getIssueObject(issues));

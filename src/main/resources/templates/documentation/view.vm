@@ -18,7 +18,7 @@
 ##    </p>
 ##    #end
     #foreach($so in $supplierOffers)
-    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a id = "button$so.getId()" href="$baseURL/jira/secure/WorkflowUIDispatcher.jspa?id=$so.getId&action=61&atl_token=BWP3-NZB2-6EDY-6C7K_56e25d5af88b28585c7cc391be66b6157d3580ff_lin" type="button" class="aui-button">Согласовать</a></p>
+    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a href="$so.setStatusId("3")">$so.getStatus() Согласовать</a> </p>
     #end
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
 ##    #if($KP.getValue($issue).toString())
