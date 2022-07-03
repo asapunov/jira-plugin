@@ -18,8 +18,9 @@
 ##    </p>
 ##    #end
     #foreach($so in $supplierOffers)
-    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a href="$so.setStatusId("3")">$so.getStatus() Согласовать</a> </p>
+    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a id = "button-$so.getKey()" href="$D11MV.updateIssueStatus($so, "Не подходит")">$so.getStatusId() Согласовать</a> </p>
     #end
+
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
 ##    #if($KP.getValue($issue).toString())
 ##    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
