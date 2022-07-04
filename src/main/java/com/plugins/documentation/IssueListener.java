@@ -39,7 +39,7 @@ public class  IssueListener implements InitializingBean, DisposableBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.warn("I was born");
+        log.warn("I was");
         this.eventPublisher.register(this);
     }
 
