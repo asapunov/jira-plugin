@@ -41,4 +41,12 @@
         <label key="Документация"/>
     </web-panel>
 
+    <webwork1 key = "UpdateValue" class = "java.lang.Object">
+        <actions>
+            <action name = "com.plugins.documentation.ApprovalsActivity" alias = "ApprovalsActivity">
+                <view name="updateIssue">/templates/documentation/updateIssue.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
 </atlassian-plugin>
