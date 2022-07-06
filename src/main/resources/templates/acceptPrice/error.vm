@@ -31,7 +31,7 @@
                 </table>
 
                 Page only to show how to use view in action<br/>
-                <form method="POST" action="${jira_base_url}/secure/AcceptPriceAction.jspa">
+                <form method="POST" action="AcceptPriceAction.jspa">
                     <input type="text" name="string"/><br/>
                     <input type="submit"/>
                 </form>

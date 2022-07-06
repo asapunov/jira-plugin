@@ -13,7 +13,7 @@ public class ApprovalsActivity extends JiraWebActionSupport {
 
     @Override
     protected String doExecute() throws Exception {
-        string2 = "You  entered " + string;
+        string2 = "You entered " + string;
         return "view";
     }
 
