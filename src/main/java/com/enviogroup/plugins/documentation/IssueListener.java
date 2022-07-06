@@ -1,10 +1,9 @@
-package com.plugins.documentation;
+package com.enviogroup.plugins.documentation;
 
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
-import com.atlassian.jira.event.issue.IssueViewEvent;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.fields.CustomField;

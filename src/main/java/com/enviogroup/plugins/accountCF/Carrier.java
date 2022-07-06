@@ -1,4 +1,4 @@
-package com.plugins.accountCF;
+package com.enviogroup.plugins.accountCF;
 import com.atlassian.jira.util.DateFieldFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

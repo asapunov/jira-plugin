@@ -131,6 +131,21 @@
                         <Import-Package>
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
+                            com.atlassian.inject.*;resolution:="optional",
+                            groovy.*;resolution:="optional",
+                            io.netty.*;resolution:="optional",
+                            io.reactivex.*;resolution:="optional",
+                            joptsimple.*;resolution:="optional",
+                            kotlin.*;resolution:="optional",
+                            net.spy.*;resolution:="optional",
+                            net.sf.*;resolution:="optional",
+                            org.apache.*;resolution:="optional",
+                            org.aspectj.*;resolution:="optional",
+                            org.codehaus.*;resolution:="optional",
+                            reactor.core.*;resolution:="optional",
+                            rx.*;resolution:="optional",
+                            sun.misc.*;resolution:="optional",
+                            org.*;resolution:="optional",
                             *
                         </Import-Package>
 
@@ -155,12 +170,13 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
     <properties>
         <jira.version>8.14.0</jira.version>
-        <amps.version>8.1.2</amps.version>
+        <amps.version>8.2.3</amps.version>
         <plugin.testrunner.version>2.0.2</plugin.testrunner.version>
         <atlassian.spring.scanner.version>2.1.7</atlassian.spring.scanner.version>
         <!-- This property ensures consistency between the key in atlassian-plugin.xml and the OSGi bundle's key. -->

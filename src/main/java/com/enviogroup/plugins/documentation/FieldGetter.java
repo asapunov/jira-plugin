@@ -1,4 +1,4 @@
-package com.plugins.documentation;
+package com.enviogroup.plugins.documentation;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;
@@ -9,6 +9,7 @@ import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
+import com.plugins.documentation.DocumentationModuleValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

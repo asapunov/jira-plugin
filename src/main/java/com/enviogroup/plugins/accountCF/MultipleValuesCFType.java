@@ -1,4 +1,4 @@
-package com.plugins.accountCF;
+package com.enviogroup.plugins.accountCF;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
@@ -22,11 +22,8 @@ import org.apache.log4j.Logger;
 import com.atlassian.jira.issue.customfields.impl.DateCFType;
 import com.atlassian.jira.issue.customfields.converters.DatePickerConverter;
 import com.atlassian.jira.datetime.DateTimeFormatterFactory;
-import com.atlassian.jira.issue.customfields.converters.DateConverter;
 import com.atlassian.jira.util.DateFieldFormat;
-import com.atlassian.jira.datetime.DateTimeFormatter;
 import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
-import java.sql.Timestamp;
 import org.apache.velocity.tools.generic.DateTool;
 
 import java.text.ParseException;
