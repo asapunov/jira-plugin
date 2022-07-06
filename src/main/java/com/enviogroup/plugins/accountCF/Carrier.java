@@ -1,5 +1,5 @@
 package com.enviogroup.plugins.accountCF;
-import com.atlassian.jira.util.DateFieldFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,23 +8,40 @@ import java.util.Date;
  */
 public class Carrier {
 
-    private Double fullAmount; /**Полная сумма счета */
-    private Double amount; /**Сумма каждой части счета */
-    private Date date; /**Дата предположительной оплаты */
-    private Double amountPost; /**Сумма релаьной оплаты */
-    private Date datePost; /**Дата релаьной оплаты */
+    /**
+     * Дата релаьной оплаты
+     */
     private final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    private Double fullAmount;
+    /**
+     * Полная сумма счета
+     */
+    private Double amount;
+    /**
+     * Сумма каждой части счета
+     */
+    private Date date;
+    /**
+     * Дата предположительной оплаты
+     */
+    private Double amountPost;
+    /**
+     * Сумма релаьной оплаты
+     */
+    private Date datePost;
+
     public Carrier(Date date, Double amount, Date datePost, Double amountPost) {
         this.amount = amount;
         this.date = date;
         this.datePost = datePost;
         this.amountPost = amountPost;
     }
-    public Carrier (Double fullAmount){
+
+    public Carrier(Double fullAmount) {
         this.fullAmount = fullAmount;
     }
 
-    public Double getFullAmount(){
+    public Double getFullAmount() {
         return fullAmount;
     }
 
@@ -38,14 +55,16 @@ public class Carrier {
         else
             return null;
     }
+
     /**
-     Возвращает дату планирующейся оплаты в формате dd.MM.yyyy
+     * Возвращает дату планирующейся оплаты в формате dd.MM.yyyy
      */
     public String getStringDate() {
         return format.format(date);
     }
+
     /**
-     Возвращает дату рельаной оплаты в формате dd.MM.yyyy
+     * Возвращает дату рельаной оплаты в формате dd.MM.yyyy
      */
     public String getStringDatePost() {
         if (datePost != null)
@@ -53,6 +72,7 @@ public class Carrier {
         else
             return null;
     }
+
     public Date getDate() {
         return date;
     }

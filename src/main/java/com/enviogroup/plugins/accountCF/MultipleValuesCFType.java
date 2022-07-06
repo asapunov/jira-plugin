@@ -1,8 +1,11 @@
 package com.enviogroup.plugins.accountCF;
 
+import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.customfields.CustomFieldType;
+import com.atlassian.jira.issue.customfields.converters.DatePickerConverter;
 import com.atlassian.jira.issue.customfields.impl.AbstractCustomFieldType;
+import com.atlassian.jira.issue.customfields.impl.DateCFType;
 import com.atlassian.jira.issue.customfields.impl.FieldValidationException;
 import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
@@ -10,6 +13,8 @@ import com.atlassian.jira.issue.customfields.persistence.PersistenceFieldType;
 import com.atlassian.jira.issue.customfields.view.CustomFieldParams;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
+import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
+import com.atlassian.jira.util.DateFieldFormat;
 import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.jira.util.velocity.NumberTool;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
@@ -19,52 +24,53 @@ import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.NotNullPredicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import com.atlassian.jira.issue.customfields.impl.DateCFType;
-import com.atlassian.jira.issue.customfields.converters.DatePickerConverter;
-import com.atlassian.jira.datetime.DateTimeFormatterFactory;
-import com.atlassian.jira.util.DateFieldFormat;
-import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
 import org.apache.velocity.tools.generic.DateTool;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * All the other Multi* classes refer to Users or Options. This class,
  * like VersionCFType, uses a different transport object, a Collection
  * of Carrier objects.
- *
+ * <p>
  * The changes for JIRA 5.0 mean that the transport and singular types
  * have to be given as a parameter to AbstractCustomFieldType. Also
- *
+ * <p>
  * More information can be found at
  * "https://developer.atlassian.com/display/JIRADEV/Java+API+Changes+in+JIRA+5.0#JavaAPIChangesinJIRA50-CustomFieldTypes
  */
 public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Carrier>, Carrier> {
 
     public static final Logger log = Logger.getLogger(MultipleValuesCFType.class);
-
-    private final CustomFieldValuePersister persister;
-    private final GenericConfigManager genericConfigManager;
-    private final DatePickerConverter datePickerConverter;
-    private final DateTimeFormatterFactory dateTimeFormatterFactory;
-    private final DateFieldFormat dateFieldFormat ;
-    private  SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-    // The type of data in the database, one entry per value in this field
-    private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
-
     /**
      * Used in the database representation of a singular value.
      * Treated as a regex when checking text input.
      */
     public static final String DB_SEP = "###";
+    // The type of data in the database, one entry per value in this field
+    private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
+    private final CustomFieldValuePersister persister;
+    private final GenericConfigManager genericConfigManager;
+    private final DatePickerConverter datePickerConverter;
+    private final DateTimeFormatterFactory dateTimeFormatterFactory;
+    private final DateFieldFormat dateFieldFormat;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-    public MultipleValuesCFType( @JiraImport CustomFieldValuePersister customFieldValuePersister,
-                                 @JiraImport GenericConfigManager genericConfigManager,
-                                 @JiraImport DatePickerConverter datePickerConverter,
-                                 @JiraImport DateTimeFormatterFactory dateTimeFormatterFactory,
-                                 @JiraImport DateFieldFormat dateFieldFormat) {
+    public MultipleValuesCFType(@JiraImport CustomFieldValuePersister customFieldValuePersister,
+                                @JiraImport GenericConfigManager genericConfigManager,
+                                @JiraImport DatePickerConverter datePickerConverter,
+                                @JiraImport DateTimeFormatterFactory dateTimeFormatterFactory,
+                                @JiraImport DateFieldFormat dateFieldFormat) {
         this.persister = customFieldValuePersister;
         this.genericConfigManager = genericConfigManager;
         this.datePickerConverter = datePickerConverter;
@@ -102,7 +108,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         Double p = Double.parseDouble(parts[1]);
         Double a = null;
         if (!parts[3].equals("null"))
-             a = Double.parseDouble(parts[3]);
+            a = Double.parseDouble(parts[3]);
         return new Carrier(d, p, dP, a);
     }
 
@@ -121,7 +127,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         if ((values != null) && !values.isEmpty()) {
             List<Carrier> result = new ArrayList<Carrier>();
             for (Iterator it = values.iterator(); it.hasNext(); ) {
-                String dbValue = (String)it.next();
+                String dbValue = (String) it.next();
                 Carrier carrier = getSingularObjectFromString(dbValue);
                 if (carrier == null) {
                     continue;
@@ -135,12 +141,9 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     }
 
     public void createValue(CustomField field, Issue issue, Collection<Carrier> value) {
-        if (value instanceof Collection)
-        {
+        if (value instanceof Collection) {
             persister.createValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(value));
-        }
-        else
-        {
+        } else {
             // With JIRA 5.0 we should no longer need to test for this case
             persister.createValues(field, issue.getId(), DB_TYPE, getDbValueFromCollection(Lists.newArrayList(value)));
         }
@@ -184,7 +187,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
             collectionOfCarriers = (Collection) o;
         } else if (o instanceof Carrier) {
             log.warn("Backwards compatible default value, should not occur");
-            collectionOfCarriers = Lists.newArrayList((Collection)o);
+            collectionOfCarriers = Lists.newArrayList((Collection) o);
         }
 
         if (collectionOfCarriers == null) {
@@ -197,7 +200,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                 if (input == null) {
                     return null;
                 }
-                String dbValue = (String)input;
+                String dbValue = (String) input;
                 return getSingularObjectFromString(dbValue);
             }
         });
@@ -227,31 +230,31 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
      * Clearing an amount removes the row.
      */
     public Collection<Carrier> getValueFromCustomFieldParams(CustomFieldParams parameters)
-            throws FieldValidationException{
+            throws FieldValidationException {
         log.debug("getValueFromCustomFieldParams: " + parameters.getKeysAndValues());
         // Strings in the order they appeared in the web page
         final Collection values = parameters.getValuesForNullKey();
         if ((values != null) && !values.isEmpty()) {
             Collection<Carrier> value = new ArrayList();
             Iterator it = values.iterator();
-            String fStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
-            fStr = fStr.replaceAll(",", "." );
+            String fStr = ((String) it.next()).replaceAll("[\\s|\\u00A0]+", "");
+            fStr = fStr.replaceAll(",", ".");
             try {
-                Double f =  Double.parseDouble(fStr);
+                Double f = Double.parseDouble(fStr);
                 value.add(new Carrier(f));
             } catch (NumberFormatException nfe) {
                 // A value was provided but it was an invalid value
                 throw new FieldValidationException("Полная сумма счета должна быть числом");
             }
-            while ( it.hasNext() ) {
-                String dStr = (String)it.next();
+            while (it.hasNext()) {
+                String dStr = (String) it.next();
                 // This won't be true if only one parameter is passed in a query
-                String aStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
-                aStr = aStr.replaceAll(",", "." );
+                String aStr = ((String) it.next()).replaceAll("[\\s|\\u00A0]+", "");
+                aStr = aStr.replaceAll(",", ".");
                 // Allow empty text but not empty amounts
-                String dpStr = (String)it.next();
-                String apStr = ((String)it.next()).replaceAll("[\\s|\\u00A0]+", "");
-                apStr = apStr.replaceAll(",", "." );
+                String dpStr = (String) it.next();
+                String apStr = ((String) it.next()).replaceAll("[\\s|\\u00A0]+", "");
+                apStr = apStr.replaceAll(",", ".");
                 if (dStr == null || dStr.equals("")) {
                     log.debug("Ignoring text " + aStr + " because the amount is empty");
                     // This is used to delete a row so do not throw a
@@ -262,8 +265,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
 
                 Date d = null;
                 Date dP = null;
-                if (!(StringUtils.isEmpty(dStr)) && (StringUtils.isEmpty(dpStr) ||  dpStr.equals("null")))
-                {
+                if (!(StringUtils.isEmpty(dStr)) && (StringUtils.isEmpty(dpStr) || dpStr.equals("null"))) {
                     try {
                         d = sdf.parse(dStr);
                     } catch (ParseException e) {
@@ -271,8 +273,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                         throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"dd.MM.yyyy\", " +
                                 "например. \"24.11.2021\"");
                     }
-                }
-                else
+                } else
                     try {
                         d = sdf.parse(dStr);
                         dP = sdf.parse(dpStr);
@@ -284,25 +285,24 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
 
                 Double a = null;
                 Double aP = null;
-                if (!(StringUtils.isEmpty(aStr)) && (StringUtils.isEmpty(apStr)) ||  apStr == null)
+                if (!(StringUtils.isEmpty(aStr)) && (StringUtils.isEmpty(apStr)) || apStr == null)
                     try {
-                    a =  Double.parseDouble(aStr);
-                    } catch (NumberFormatException nfe) {
-                    // A value was provided but it was an invalid value
-                        throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
-                    }
-                else
-                    try {
-                        a =  Double.parseDouble(aStr);
-                        aP =  Double.parseDouble(apStr);
+                        a = Double.parseDouble(aStr);
                     } catch (NumberFormatException nfe) {
                         // A value was provided but it was an invalid value
                         throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
                     }
-                value.add(new Carrier(d, a, dP, aP ));
+                else
+                    try {
+                        a = Double.parseDouble(aStr);
+                        aP = Double.parseDouble(apStr);
+                    } catch (NumberFormatException nfe) {
+                        // A value was provided but it was an invalid value
+                        throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
+                    }
+                value.add(new Carrier(d, a, dP, aP));
             }
-            if (value.size() < 2)
-            {
+            if (value.size() < 2) {
                 throw new FieldValidationException("Необходимо заполнить хоть одну строчку с датой выплат");
             }
             return value;
@@ -323,13 +323,13 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         return singularObject.toString();
     }
 
-    public String getChangelogValue(CustomField field, Collection<Carrier> value)  {
+    public String getChangelogValue(CustomField field, Collection<Carrier> value) {
         if (value == null) {
             return "";
         }
         StringBuffer sb = new StringBuffer();
         Collection<Carrier> carriers = value;
-        for (Carrier carrier: carriers) {
+        for (Carrier carrier : carriers) {
             sb.append(carrier.toString());
             // Newlines are text not HTML here
             sb.append(", ");
@@ -344,8 +344,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
      * Convert the Transport object to a collection of the
      * representation used in the database.
      */
-    private Collection getDbValueFromCollection(final Collection<Carrier> value)
-    {
+    private Collection getDbValueFromCollection(final Collection<Carrier> value) {
         log.debug("getDbValueFromCollection: " + value);
         if (value == null) {
             return Collections.EMPTY_LIST;
@@ -376,18 +375,17 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
         return result;
     }
 
-@Override
+    @Override
     public Map<String, Object> getVelocityParameters(final Issue issue,
                                                      final CustomField field,
-                                                     final FieldLayoutItem fieldLayoutItem)
-    {
+                                                     final FieldLayoutItem fieldLayoutItem) {
 
 
         //NumberTool numberTool = new NumberTool();
         //map.put("number", numberTool);
         //$dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar
         DateCFType dateCFType = new DateCFType(persister, datePickerConverter, genericConfigManager, null, dateFieldFormat,
-                dateTimeFormatterFactory, null );
+                dateTimeFormatterFactory, null);
         final Map<String, Object> map = dateCFType.getVelocityParameters(issue, field, fieldLayoutItem);
         NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
         map.put("number", numberTool);

@@ -1,49 +1,50 @@
 package com.enviogroup.plugins.customfield;
 
-import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
-import org.apache.commons.lang.StringUtils;
-import com.atlassian.jira.issue.customfields.persistence.PersistenceFieldType;
-import com.atlassian.jira.util.ErrorCollection;
-import com.atlassian.jira.issue.customfields.impl.FieldValidationException;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.customfields.CustomFieldType;
 import com.atlassian.jira.issue.customfields.impl.AbstractSingleFieldType;
+import com.atlassian.jira.issue.customfields.impl.FieldValidationException;
 import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
+import com.atlassian.jira.issue.customfields.persistence.PersistenceFieldType;
 import com.atlassian.jira.issue.customfields.view.CustomFieldParams;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collection;
+import com.atlassian.jira.util.ErrorCollection;
+import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import com.atlassian.jira.issue.customfields.CustomFieldType;
+
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * All the other Multi* classes refer to Users or Options. This class,
  * like VersionCFType, uses a different transport object, a Collection
  * of Carrier objects.
- *
+ * <p>
  * The changes for JIRA 5.0 mean that the transport and singular types
  * have to be given as a parameter to AbstractCustomFieldType. Also
- *
+ * <p>
  * More information can be found at
  * "https://developer.atlassian.com/display/JIRADEV/Java+API+Changes+in+JIRA+5.0#JavaAPIChangesinJIRA50-CustomFieldTypes
  */
 public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
 
     public static final Logger log = Logger.getLogger(MultipleValuesCFType.class);
-    private final CustomFieldValuePersister persister;
-    private final GenericConfigManager genericConfigManager;
-    // The type of data in the database, one entry per value in this field
-    private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
-
     /**
      * Used in the database representation of a singular value.
      * Treated as a regex when checking text input.
      */
     public static final String DB_SEP = "###";
+    // The type of data in the database, one entry per value in this field
+    private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
+    private final CustomFieldValuePersister persister;
+    private final GenericConfigManager genericConfigManager;
+
     protected MultipleValuesCFType(@JiraImport CustomFieldValuePersister customFieldValuePersister,
                                    @JiraImport GenericConfigManager genericConfigManager) {
         super(customFieldValuePersister, genericConfigManager);
@@ -63,13 +64,13 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         if (carrier == null) {
             return "";
         }
-        return  carrier.getRate().toString() +
+        return carrier.getRate().toString() +
                 DB_SEP +
                 carrier.getPrepayment().toString() +
                 DB_SEP +
                 carrier.getAdvance().toString() +
                 DB_SEP +
-                carrier.getWillingness().toString()+
+                carrier.getWillingness().toString() +
                 DB_SEP +
                 carrier.getPostpaid().toString() +
                 DB_SEP +
@@ -120,6 +121,7 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 valuesI.get(1), valuesI.get(2), valuesI.get(3));
 
     }
+
     @Override
     public Object getStringValueFromCustomFieldParams(CustomFieldParams parameters) {
         log.debug("getStringValueFromCustomFieldParams: " + parameters.getKeysAndValues());
@@ -140,14 +142,14 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
         final List<Object> value = persister.getValues(field, issue.getId(), DB_TYPE);
         log.debug("getValueFromIssue entered with " + value);
         if ((value != null) && !value.isEmpty()) {
-            return getSingularObjectFromString((String)value.get(0));
+            return getSingularObjectFromString((String) value.get(0));
         } else {
             return null;
         }
     }
 
     public Carrier getValueFromCustomFieldParams(CustomFieldParams parameters)
-            throws FieldValidationException{
+            throws FieldValidationException {
         log.debug("getValueFromCustomFieldParams: " + parameters.getKeysAndValues());
         // Strings in the order they appeared in the web page
         final Collection values = parameters.getValuesForNullKey();
@@ -155,10 +157,9 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
             Iterator it = values.iterator();
             List<String> dStr = new ArrayList<>();
             int count = 0; // количетсво незаполненных полей
-            for (int i = 0;  i < Carrier.NUMBER_OF_VALUES; i++) {
+            for (int i = 0; i < Carrier.NUMBER_OF_VALUES; i++) {
                 dStr.add((String) it.next());
-                if (StringUtils.isEmpty(dStr.get(i)) || dStr.get(i).equals("0"))
-                {
+                if (StringUtils.isEmpty(dStr.get(i)) || dStr.get(i).equals("0")) {
                     String temp2 = dStr.get(i).replaceAll("", "0");
                     dStr.set(i, temp2);
                     count++;
@@ -180,7 +181,7 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 }
             }
             List<Double> dDbl = new ArrayList<>();
-            for(int i = 0;  i < Carrier.NUMBER_OF_DOUBLE_VALUES; i++) {
+            for (int i = 0; i < Carrier.NUMBER_OF_DOUBLE_VALUES; i++) {
                 try {
                     dDbl.add(Double.parseDouble(dStr.get(i)));
                 } catch (NumberFormatException nfe) {
@@ -188,17 +189,16 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
                 }
             }
             List<Integer> dInt = new ArrayList<>();
-            for(int i = Carrier.NUMBER_OF_DOUBLE_VALUES;  i < (Carrier.NUMBER_OF_INT_VALUES + Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
+            for (int i = Carrier.NUMBER_OF_DOUBLE_VALUES; i < (Carrier.NUMBER_OF_INT_VALUES + Carrier.NUMBER_OF_DOUBLE_VALUES); i++) {
                 try {
                     dInt.add(Integer.parseInt(dStr.get(i)));
                 } catch (NumberFormatException nfe) {
                     throw new FieldValidationException(dStr.get(i) + " Должно быть целочисленным числом");
                 }
             }
-            return new Carrier(dDbl.get(0), dDbl.get(1), dDbl.get(2), dDbl.get(3),dDbl.get(4),
+            return new Carrier(dDbl.get(0), dDbl.get(1), dDbl.get(2), dDbl.get(3), dDbl.get(4),
                     dInt.get(0), dInt.get(1), dInt.get(2), dInt.get(3));
-        } else
-        {
+        } else {
             return null;
         }
     }
@@ -225,6 +225,7 @@ public class MultipleValuesCFType extends AbstractSingleFieldType<Carrier> {
 
         return carrier; // No default value exists
     }
+
     public void setDefaultValue(FieldConfig fieldConfig, Carrier value) {
         log.debug("setDefaultValue with object " + value);
         Object strings = getDbValueFromObject(value);

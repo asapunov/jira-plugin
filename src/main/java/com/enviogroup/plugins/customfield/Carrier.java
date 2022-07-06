@@ -9,23 +9,51 @@ import java.text.MessageFormat;
  * for comments about the the amount.
  */
 public class Carrier {
-    DecimalFormat dF = new DecimalFormat("###,###,###.##"); //формат вывода
-    private final Double advance; /** Аванс */
-    private final Double willingness; /** Уведомление по готовности */
-    private final Double rate; /** Ставка */
-    private final Double prepayment; /** Предоплата */
-    private final Double postpaid; /** Постоплата */
-    private final int  daysAdvance; /** Количество календарных дней выплаты аванса */
-    private final int  daysWillingness; /** Количество календарных дней выплаты по готовности */
-    private final int  daysPrepayment; /** Количество календарных дней выплаты предоплаты */
-    private final int  daysPostpaid; /** количество календарных дней выплаты постоплаты */
-    private static final String PATTERN_FOR_DOUBLE = "{0,choice,-1<{0,number,'#.##'}|0#|0<{0,number,'###,###,###.##'}}";
-    private static final String PATTERN_FOR_INT = "{0,choice,-1<{0,integer,'#.##'}|0#|0<{0,number,integer}}";
     public static final int NUMBER_OF_VALUES = 9;
     public static final int NUMBER_OF_INT_VALUES = 4;
     public static final int NUMBER_OF_DOUBLE_VALUES = 5;
-    public Carrier( Double rate, Double prepayment, Double advance,  Double willingness,
-                    Double postpaid, int daysPrepayment, int daysAdvance, int daysWillingness, int daysPostpaid) {
+    /**
+     * количество календарных дней выплаты постоплаты
+     */
+    private static final String PATTERN_FOR_DOUBLE = "{0,choice,-1<{0,number,'#.##'}|0#|0<{0,number,'###,###,###.##'}}";
+    private static final String PATTERN_FOR_INT = "{0,choice,-1<{0,integer,'#.##'}|0#|0<{0,number,integer}}";
+    private final Double advance;
+    /**
+     * Аванс
+     */
+    private final Double willingness;
+    /**
+     * Уведомление по готовности
+     */
+    private final Double rate;
+    /**
+     * Ставка
+     */
+    private final Double prepayment;
+    /**
+     * Предоплата
+     */
+    private final Double postpaid;
+    /**
+     * Постоплата
+     */
+    private final int daysAdvance;
+    /**
+     * Количество календарных дней выплаты аванса
+     */
+    private final int daysWillingness;
+    /**
+     * Количество календарных дней выплаты по готовности
+     */
+    private final int daysPrepayment;
+    /**
+     * Количество календарных дней выплаты предоплаты
+     */
+    private final int daysPostpaid;
+    DecimalFormat dF = new DecimalFormat("###,###,###.##"); //формат вывода
+
+    public Carrier(Double rate, Double prepayment, Double advance, Double willingness,
+                   Double postpaid, int daysPrepayment, int daysAdvance, int daysWillingness, int daysPostpaid) {
         this.advance = advance;
         this.willingness = willingness;
         this.daysAdvance = daysAdvance;
@@ -91,8 +119,7 @@ public class Carrier {
     /**
      * Метод для расчета итогового значения
      */
-    public String getAnswer()
-    {
+    public String getAnswer() {
         Double rateF = rate / 36500;
         Double ans = prepayment * rateF * daysPrepayment +
                 advance * rateF * daysAdvance +
@@ -104,15 +131,25 @@ public class Carrier {
     /**
      * Методы для форматированного вывода
      */
-    public String getFormatPrepayment() { return MessageFormat.format(PATTERN_FOR_DOUBLE, prepayment); }
+    public String getFormatPrepayment() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, prepayment);
+    }
 
-    public String getFormatAdvance() { return MessageFormat.format(PATTERN_FOR_DOUBLE, advance); }
+    public String getFormatAdvance() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, advance);
+    }
 
-    public String getFormatWillingness() { return MessageFormat.format(PATTERN_FOR_DOUBLE, willingness); }
+    public String getFormatWillingness() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, willingness);
+    }
 
-    public String getFormatPostpaid() { return MessageFormat.format(PATTERN_FOR_DOUBLE, postpaid);}
+    public String getFormatPostpaid() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, postpaid);
+    }
 
-    public String getFormatRate() { return MessageFormat.format(PATTERN_FOR_DOUBLE, rate); }
+    public String getFormatRate() {
+        return MessageFormat.format(PATTERN_FOR_DOUBLE, rate);
+    }
 
     public String getFormatDaysPrepayment() {
         return MessageFormat.format(PATTERN_FOR_INT, daysPrepayment);
