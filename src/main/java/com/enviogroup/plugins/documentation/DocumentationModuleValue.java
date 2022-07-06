@@ -1,24 +1,25 @@
-package com.plugins.documentation;
+package com.enviogroup.plugins.documentation;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.issue.*;
+import com.atlassian.jira.issue.CustomFieldManager;
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueInputParameters;
+import com.atlassian.jira.issue.IssueInputParametersImpl;
+import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.plugin.webfragment.contextproviders.AbstractJiraContextProvider;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
-import com.atlassian.jira.rest.client.api.IssueRestClient;
-import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.atlassian.jira.rest.client.api.domain.Transition;
-import com.atlassian.jira.rest.client.api.domain.input.TransitionInput;
-import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.util.velocity.NumberTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class DocumentationModuleValue extends AbstractJiraContextProvider {
 
@@ -28,10 +29,11 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
     private static final IssueService issueService = ComponentAccessor.getIssueService();
     private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
+
     @Override
     public Map<String, Object> getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
         Map<String, Object> contextMap = new HashMap<>();
-        Issue issue = (Issue)jiraHelper.getContextParams().get("issue");
+        Issue issue = (Issue) jiraHelper.getContextParams().get("issue");
         contextMap.put("customFieldManager", customFieldManager);
         contextMap.put("issueManager", issueManager);
         contextMap.put("issue", issue);
@@ -42,19 +44,22 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         return contextMap;
     }
 
-    private ArrayList<MutableIssue> getSupplierOffers(Issue issue){
+    private ArrayList<MutableIssue> getSupplierOffers(Issue issue) {
         String supplierOffers = getCfValue("Предложения поставщиков", issue);
         assert supplierOffers != null;
-        String[] offers = supplierOffers.split(",");
+
         ArrayList<MutableIssue> issuesSO = new ArrayList<>();
-        for (String issues: offers){
-            issues = issues.trim();
-            issuesSO.add(issueManager.getIssueObject(issues));
+        if (null != supplierOffers) {
+            String[] offers = supplierOffers.split(",");
+            for (String issues : offers) {
+                issues = issues.trim();
+                issuesSO.add(issueManager.getIssueObject(issues));
+            }
         }
         return issuesSO;
     }
 
-    public IssueService.IssueResult validation(Issue issue, int actionId){
+    public IssueService.IssueResult validation(Issue issue, int actionId) {
         IssueInputParameters issueInputParameters = new IssueInputParametersImpl();
         IssueService.TransitionValidationResult transitionValidationResult = issueService.validateTransition(currentUser, issue.getId(), actionId, issueInputParameters);
         if (transitionValidationResult.isValid()) {
@@ -64,42 +69,11 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
             else
                 log.debug("Transition result is not valid");
             return transitionResult;
-        }
-        else {
+        } else {
             log.debug("The transitionValidation is not valid");
             return null;
         }
 
-    }
-
-    public void updateIssueStatus(Issue issue, String status) {
-        IssueRestClient client = getJiraRestClient().getIssueClient();
-
-        Iterable<Transition> transitions = client.getTransitions((com.atlassian.jira.rest.client.api.domain.Issue) issue).claim();
-
-        for(Transition t : transitions){
-            if(t.getName().equals(status)) {
-                TransitionInput input = new TransitionInput(t.getId());
-                client.transition((com.atlassian.jira.rest.client.api.domain.Issue) issue, input).claim();
-                return;
-            }
-        }
-    }
-
-
-// you can ignore below if you know how to get IssueRestClient and Issue
-
-    public JiraRestClient getJiraRestClient() {
-        AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-
-        JiraRestClient client = factory.createWithBasicHttpAuthentication(URI.create(getjiraURL()), "admin", "admin");
-
-        return client;
-    }
-
-    public Issue getIssue(String issueKey) {
-        IssueRestClient client = getJiraRestClient().getIssueClient();
-        return (Issue) client.getIssue(issueKey).claim();
     }
 
     private String getCfValue(String cfName, Issue issue) {
@@ -108,8 +82,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
             String cfValue = (customField != null ? customField.getValue(issue).toString() : null);
             log.warn(cfValue);
             return cfValue;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("Field is empty");
             return null;
         }

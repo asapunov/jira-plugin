@@ -1,4 +1,4 @@
-package com.plugins.customfield;
+package com.enviogroup.plugins.customfield;
 
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import org.apache.commons.lang.StringUtils;

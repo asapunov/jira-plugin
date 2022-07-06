@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>CommandOne</title>
+</head>
+
+<body>
+
+<div style="background: #FFFFFF">
+    <table class="jiraform maxWidth">
+        <tr>
+            <td class="jiraformheader">
+                <h3 class="formtitle">Example</h3>
+            </td>
+        </tr>
+        <tr>
+            <td class="jiraformbody">
+                 Page only to show how to use view in action
+                <form method="POST" action="${jira_base_url}/secure/AcceptPriceAction.jspa">
+                    <input type="text" name="string"/><br/>
+                    <input type="submit"/>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td class="jiraformbody">
+                $string2
+            </td>
+        </tr>
+
+    </table>
+    <br>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.plugins.customfield;
+package com.enviogroup.plugins.customfield;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
