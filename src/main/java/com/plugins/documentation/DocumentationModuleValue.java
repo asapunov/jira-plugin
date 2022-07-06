@@ -23,6 +23,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
     private static final IssueService issueService = ComponentAccessor.getIssueService();
     private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
+    private static final FieldGetter fieldGetter = new FieldGetter();
     @Override
     public Map<String, Object> getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
         Map<String, Object> contextMap = new HashMap<>();
@@ -31,55 +32,13 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("issueManager", issueManager);
         contextMap.put("issue", issue);
         contextMap.put("number", numberTool);
-        contextMap.put("baseURL", getjiraURL());
-        contextMap.put("supplierOffers", getSupplierOffers(issue));
+        contextMap.put("baseURL", getJiraURL());
+        contextMap.put("supplierOffers", fieldGetter.getSupplierOffers(issue));
         contextMap.put("DMV", this);
         return contextMap;
     }
 
-    private ArrayList<MutableIssue> getSupplierOffers(Issue issue){
-        String supplierOffers = getCfValue("Предложения поставщиков", issue);
-        assert supplierOffers != null;
-        String[] offers = supplierOffers.split(",");
-        ArrayList<MutableIssue> issuesSO = new ArrayList<>();
-        for (String issues: offers){
-            issues = issues.trim();
-            issuesSO.add(issueManager.getIssueObject(issues));
-        }
-        return issuesSO;
-    }
-
-//    public IssueService.IssueResult validation(Issue issue, int actionId){
-//        IssueInputParameters issueInputParameters = new IssueInputParametersImpl();
-//        IssueService.TransitionValidationResult transitionValidationResult = issueService.validateTransition(currentUser, issue.getId(), actionId, issueInputParameters);
-//        if (transitionValidationResult.isValid()) {
-//            IssueService.IssueResult transitionResult = issueService.transition(currentUser, transitionValidationResult);
-//            if (transitionResult.isValid())
-//                log.debug("Transitioned issue" + issue + "through action $actionId");
-//            else
-//                log.debug("Transition result is not valid");
-//            return transitionResult;
-//        }
-//        else {
-//            log.debug("The transitionValidation is not valid");
-//            return null;
-//        }
-//    }
-
-    private String getCfValue(String cfName, Issue issue) {
-        CustomField customField = customFieldManager.getCustomFieldObjectByName(cfName);
-        try {
-            String cfValue = (customField != null ? customField.getValue(issue).toString() : null);
-            log.warn(cfValue);
-            return cfValue;
-        }
-        catch (Exception e) {
-            log.warn("Field is empty");
-            return null;
-        }
-    }
-
-    private String getjiraURL() {
+    private String getJiraURL() {
         return ComponentAccessor.getApplicationProperties().getString("jira.baseurl");
     }
 
