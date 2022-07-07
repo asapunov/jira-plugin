@@ -1,36 +1,37 @@
 package com.enviogroup.plugins.documentation;
 
+import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 
 public class ApprovalsActivity extends JiraWebActionSupport {
-    private String string;
-    private String string2;
+    private String issue;
+    private String newIssue;
 
-    @Override
-    public String doDefault() throws Exception {
-        return "view";
-    }
+//    @Override
+//    public String doDefault() throws Exception {
+//        return "view";
+//    }
 
     @Override
     protected String doExecute() throws Exception {
-        string2 = "You entered " + string;
-        return "view";
+        this.newIssue =  "It's " + issue;
+        return "issues";
     }
 
     @Override
     protected void doValidation() {
-        if (null == string || string.isEmpty()) {
+        if (null == issue) {
             addErrorMessage("Пустое значение");
             return;
         }
         super.doValidation();
     }
 
-    public void setString(String string) {
-        this.string = string;
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 
-    public String getString2() {
-        return string2;
+    public String getNewIssue() {
+        return this.newIssue;
     }
 }

@@ -46,8 +46,12 @@
 
     <webwork1 key="AcceptPriceActionWebwork" name="Accept price action" class="java.lang.Object">
         <actions>
+<!--            <action name="com.enviogroup.plugins.documentation.ApprovalsActivity" alias="AcceptPriceAction">-->
+<!--                <view name="view">/templates/acceptPrice/view.vm</view>-->
+<!--                <view name="error">/templates/acceptPrice/error.vm</view>-->
+<!--            </action>-->
             <action name="com.enviogroup.plugins.documentation.ApprovalsActivity" alias="AcceptPriceAction">
-                <view name="view">/templates/acceptPrice/view.vm</view>
+                <view name="issues">/templates/acceptPrice/issues.vm</view>
                 <view name="error">/templates/acceptPrice/error.vm</view>
             </action>
         </actions>

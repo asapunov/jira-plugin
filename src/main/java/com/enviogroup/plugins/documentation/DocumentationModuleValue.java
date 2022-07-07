@@ -38,37 +38,8 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("issue", issue);
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getJiraURL());
-        contextMap.put("supplierOffers", getSupplierOffers(issue));
-        contextMap.put("DMV", this);
+        contextMap.put("supplierOffers", fieldGetter.getSupplierOffers(issue));
         return contextMap;
-    }
-
-
-    private ArrayList<MutableIssue> getSupplierOffers(Issue issue) {
-        String supplierOffers = getCfValue("Предложения поставщиков", issue);
-        ArrayList<MutableIssue> issuesSO = new ArrayList<>();
-
-        if (null != supplierOffers) {
-            String[] offers = supplierOffers.split(",");
-            for (String issues : offers) {
-                issues = issues.trim();
-                issuesSO.add(issueManager.getIssueObject(issues));
-            }
-        }
-        return issuesSO;
-
-    }
-
-    private String getCfValue(String cfName, Issue issue) {
-        CustomField customField = customFieldManager.getCustomFieldObjectByName(cfName);
-        try {
-            String cfValue = (customField != null ? customField.getValue(issue).toString() : null);
-            log.warn(cfValue);
-            return cfValue;
-        } catch (Exception e) {
-            log.warn("Field is empty");
-            return null;
-        }
     }
 
     private String getJiraURL() {
