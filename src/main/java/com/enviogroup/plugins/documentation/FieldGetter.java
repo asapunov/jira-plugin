@@ -2,10 +2,7 @@ package com.enviogroup.plugins.documentation;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.issue.CustomFieldManager;
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.IssueManager;
-import com.atlassian.jira.issue.MutableIssue;
+import com.atlassian.jira.issue.*;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
 import org.slf4j.Logger;
@@ -44,4 +41,6 @@ public class FieldGetter {
             return null;
         }
     }
+
+
 }

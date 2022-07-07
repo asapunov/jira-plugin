@@ -18,7 +18,7 @@
 ##    </p>
 ##    #end
     #foreach($so in $supplierOffers)
-    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a id = "button-$so.getKey()" href="$baseURL/secure/AcceptPriceAction.jspa?issue=$so.getKey()">Согласовать</a> </p>
+    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a id = "button-$so.getKey()" href="$baseURL/secure/AcceptPriceAction.jspa?issue=$so.getKey()" target="_blank" >Согласовать</a> </p>
     #end
 
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>

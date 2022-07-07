@@ -13,7 +13,7 @@
             </td>
         </tr>
             <td class="jiraformbody">
-                $newIssue
+                <h2>$newIssue</h2>
             </td>
         </tr>
 
