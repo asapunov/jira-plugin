@@ -2,19 +2,20 @@ package com.enviogroup.plugins.documentation;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.issue.*;
-import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueInputParameters;
+import com.atlassian.jira.issue.IssueInputParametersImpl;
+import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ApprovalsActivity extends JiraWebActionSupport {
-    private String issue;
-    private String newIssue;
     private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
     private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
     private static final IssueService issueService = ComponentAccessor.getIssueService();
+    private String issueId;
+    private String parentId;
+    private String newIssue;
 
 //    @Override
 //    public String doDefault() throws Exception {
@@ -23,23 +24,23 @@ public class ApprovalsActivity extends JiraWebActionSupport {
 
     @Override
     protected String doExecute() throws Exception {
-        Issue issueObject = issueManager.getIssueObject(issue);
+        Issue issueObject = issueManager.getIssueObject(issueId);
         approval(issueObject, 61);
-        this.newIssue =  issue + " approved";
-        return "issues";
+        this.newIssue = issueId + " approved";
+        return getRedirect("/browse/" + parentId);
     }
 
     @Override
     protected void doValidation() {
-        if (null == issue || issue.isEmpty()) {
+        if (null == issueId || issueId.isEmpty()) {
             addErrorMessage("Пустое значение");
             return;
         }
         super.doValidation();
     }
 
-    public void setIssue(String issue) {
-        this.issue = issue;
+    public void setIssueId(String issueId) {
+        this.issueId = issueId;
     }
 
     public String getNewIssue() {
