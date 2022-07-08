@@ -7,6 +7,7 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.plugin.webfragment.contextproviders.AbstractJiraContextProvider;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
+import com.atlassian.jira.template.soy.SoyTemplateRendererProvider;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.util.velocity.NumberTool;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getJiraURL());
         contextMap.put("supplierOffers", fieldGetter.getSupplierOffers(issue));
+        contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
         return contextMap;
     }
 

@@ -17,11 +17,39 @@
 ##        $number.format($marginPercent.getValue($issue).toString())%
 ##    </p>
 ##    #end
-    #foreach($so in $supplierOffers)
-    <p><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a> $so.getSummary() <a id="button-$so.getKey()"
-                                                                                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()">Согласовать</a>
-    </p>
-    #end
+
+<table class="aui aui-table-sortable">
+    <thead>
+    <tr>
+        <th id="id" class="aui-table-column-issue-key">№</th>
+        <th id="summary">Тема</th>
+        <th id="status">Статус</th>
+        <th id="action">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach($so in $supplierOffers)
+        <tr class="aui-row-subtle">
+            <td headers="id"><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a></td>
+            <td headers="summary">$so.getSummary()</td>
+            <td headers="status">
+                $soyRenderer.render(
+                    'jira.webresources:issue-statuses', 'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                    'issueStatus': $so.getStatus(),
+                    'isSubtle': false,
+                    'isCompact': false,
+                    'maxWidth': 250
+                })
+            </td>
+            <td headers="action">
+                <a id="button-$so.getKey()" class=""
+                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()">Согласовать</a>
+
+            </td>
+        </tr>
+        #end
+    </tbody>
+</table>
 
 ##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
 ##    #if($KP.getValue($issue).toString())

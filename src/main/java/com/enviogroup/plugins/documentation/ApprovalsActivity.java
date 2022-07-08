@@ -14,6 +14,7 @@ public class ApprovalsActivity extends JiraWebActionSupport {
     private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
     private static final IssueService issueService = ComponentAccessor.getIssueService();
     private String issueId;
+
     private String parentId;
     private String newIssue;
 
@@ -39,15 +40,9 @@ public class ApprovalsActivity extends JiraWebActionSupport {
         super.doValidation();
     }
 
-    public void setIssueId(String issueId) {
-        this.issueId = issueId;
-    }
-
-    public String getNewIssue() {
-        return this.newIssue;
-    }
 
     private IssueService.IssueResult approval(Issue issue, int actionId) {
+        issue.getStatus().getSimpleStatus();
         IssueInputParameters issueInputParameters = new IssueInputParametersImpl();
         IssueService.TransitionValidationResult transitionValidationResult = issueService.validateTransition(currentUser, issue.getId(), actionId, issueInputParameters);
         if (transitionValidationResult.isValid()) {
@@ -61,5 +56,17 @@ public class ApprovalsActivity extends JiraWebActionSupport {
             log.debug("The transitionValidation is not valid");
             return null;
         }
+    }
+
+    public void setIssueId(String issueId) {
+        this.issueId = issueId;
+    }
+
+    public String setParentId() {
+        return parentId;
+    }
+
+    public String getNewIssue() {
+        return this.newIssue;
     }
 }
