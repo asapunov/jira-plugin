@@ -1,0 +1,11 @@
+<html>
+<head>
+    <title>Configuration</title>
+    <meta name="decorator" content="atl.admin"/>
+    <meta name="admin.active.section" content="plugin-admin-config-link"/>
+</head>
+<body>
+<h1>Plugin Configuration</h1>
+<p>Now it looks nice :)</p>
+</body>
+</html>
