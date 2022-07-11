@@ -9,14 +9,6 @@
         <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
         #end
     #end
-##    #mac($NMC, $issue)
-##    #mac($KP, $issue)
-##    #mac($procurement, $issue)
-##    #if($margin.getValue($issue).toString())
-##    <p>Маржа: $number.format($margin.getValue($issue).toString()) руб.
-##        $number.format($marginPercent.getValue($issue).toString())%
-##    </p>
-##    #end
 
 <table class="aui aui-table-sortable">
     <thead>
@@ -43,26 +35,11 @@
             </td>
             <td headers="action">
                 <a id="button-$so.getKey()" class=""
-                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()">Согласовать</a>
-
+                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()&issuesIds=$supplierOffers.toString()">Согласовать</a>
             </td>
         </tr>
         #end
     </tbody>
 </table>
-
-##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
-##    #if($KP.getValue($issue).toString())
-##    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
-##    #end
-##    #if($procurement.getValue($issue).toString())
-##    <p> $number.format($procurement.getValue($issue).toString())</p>
-##    #end
-##    #if($margin.getValue($issue).toString())
-##    <p> Маржа: $number.format($margin.getValue($issue).toString())</p>
-##    #end
-##    #if($marginPercent.getValue($issue).toString())
-##    <p> $number.format($marginPercent.getValue($issue).toString())</p>
-##    #end
 
 #end

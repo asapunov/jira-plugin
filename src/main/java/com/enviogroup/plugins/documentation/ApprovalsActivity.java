@@ -14,9 +14,8 @@ public class ApprovalsActivity extends JiraWebActionSupport {
     private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
     private static final IssueService issueService = ComponentAccessor.getIssueService();
     private String issueId;
-
     private String parentId;
-    private String newIssue;
+    private String issuesIds;
 
 //    @Override
 //    public String doDefault() throws Exception {
@@ -25,10 +24,17 @@ public class ApprovalsActivity extends JiraWebActionSupport {
 
     @Override
     protected String doExecute() throws Exception {
-        Issue issueObject = issueManager.getIssueObject(issueId);
-        approval(issueObject, 61);
-        this.newIssue = issueId + " approved";
-        return getRedirect("/browse/" + parentId);
+        issuesIds = issuesIds.replace("[", "");
+        issuesIds = issuesIds.replace("]", "");
+        String[] issuesIdsArray = issuesIds.split(", ");
+        approval(issueId, 61);
+        if (issuesIdsArray.length > 1) {
+            for (String i : issuesIdsArray) {
+                if (!i.equals(issueId))
+                    approval(i, 51);
+            }
+        }
+        return getRedirect("/browse/" + this.parentId);
     }
 
     @Override
@@ -40,8 +46,8 @@ public class ApprovalsActivity extends JiraWebActionSupport {
         super.doValidation();
     }
 
-
-    private IssueService.IssueResult approval(Issue issue, int actionId) {
+    private IssueService.IssueResult approval(String issueId, int actionId) {
+        Issue issue = issueManager.getIssueObject(issueId);
         issue.getStatus().getSimpleStatus();
         IssueInputParameters issueInputParameters = new IssueInputParametersImpl();
         IssueService.TransitionValidationResult transitionValidationResult = issueService.validateTransition(currentUser, issue.getId(), actionId, issueInputParameters);
@@ -62,11 +68,20 @@ public class ApprovalsActivity extends JiraWebActionSupport {
         this.issueId = issueId;
     }
 
-    public String setParentId() {
-        return parentId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
-    public String getNewIssue() {
-        return this.newIssue;
+    public void setIssuesIds(String issuesIds) {
+        this.issuesIds = issuesIds;
     }
+
+    public String getParentId() {
+        return this.parentId;
+    }
+
+    public String getIssuesIds() {
+        return this.issuesIds;
+    }
+
 }
