@@ -25,7 +25,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
     private static final IssueService issueService = ComponentAccessor.getIssueService();
     private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
-    private static final FieldGetter fieldGetter = new FieldGetter();
+    private static final IssueWorker issueWorker = new IssueWorker(currentUser, issueService, customFieldManager, issueManager);
 
     @Override
     public Map<String, Object> getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
@@ -36,7 +36,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("issue", issue);
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getJiraURL());
-        contextMap.put("supplierOffers", fieldGetter.getSupplierOffers(issue));
+        contextMap.put("supplierOffers", issueWorker.getMutableIssuesList(issue, "Предложения поставщиков"));
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
         return contextMap;
     }

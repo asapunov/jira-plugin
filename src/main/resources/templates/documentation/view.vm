@@ -35,7 +35,7 @@
             </td>
             <td headers="action">
                 <a id="button-$so.getKey()" class=""
-                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()&issuesIds=$supplierOffers.toString()">Согласовать</a>
+                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()">Согласовать</a>
             </td>
         </tr>
         #end
