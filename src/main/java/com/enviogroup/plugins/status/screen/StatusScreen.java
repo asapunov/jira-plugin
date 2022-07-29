@@ -1,4 +1,4 @@
-package com.enviogroup.plugins.statusscreen;
+package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;

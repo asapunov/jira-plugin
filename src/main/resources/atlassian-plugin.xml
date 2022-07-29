@@ -74,7 +74,7 @@
     </webwork1>
 
     <web-panel key="status-screen" name="Status Screen" location="atl.jira.view.issue.left.context" weight="120">
-        <context-provider class="com.enviogroup.plugins.statusscreen.StatusScreen"/>
+        <context-provider class="com.enviogroup.plugins.status.screen.StatusScreen"/>
         <resource type="velocity" name="view" location="templates/statusscreen/view.vm"/>
         <label key="Экран для статуса Выиграли"/>
     </web-panel>

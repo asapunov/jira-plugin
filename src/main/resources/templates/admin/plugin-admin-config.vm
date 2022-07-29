@@ -1,25 +1,23 @@
 <html>
-<head>
-    <title>Configuration</title>
-    <meta name="decorator" content="atl.admin"/>
-    <meta name="admin.active.section" content="plugin-admin-config-link"/>
-</head>
-<body>
-<h1>Plugin Configuration</h1>
-<p>Поле задачи, которое мы согласовываем: </p>
-<p>Переход для согласования: </p>
-<p>Переход для отказа: </p>
-<div class="select2-container" id="s2id_projectNameIdFilter" style="margin: 5px 0px 0px 5px; width: 200px;">
-    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1">
-        <span class="select2-chosen">Project Name</span>
-        <abbr class="select2-search-choice-close"></abbr>
-        <span class="select2-arrow"><b></b></span></a>
-        <input class="select2-focusser select2-offscreen" type="text" id="s2id_autogen1">
-    <select name = "select">
-        <option selected="selected">Выберете тип задачи</option>
-        <option>1</option>
-        <option>2</option>
-    </select>
-</div>
-</body>
+    <head>
+        <title>Configuration</title>
+        <meta name="decorator" content="atl.admin"/>
+        <meta name="admin.active.section" content="plugin-admin-config-link"/>
+    </head>
+    <body>
+        <h1>Plugin Configuration</h1>
+        <form id="admin" class="aui">
+            <div class="field-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="text">
+            </div>
+            <div class="field-group">
+                <label for="time">Time:</label>
+                <input type="text" id="time" name="time" class="text">
+            </div>
+            <div class="field-group">
+                <input type="submit" value="Save" class="button">
+            </div>
+        </form>
+    </body>
 </html>
