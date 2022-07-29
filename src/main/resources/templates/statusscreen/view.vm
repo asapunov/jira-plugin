@@ -1,1 +1,10 @@
-ScreenID: $fieldScreen.getId()
+#foreach($tabs in $fieldScreen.getTabs())
+    #foreach($fsli in $tabs.getFieldScreenLayoutItems())
+    #mac($customFieldManager.getCustomFieldObject($fsli.getFieldId()), $issue)
+    #end
+#end
+#macro (mac $field, $issue)
+    #if($field.getValue($issue).toString())
+    <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
+    #end
+#end
