@@ -1,10 +1,36 @@
-#foreach($tabs in $fieldScreen.getTabs())
-    #foreach($fsli in $tabs.getFieldScreenLayoutItems())
-    #mac($customFieldManager.getCustomFieldObject($fsli.getFieldId()), $issue)
+<div class="aui-tabs horizontal-tabs">
+    <ul class="tabs-menu">
+    #foreach($tabs in $fieldScreen.getTabs())
+        #if($tabs.getPosition() == 0)
+            <li class="menu-item active-tab">
+                <a href="#tab-$tabs.getId()">$tabs.getName()</a>
+            </li>
+        #else
+            <li class="menu-item">
+                <a href="#tab-$tabs.getId()">$tabs.getName()</a>
+            </li>
+        #end
     #end
-#end
+    </ul>
+    #foreach($tabs in $fieldScreen.getTabs())
+        #if($tabs.getPosition() == 0)
+            <div class="tabs-pane active-pane" id="tab-$tabs.getId()">
+                #foreach($fsli in $tabs.getFieldScreenLayoutItems())
+                    #mac($customFieldManager.getCustomFieldObject($fsli.getFieldId()), $issue)
+                #end
+            </div>
+        #else
+            <div class="tabs-pane" id="tab-$tabs.getId()">
+                #foreach($fsli in $tabs.getFieldScreenLayoutItems())
+                    #mac($customFieldManager.getCustomFieldObject($fsli.getFieldId()), $issue)
+                #end
+            </div>
+        #end
+    #end
+</div>
 #macro (mac $field, $issue)
     #if($field.getValue($issue).toString())
     <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
     #end
 #end
+
