@@ -1,15 +1,4 @@
 #if ($issue)
-    #set($NMC = $customFieldManager.getCustomFieldObjectByName('Сумма НМЦ в руб')) ## Сумма НМЦ в руб
-    #set($KP = $customFieldManager.getCustomFieldObjectByName('Сумма КП в руб')) ## Сумма КП в руб
-    #set($procurement = $customFieldManager.getCustomFieldObjectByName('Сумма закупки в руб')) ## Сумма закупки в руб
-    #set($margin = $customFieldManager.getCustomFieldObjectByName('Маржа в руб')) ## Маржа в руб
-    #set($marginPercent = $customFieldManager.getCustomFieldObjectByName('Маржа в %')) ## Маржа в %
-    #macro (mac $field, $issue)
-        #if($field.getValue($issue).toString())
-        <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
-        #end
-    #end
-
 <table class="aui aui-table-sortable">
     <thead>
     <tr>
