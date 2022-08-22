@@ -28,6 +28,7 @@ public class StatusScreen extends AbstractJiraContextProvider {
     private static final IssueService issueService = ComponentAccessor.getIssueService();
     private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
+    private static final IssueWorker issueWorker = new IssueWorker(currentUser, issueService, customFieldManager, issueManager);
 
     public StatusScreen(FieldScreenManager fieldScreenManager) {
         this.fieldScreenManager = fieldScreenManager;
@@ -51,6 +52,7 @@ public class StatusScreen extends AbstractJiraContextProvider {
         contextMap.put("number", numberTool);
         contextMap.put("issue", issue);
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
+        contextMap.put("documents", issueWorker.getMutableIssuesList(issue, "Договоры"));
         return contextMap;
     }
 }

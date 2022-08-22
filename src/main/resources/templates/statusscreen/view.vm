@@ -1,36 +1,78 @@
-<div class="aui-tabs horizontal-tabs">
+#set($NMC = $customFieldManager.getCustomFieldObjectByName('Сумма НМЦ в руб')) ## Сумма НМЦ в руб
+#set($KP = $customFieldManager.getCustomFieldObjectByName('Сумма КП в руб')) ## Сумма КП в руб
+#set($procurement = $customFieldManager.getCustomFieldObjectByName('Сумма закупки в руб')) ## Сумма закупки в руб
+#set($pNumber = $customFieldManager.getCustomFieldObjectByName('№ Процедуры')) ## № процедуры
+#set($margin = $customFieldManager.getCustomFieldObjectByName('Маржа в руб')) ## Маржа в руб
+#set($marginPercent = $customFieldManager.getCustomFieldObjectByName('Маржа в %')) ## Маржа в %
+#set($cr = $customFieldManager.getCustomFieldObjectByName('Командировочные расходы'))
+#set($fr = $customFieldManager.getCustomFieldObjectByName('Финансовые расходы'))
+#set($lr = $customFieldManager.getCustomFieldObjectByName('Логистические расходы'))
+#set($dr = $customFieldManager.getCustomFieldObjectByName('Доп расходы'))
+#set($amount = $customFieldManager.getCustomFieldObjectByName('Сумма договора в руб с НДС'))
+<div class="aui-tabs horizontal-tabs" xmlns="http://www.w3.org/1999/html">
     <ul class="tabs-menu">
-    #foreach($tabs in $fieldScreen.getTabs())
-        #if($tabs.getPosition() == 0)
-            <li class="menu-item active-tab">
-                <a href="#tab-$tabs.getId()">$tabs.getName()</a>
-            </li>
-        #else
-            <li class="menu-item">
-                <a href="#tab-$tabs.getId()">$tabs.getName()</a>
-            </li>
-        #end
-    #end
+        <li class="menu-item active-tab">
+            <a href="#tab-win-status-1">Тендерная инфомация</a>
+        </li>
+        <li class="menu-item">
+                <a href="#tab-win-status-2">Финансы</a>
+        </li>
     </ul>
-    #foreach($tabs in $fieldScreen.getTabs())
-        #if($tabs.getPosition() == 0)
-            <div class="tabs-pane active-pane" id="tab-$tabs.getId()">
-                #foreach($fsli in $tabs.getFieldScreenLayoutItems())
-                    #mac($customFieldManager.getCustomFieldObject($fsli.getFieldId()), $issue)
-                #end
-            </div>
-        #else
-            <div class="tabs-pane" id="tab-$tabs.getId()">
-                #foreach($fsli in $tabs.getFieldScreenLayoutItems())
-                    #mac($customFieldManager.getCustomFieldObject($fsli.getFieldId()), $issue)
-                #end
-            </div>
+    <div class="tabs-pane active-pane" id="tab-win-status-1">
+        <h3>Процедура № $pNumber.getValue($issue)</h3>
+        <p>Цена закупки: <span style="color: green; "> #fValue($KP, $issue)</span>  Цена продажи: <span style="color: red">#fValue($procurement, $issue)</span></p>
+        <p>Маржа: $margin.getValue($issue)</p>
+        <table class="aui aui-table-sortable">
+            <thead>
+            <tr>
+                <th colspan="4">Договоры</th>
+            </tr>
+            <tr>
+                <th id="id" class="aui-table-column-issue-key">№</th>
+                <th id="summary">Тема</th>
+                <th id="status">Статус</th>
+                <th id="action">Сумма</th>
+            </tr>
+            </thead>
+            <tbody>
+        #foreach($doc in $documents)
+            <tr class="aui-row-subtle">
+                <td headers="id"><a href="$baseURL/browse/$doc.getKey()">$doc.getKey()</a></td>
+                <td headers="summary">$doc.getSummary()</td>
+                <td headers="status">
+                    $soyRenderer.render(
+                        'jira.webresources:issue-statuses', 'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                        'issueStatus': $doc.getStatus(),
+                        'isSubtle': false,
+                        'isCompact': false,
+                        'maxWidth': 250
+                    })
+                </td>
+                <td headers="amount">
+                    #mac($amount, $doc)
+                </td>
+            </tr>
         #end
-    #end
+            </tbody>
+        </table>
+    </div>
+    <div class="tabs-pane" id="tab-win-status-2">
+        <p>#mac($procurement, $issue)</p>
+        <p>#mac($cr, $issue)</p>
+        <p>#mac($fr, $issue)</p>
+        <p>#mac($lr, $issue)</p>
+        <p>#mac($dr, $issue)</p>
+    </div>
 </div>
+
 #macro (mac $field, $issue)
     #if($field.getValue($issue).toString())
-    <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
+    $field.getName(): $number.format($field.getValue($issue).toString())
+    #end
+#end
+#macro (fValue $field, $issue)
+    #if($field.getValue($issue).toString())
+        $number.format($field.getValue($issue).toString())
     #end
 #end
 
