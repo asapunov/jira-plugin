@@ -19,6 +19,19 @@ public class ModelMapper {
     }
 
     public Map<String, Object> getModelMap() {
+        TenderModel model = new TenderModel();
+        model.setProcedureNumber(issueWorker.getCfValue("№ Процедуры", issue));
+        model.setKey(issue.getKey());
+
+
+        AgreementModel agreementModel = new AgreementModel();
+        agreementModel.setKey("");
+        model.setAgreement(agreementModel);
+
+        AgreementModel agreementModel2 = new AgreementModel();
+        agreementModel2.setKey("");
+        model.addAgreement(agreementModel2);
+
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("issue", issue);
         modelMap.put("pNumber", issueWorker.getCfValue("№ Процедуры", issue));
