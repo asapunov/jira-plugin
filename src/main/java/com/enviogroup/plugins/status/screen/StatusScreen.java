@@ -21,38 +21,14 @@ import java.util.Map;
 
 public class StatusScreen extends AbstractJiraContextProvider {
 
-    @ComponentImport
-    private final FieldScreenManager fieldScreenManager;
-    private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
-    private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-    private static final IssueService issueService = ComponentAccessor.getIssueService();
-    private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
-    private static final IssueWorker issueWorker = new IssueWorker(currentUser, issueService, customFieldManager, issueManager);
-
-    public StatusScreen(FieldScreenManager fieldScreenManager) {
-        this.fieldScreenManager = fieldScreenManager;
-    }
-
-    private FieldScreen getFieldScreen(int a) {
-        Long aL = (long) a;
-        return fieldScreenManager.getFieldScreen(aL);
-    }
-
     @Override
     public Map getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
         Map<String, Object> contextMap = new HashMap<>();
-        Issue issue = (Issue) jiraHelper.getContextParams().get("issue");
-        FieldScreen fieldScreen = getFieldScreen(10200);
-        contextMap.put("fieldScreen", fieldScreen);
-        contextMap.put("issueManager", issueManager);
-        contextMap.put("currentUser", currentUser);
-        contextMap.put("issueService", issueService);
-        contextMap.put("customFieldManager", customFieldManager);
+        ModelMapper modelMapper = new ModelMapper(jiraHelper, new EntityConverter());
+        contextMap.putAll(modelMapper.getModelMap());
         contextMap.put("number", numberTool);
-        contextMap.put("issue", issue);
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
-        contextMap.put("documents", issueWorker.getMutableIssuesList(issue, "Договоры"));
         return contextMap;
     }
 }

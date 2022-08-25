@@ -4,10 +4,13 @@ import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.issue.*;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
+import electric.soap.rpc.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IssueWorker {
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
