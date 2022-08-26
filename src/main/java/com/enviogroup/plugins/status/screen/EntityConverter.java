@@ -27,17 +27,10 @@ public class EntityConverter {
         Issue issue = (Issue) jiraHelper.getContextParams().get("issue");
         entityConverterMap.put("currentUser", currentUser);
         entityConverterMap.put("issue", issue);
-        entityConverterMap.put("documents", issueMap(issue, "Договоры"));
+        entityConverterMap.put("documents", issueWorker.issueMap(issue, "Договоры"));
         entityConverterMap.put("issueWorker", issueWorker);
         return entityConverterMap;
     }
 
-    private Map<Integer, Object> issueMap(Issue issueId, String cfName) {
-        Map<Integer, Object> issueMap = new HashMap<>();
-        int j = 0;
-        for (MutableIssue i : issueWorker.getMutableIssuesList(issueId, cfName)) {
-            issueMap.put(j++, i);
-        }
-        return issueMap;
-    }
+
 }

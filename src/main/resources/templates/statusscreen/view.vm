@@ -8,9 +8,17 @@
         </li>
     </ul>
     <div class="tabs-pane active-pane" id="tab-win-status-1">
-        <h3>Процедура № $pNumber</h3>
-        <p>Цена закупки: <span style="color: green; "> $number.format($procurement)</span>  Цена продажи: <span style="color: red">$number.format($procurement)</span></p>
-        <p>Маржа: $number.format($margin)</p>
+        <h3>Процедура № $pNumber.toString()</h3>
+        <p>Цена закупки: <span style="color: green; "> $procurement.toString()</span>  Цена продажи: <span style="color: red">$procurement.toString()</span></p>
+        <p>Маржа: $margin.toString()</p>
+        <h3>Договоры с заказчиком</h3>
+##        #foreach($agreement in $agreementList)
+##            <p>$agreement.getKey()</p>
+##        #end
+##        <h3>Договоры с Поставщиком</h3>
+##        #foreach($agreement in $agreementListSupplier)
+##            <p>$agreement.getKey()</p>
+##        #end
 ##        <table class="aui aui-table-sortable">
 ##            <thead>
 ##            <tr>
@@ -45,13 +53,13 @@
 ##            </tbody>
 ##        </table>
     </div>
-    <div class="tabs-pane" id="tab-win-status-2">
-        <p>$number.format($procurement)</p>
-        <p>$number.format($cr)</p>
-        <p>$number.format($fr)</p>
-        <p>$number.format($lr)</p>
-        <p>$number.format($dr)</p>
-    </div>
+##    <div class="tabs-pane" id="tab-win-status-2">
+##        <p>$number.format($procurement)</p>
+##        <p>$number.format($cr)</p>
+##        <p>$number.format($fr)</p>
+##        <p>$number.format($lr)</p>
+##        <p>$number.format($dr)</p>
+##    </div>
 </div>
 
 

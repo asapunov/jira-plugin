@@ -79,5 +79,13 @@ public class IssueWorker {
         }
     }
 
+    public Map<Integer, Object> issueMap(Issue issueId, String cfName) {
+        Map<Integer, Object> issueMap = new HashMap<>();
+        int j = 0;
+        for (MutableIssue i : getMutableIssuesList(issueId, cfName)) {
+            issueMap.put(j++, i);
+        }
+        return issueMap;
+    }
 
 }
