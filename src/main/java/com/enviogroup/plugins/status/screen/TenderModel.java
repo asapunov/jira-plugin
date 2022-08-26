@@ -8,11 +8,15 @@ public class TenderModel {
     private String procedureNumber;
     private AgreementModel agreement;
     private Double offer;
-    private Double offer2;
     private Double saleAmount;
-    private Double margin = getBuyAmount() - saleAmount;
+    private Double buyAmount;
+    private Double margin;
+    private Double marginPercent;
+
+
     private List<AgreementModel> agreementsList = new ArrayList<>();
-     public TenderModel() {
+
+    public TenderModel() {
     }
 
     public AgreementModel getAgreement() {
@@ -46,6 +50,7 @@ public class TenderModel {
     public void setProcedureNumber(String procedureNumber) {
         this.procedureNumber = procedureNumber;
     }
+
     public void addAgreement(AgreementModel agreementModel) {
         agreementsList.add(agreementModel);
     }
@@ -58,29 +63,35 @@ public class TenderModel {
         this.saleAmount = saleAmount;
     }
 
-    public Double getBuyAmount() {
-        if (offer2 == null)
-            return offer;
-        else
-            return offer2;
-    }
-
     public Double getMargin() {
         return margin;
     }
 
-    public Double getMarginPercent() {
-        if (getBuyAmount() != 0 || getBuyAmount() != null)
-            return  getMargin() / getBuyAmount() * 100;
-        else
-            return null;
+    public void setMargin(Double margin) {
+        this.margin = margin;
     }
 
-    public void setOffer(java.lang.Double offer) {
+    public Double getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Double offer) {
         this.offer = offer;
     }
 
-    public void setOffer2(java.lang.Double offer2) {
-        this.offer2 = offer2;
+    public Double getBuyAmount() {
+        return buyAmount;
+    }
+
+    public void setBuyAmount(Double buyAmount) {
+        this.buyAmount = buyAmount;
+    }
+
+    public Double getMarginPercent() {
+        return marginPercent;
+    }
+
+    public void setMarginPercent(Double marginPercent) {
+        this.marginPercent = marginPercent;
     }
 }
