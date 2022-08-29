@@ -1,17 +1,124 @@
+$webResourceManager.requireResourcesForContext("status-screen-resources")
 <div class="aui-tabs horizontal-tabs" xmlns="http://www.w3.org/1999/html">
     <ul class="tabs-menu">
         <li class="menu-item active-tab">
             <a href="#tab-win-status-1">Тендерная инфомация</a>
         </li>
         <li class="menu-item">
-                <a href="#tab-win-status-2">Финансы</a>
+            <a href="#tab-win-status-2">Финансы</a>
         </li>
     </ul>
     <div class="tabs-pane active-pane" id="tab-win-status-1">
-        <h3>Процедура № $pNumber.toString()</h3>
-        <p>Цена закупки: <span style="color: green; "> $procurement.toString()</span>  Цена продажи: <span style="color: red">$procurement.toString()</span></p>
-        <p>Маржа: $margin.toString()</p>
-        <h3>Договоры с заказчиком</h3>
+        <h3 id="procedure">Процедура № $model.getProcedureNumber()</h3>
+        <div class="doc-container">
+            <div class="documents-type-names">
+                #if($model.getAgreement())
+                    <span class="field-group">Договор с заказчиком</span>
+                    <table class="aui aui-table-sortable">
+                        <thead>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <th id="id" class="aui-table-column-issue-key">Ключ</th>
+                            <th id="summary">Тема</th>
+                            <th id="status">Статус</th>
+                            <th id="action">Сумма</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #set($agreement = $model.getAgreement())
+                        <tr class="aui-row-subtle">
+                            <td headers="id"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a></td>
+                            <td headers="summary">$agreement.getSummary()</td>
+                            <td headers="status">
+                                $soyRenderer.render(
+                                    'jira.webresources:issue-statuses',
+                                    'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                                    'issueStatus': $agreement.getStatus(),
+                                    'isSubtle': false,
+                                    'isCompact': false,
+                                    'maxWidth': 250
+                                })
+                            </td>
+                            <td headers="amount">
+                                #set($finishAmountBuyer = $agreement.getAmount())
+                                    #if($finishAmountBuyer)
+                                $number.format($finishAmountBuyer.toString())
+                            #end
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span class="finish-amount">Итоговая сумма: </span>
+                    <strong class="finish-value">$finishAmountBuyer</strong>
+                #end
+            </div>
+            <div class="documents-type-names">
+                #if(!$model.getAgreementsList().isEmpty())
+                    <span class="field-group">Договоры с поставщиками</span>
+                    <table class="aui aui-table-sortable">
+                        <thead>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <th id="id" class="aui-table-column-issue-key">Ключ</th>
+                            <th id="summary">Тема</th>
+                            <th id="status">Статус</th>
+                            <th id="action">Сумма</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #set($finishAmountSeller = 0)
+                            #foreach($agreement in $model.getAgreementsList())
+                            <tr class="aui-row-subtle">
+                                <td headers="id"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a>
+                                </td>
+                                <td headers="summary">$agreement.getSummary()</td>
+                                <td headers="status">
+                                    $soyRenderer.render(
+                                        'jira.webresources:issue-statuses',
+                                        'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                                        'issueStatus': $agreement.getStatus(),
+                                        'isSubtle': false,
+                                        'isCompact': false,
+                                        'maxWidth': 250
+                                    })
+                                </td>
+                                <td headers="amount">
+                                    #if($agreement.getAmount())
+                                        $number.format($agreement.getAmount().toString())
+                                    #end
+                                </td>
+                            </tr>
+                                #set($finishAmountSeller = $finishAmountSeller + $agreement.getAmount())
+                            #end
+                        </tbody>
+                    </table>
+                    <span class="finish-amount">Итоговая сумма: </span>
+                    <strong class="finish-value">$finishAmountSeller</strong>
+                #end
+            </div>
+        </div>
+        #set($margin = $finishAmountBuyer - $finishAmountSeller)
+        #set($marginPercent = $margin / $finishAmountBuyer * 100)
+        <span>Маржа: </span>
+        <strong>$margin ($marginPercent %)</strong>
+    </div>
+</div>
+##        <div class="property-list item name">Цена закупки:</div>
+##        <div class="value">$number.format($model.getOffer())</div>
+##        Цена продажи: <span style="color: red">$number.format($model.getSaleAmount())</span></strong>
+####        <p>Маржа: $margin.toString()</p>
+##        #if($model.getAgreement())
+##            <h3>Договор с заказчиком: $model.getAgreement().getKey()</h3>
+##        #end
+##        #if(!$model.getAgreementsList().isEmpty())
+##            Договоры с поставщиками:
+##            #foreach($agreement in $model.getAgreementsList())
+##                <p> $agreement.getKey()</p>
+##            #end
+##        #end
+##    </div>
 ##        #foreach($agreement in $agreementList)
 ##            <p>$agreement.getKey()</p>
 ##        #end
@@ -52,7 +159,6 @@
 ##        #end
 ##            </tbody>
 ##        </table>
-    </div>
 ##    <div class="tabs-pane" id="tab-win-status-2">
 ##        <p>$number.format($procurement)</p>
 ##        <p>$number.format($cr)</p>
@@ -60,6 +166,5 @@
 ##        <p>$number.format($lr)</p>
 ##        <p>$number.format($dr)</p>
 ##    </div>
-</div>
 
 

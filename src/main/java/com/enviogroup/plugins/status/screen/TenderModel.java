@@ -9,11 +9,6 @@ public class TenderModel {
     private AgreementModel agreement;
     private Double offer;
     private Double saleAmount;
-    private Double buyAmount;
-    private Double margin;
-    private Double marginPercent;
-
-
     private List<AgreementModel> agreementsList = new ArrayList<>();
 
     public TenderModel() {
@@ -59,16 +54,8 @@ public class TenderModel {
         return saleAmount;
     }
 
-    public void setSaleAmount(java.lang.Double saleAmount) {
+    public void setSaleAmount(Double saleAmount) {
         this.saleAmount = saleAmount;
-    }
-
-    public Double getMargin() {
-        return margin;
-    }
-
-    public void setMargin(Double margin) {
-        this.margin = margin;
     }
 
     public Double getOffer() {
@@ -79,19 +66,4 @@ public class TenderModel {
         this.offer = offer;
     }
 
-    public Double getBuyAmount() {
-        return buyAmount;
-    }
-
-    public void setBuyAmount(Double buyAmount) {
-        this.buyAmount = buyAmount;
-    }
-
-    public Double getMarginPercent() {
-        return marginPercent;
-    }
-
-    public void setMarginPercent(Double marginPercent) {
-        this.marginPercent = marginPercent;
-    }
 }

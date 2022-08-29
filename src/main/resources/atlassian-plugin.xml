@@ -79,4 +79,10 @@
         <label key="Экран для статуса Выиграли"/>
     </web-panel>
 
+    <web-resource key="status-screen-resources" name="Status Screen Web Resources">
+<!--        <resource type="download" name="status-screen.js" location="/js/accountCF/jira-custom-field.js"/>-->
+        <resource type="download" name="status-screen.css" location="/css/status-screen.css"/>
+        <context>atl.general</context>
+    </web-resource>
+
 </atlassian-plugin>

@@ -1,0 +1,29 @@
+#procedure {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+}
+.doc-container {
+    display:flex;
+}
+.documents-type-names {
+    padding: 10px;
+    display: block;
+    flex: 1;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.field-group {
+
+}
+
+.finish-amount {
+
+}
+
+.finish-value {
+
+}

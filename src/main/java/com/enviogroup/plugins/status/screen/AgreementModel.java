@@ -1,10 +1,11 @@
 package com.enviogroup.plugins.status.screen;
+import com.atlassian.jira.issue.status.Status;
 
 public class AgreementModel {
     private String key;
     private String summary;
     private Double amount;
-    private String status;
+    private Status status;
     private OrganisationModel organisation;
 
     public String getKey() {
@@ -15,11 +16,11 @@ public class AgreementModel {
         this.key = key;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

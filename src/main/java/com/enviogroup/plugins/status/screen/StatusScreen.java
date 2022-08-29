@@ -16,9 +16,8 @@ public class StatusScreen extends AbstractJiraContextProvider {
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
     @Override
     public Map getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
-        Map<String, Object> contextMap = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper(jiraHelper, new EntityConverter());
-        contextMap.putAll(modelMapper.getModelMap());
+        Map<String, Object> contextMap = new HashMap<>(modelMapper.getModelMap());
         contextMap.put("number", numberTool);
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
         return contextMap;
