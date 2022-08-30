@@ -4,23 +4,36 @@
     font-size: 20px;
     line-height: 24px;
 }
+
 .doc-container {
-    display:flex;
+    display: flex;
 }
+
 .documents-type-names {
-    padding: 10px;
-    display: block;
+    padding-top: 10px;
+    padding-right: 5px;
+    display: flex;
+    flex-direction: column;
     flex: 1;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
 
-.field-group {
-
+.finish-amount {
+    align-self: flex-start;
+    margin-top: auto;
+    text-align: end;
 }
 
-.finish-amount {
+.tender-margin {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+}
+
+.field-group {
 
 }
 
@@ -28,5 +41,3 @@
 
 }
 
-.table-bottom {
-}

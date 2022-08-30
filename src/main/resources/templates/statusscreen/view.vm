@@ -49,11 +49,11 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                         </tr>
                         </tbody>
                     </table>
-                    <div class="table-bottom">
-                        <span class="finish-amount">Итоговая сумма: </span>
-                        <strong class="finish-value">$finishAmountBuyer</strong>
-                    </div>
-
+                    #if($finishAmountBuyer)
+                        <span class="finish-amount">Итоговая сумма:
+                        <strong class="finish-value">$number.format($finishAmountBuyer)</strong>
+                        </span>
+                    #end
                 #end
             </div>
             <div class="documents-type-names">
@@ -89,7 +89,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                                 </td>
                                 <td headers="amount">
                                     #if($agreement.getAmount())
-                                        $number.format($agreement.getAmount().toString())
+                                        $number.format($agreement.getAmount())
                                     #end
                                 </td>
                             </tr>
@@ -97,17 +97,21 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                             #end
                         </tbody>
                     </table>
-                    <div class="table-bottom">
-                        <span class="finish-amount">Итоговая сумма: </span>
-                        <strong class="finish-value">$finishAmountSeller</strong>
-                    </div>
+                    #if($finishAmountSeller)
+                        <span class="finish-amount">Итоговая сумма:
+                        <strong class="finish-value">$number.format($finishAmountSeller)</strong>
+                        </span>
+                    #end
                 #end
             </div>
         </div>
-        #set($margin = $finishAmountBuyer - $finishAmountSeller)
-        #set($marginPercent = $margin / $finishAmountBuyer * 100)
-        <span>Маржа: </span>
-        <strong>$margin ($marginPercent %)</strong>
+        #if($model.getAgreement() && !$model.getAgreementsList().isEmpty() && $finishAmountBuyer && $finishAmountSeller )
+            #set($margin = $finishAmountBuyer - $finishAmountSeller)
+            #set($marginPercent = $margin / $finishAmountBuyer * 100)
+            <div class="tender-margin">Маржа:
+                <strong>$number.format($margin) ($number.format($marginPercent) %)</strong>
+            </div>>
+        #end
     </div>
 </div>
 

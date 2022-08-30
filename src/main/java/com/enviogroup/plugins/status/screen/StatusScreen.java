@@ -20,6 +20,7 @@ public class StatusScreen extends AbstractJiraContextProvider {
         Map<String, Object> contextMap = new HashMap<>(modelMapper.getModelMap());
         contextMap.put("number", numberTool);
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
+        contextMap.put("baseURL", ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));
         return contextMap;
     }
 }

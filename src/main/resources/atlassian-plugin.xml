@@ -41,6 +41,7 @@
         <context-provider class="com.enviogroup.plugins.documentation.DocumentationModuleValue"/>
         <resource type="velocity" name="view" location="templates/documentation/view.vm"/>
         <label key="Документация"/>
+        <condition class="com.enviogroup.plugins.conditions.DirectPurchaseWebPanelCondition"/>
     </web-panel>
 
 
@@ -77,6 +78,7 @@
         <context-provider class="com.enviogroup.plugins.status.screen.StatusScreen"/>
         <resource type="velocity" name="view" location="templates/statusscreen/view.vm"/>
         <label key="Экран для статуса Выиграли"/>
+        <condition class="com.enviogroup.plugins.conditions.TenderWebPanelCondition"/>
     </web-panel>
 
     <web-resource key="status-screen-resources" name="Status Screen Web Resources">
