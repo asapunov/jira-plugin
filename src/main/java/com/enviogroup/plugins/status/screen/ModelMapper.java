@@ -2,6 +2,7 @@ package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
+import com.atlassian.jira.issue.customfields.option.LazyLoadedOption;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
@@ -47,7 +48,8 @@ public class ModelMapper {
             OrganisationModel organisationModel = new OrganisationModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
             organisationModel.setKey(org.getKey());
-            //organisationModel.setType(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10029, org));
+            LazyLoadedOption orgType = (LazyLoadedOption) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10029, org);
+            organisationModel.setType(orgType.getValue());
             agreementModel.setOrganisation(organisationModel);
             agreementModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());
