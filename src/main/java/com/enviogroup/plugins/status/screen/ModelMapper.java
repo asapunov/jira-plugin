@@ -8,6 +8,8 @@ import com.enviogroup.plugins.documentation.IssueWorker;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.enviogroup.plugins.status.screen.CustomField.*;
+
 public class ModelMapper {
     private final Map entityConverterMap;
     private final IssueWorker issueWorker;
@@ -26,15 +28,15 @@ public class ModelMapper {
         TenderModel model = new TenderModel();
         model.setKey(issue.getKey());
         /* № Процедуры */
-        model.setProcedureNumber(issueWorker.getStringCustomFieldValue(10132L, issue));
+        model.setProcedureNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10132, issue));
         /* Сумма закупки в руб */
-        model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(10522L, issue));
+        model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, issue));
         /* Сумма нового предложения в руб*/
-        Double newOffer = issueWorker.getDoubleCustomFieldValue(10056L, issue);
+        Double newOffer = issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10056, issue);
 
         if (newOffer == null || newOffer.isNaN()) {
             /* Сумма КП в руб */
-            model.setOffer(issueWorker.getDoubleCustomFieldValue(10518L, issue));
+            model.setOffer(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10518, issue));
         } else {
             /* Сумма нового предложения в руб */
             model.setOffer(newOffer);
@@ -43,15 +45,15 @@ public class ModelMapper {
             Issue issueDoc = (MutableIssue) entry.getValue();
             AgreementModel agreementModel = new AgreementModel();
             OrganisationModel organisationModel = new OrganisationModel();
-            Issue org = (issueWorker.getMutableIssuesList(issueDoc, "Поставщик")).get(0);
+            Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
             organisationModel.setKey(org.getKey());
-            organisationModel.setType(issueWorker.getCfValue("Тип организации", org));
+            organisationModel.setType(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10029, org));
             agreementModel.setOrganisation(organisationModel);
-            agreementModel.setAmount(Double.parseDouble(issueWorker.getCfValue("Сумма договора в руб с НДС", issueDoc)));
+            agreementModel.setAmount(Double.parseDouble(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
-            if (organisationModel.getKey().equals("ORG-1")) {
+            if (organisationModel.getKey().equals(ORG_1)) {
                 model.setAgreement(agreementModel);
             } else {
                 model.addAgreement(agreementModel);

@@ -14,7 +14,7 @@ import com.enviogroup.plugins.documentation.IssueWorker;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.enviogroup.plugins.status.screen.CustomField.AGREEMENTS;
+import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_10327;
 
 public class EntityConverter {
     @ComponentImport
@@ -29,7 +29,7 @@ public class EntityConverter {
         Issue issue = (Issue) jiraHelper.getContextParams().get("issue");
         entityConverterMap.put("currentUser", currentUser);
         entityConverterMap.put("issue", issue);
-        entityConverterMap.put("documents", issueWorker.issueMap(issue, AGREEMENTS));
+        entityConverterMap.put("documents", issueWorker.issueMap(issue, CUSTOM_FIELD_10327));
         entityConverterMap.put("issueWorker", issueWorker);
         return entityConverterMap;
     }

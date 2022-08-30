@@ -7,6 +7,8 @@ import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 
+import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_11411;
+
 public class ApprovalsActivity extends JiraWebActionSupport {
     private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
     private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
@@ -23,7 +25,7 @@ public class ApprovalsActivity extends JiraWebActionSupport {
 
     @Override
     protected String doExecute() throws Exception {
-        String issuesIds = issueWorker.getCfValue("Предложения поставщиков", this.parentId);
+        String issuesIds = issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_11411, this.parentId);
         String[] issuesIdsArray = issuesIds.split(", ");
         issueWorker.approval(issueId, 61);
         if (issuesIdsArray.length > 1) {

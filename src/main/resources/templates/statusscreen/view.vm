@@ -42,15 +42,18 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                             </td>
                             <td headers="amount">
                                 #set($finishAmountBuyer = $agreement.getAmount())
-                                    #if($finishAmountBuyer)
-                                $number.format($finishAmountBuyer.toString())
-                            #end
+                                #if($finishAmountBuyer)
+                                    $number.format($finishAmountBuyer.toString())
+                                #end
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <span class="finish-amount">Итоговая сумма: </span>
-                    <strong class="finish-value">$finishAmountBuyer</strong>
+                    <div class="table-bottom">
+                        <span class="finish-amount">Итоговая сумма: </span>
+                        <strong class="finish-value">$finishAmountBuyer</strong>
+                    </div>
+
                 #end
             </div>
             <div class="documents-type-names">
@@ -94,8 +97,10 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                             #end
                         </tbody>
                     </table>
-                    <span class="finish-amount">Итоговая сумма: </span>
-                    <strong class="finish-value">$finishAmountSeller</strong>
+                    <div class="table-bottom">
+                        <span class="finish-amount">Итоговая сумма: </span>
+                        <strong class="finish-value">$finishAmountSeller</strong>
+                    </div>
                 #end
             </div>
         </div>
@@ -105,66 +110,6 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         <strong>$margin ($marginPercent %)</strong>
     </div>
 </div>
-##        <div class="property-list item name">Цена закупки:</div>
-##        <div class="value">$number.format($model.getOffer())</div>
-##        Цена продажи: <span style="color: red">$number.format($model.getSaleAmount())</span></strong>
-####        <p>Маржа: $margin.toString()</p>
-##        #if($model.getAgreement())
-##            <h3>Договор с заказчиком: $model.getAgreement().getKey()</h3>
-##        #end
-##        #if(!$model.getAgreementsList().isEmpty())
-##            Договоры с поставщиками:
-##            #foreach($agreement in $model.getAgreementsList())
-##                <p> $agreement.getKey()</p>
-##            #end
-##        #end
-##    </div>
-##        #foreach($agreement in $agreementList)
-##            <p>$agreement.getKey()</p>
-##        #end
-##        <h3>Договоры с Поставщиком</h3>
-##        #foreach($agreement in $agreementListSupplier)
-##            <p>$agreement.getKey()</p>
-##        #end
-##        <table class="aui aui-table-sortable">
-##            <thead>
-##            <tr>
-##                <th colspan="4">Договоры</th>
-##            </tr>
-##            <tr>
-##                <th id="id" class="aui-table-column-issue-key">№</th>
-##                <th id="summary">Тема</th>
-##                <th id="status">Статус</th>
-##                <th id="action">Сумма</th>
-##            </tr>
-##            </thead>
-##            <tbody>
-##        #foreach($doc in $documents)
-##            <tr class="aui-row-subtle">
-##                <td headers="id"><a href="$baseURL/browse/$doc.getKey()">$doc.getKey()</a></td>
-##                <td headers="summary">$doc.getSummary()</td>
-##                <td headers="status">
-##                    $soyRenderer.render(
-##                        'jira.webresources:issue-statuses', 'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
-##                        'issueStatus': $doc.getStatus(),
-##                        'isSubtle': false,
-##                        'isCompact': false,
-##                        'maxWidth': 250
-##                    })
-##                </td>
-##                <td headers="amount">
-##                    $amount.getValue($issue)
-##                </td>
-##            </tr>
-##        #end
-##            </tbody>
-##        </table>
-##    <div class="tabs-pane" id="tab-win-status-2">
-##        <p>$number.format($procurement)</p>
-##        <p>$number.format($cr)</p>
-##        <p>$number.format($fr)</p>
-##        <p>$number.format($lr)</p>
-##        <p>$number.format($dr)</p>
-##    </div>
+
 
 
