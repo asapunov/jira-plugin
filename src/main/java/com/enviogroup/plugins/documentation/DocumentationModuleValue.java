@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_11411;
+
 public class DocumentationModuleValue extends AbstractJiraContextProvider {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
@@ -36,7 +38,7 @@ public class DocumentationModuleValue extends AbstractJiraContextProvider {
         contextMap.put("issue", issue);
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getJiraURL());
-        contextMap.put("supplierOffers", issueWorker.getMutableIssuesList(issue, "Предложения поставщиков"));
+        contextMap.put("supplierOffers", issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_11411));
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
         return contextMap;
     }

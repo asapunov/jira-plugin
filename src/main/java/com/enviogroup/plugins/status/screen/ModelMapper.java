@@ -24,17 +24,21 @@ public class ModelMapper {
 
     public Map<String, Object> getModelMap() {
         TenderModel model = new TenderModel();
-        model.setProcedureNumber(issueWorker.getCfValue("№ Процедуры", issue));
         model.setKey(issue.getKey());
-        model.setProcedureNumber(issueWorker.getCfValue("№ Процедуры", issue));
-        model.setSaleAmount(Double.parseDouble(issueWorker.getCfValue("Сумма закупки в руб", issue)));
-        String newOffer = (issueWorker.getCfValue("Сумма нового предложения в руб", issue));
-        if (newOffer == null || newOffer.isEmpty()) {
-            model.setOffer(Double.parseDouble(issueWorker.getCfValue("Сумма КП в руб", issue)));
+        /* № Процедуры */
+        model.setProcedureNumber(issueWorker.getStringCustomFieldValue(10132L, issue));
+        /* Сумма закупки в руб */
+        model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(10522L, issue));
+        /* Сумма нового предложения в руб*/
+        Double newOffer = issueWorker.getDoubleCustomFieldValue(10056L, issue);
+
+        if (newOffer == null || newOffer.isNaN()) {
+            /* Сумма КП в руб */
+            model.setOffer(issueWorker.getDoubleCustomFieldValue(10518L, issue));
         } else {
-            model.setOffer(Double.parseDouble(issueWorker.getCfValue("Сумма нового предложения в руб", issue)));
+            /* Сумма нового предложения в руб */
+            model.setOffer(newOffer);
         }
-        model.setSaleAmount(Double.parseDouble(issueWorker.getCfValue("Сумма закупки в руб", issue)));
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
             AgreementModel agreementModel = new AgreementModel();

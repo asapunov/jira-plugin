@@ -1,10 +1,14 @@
 package com.enviogroup.plugins.documentation;
 
 import com.atlassian.jira.bc.issue.IssueService;
-import com.atlassian.jira.issue.*;
+import com.atlassian.jira.issue.CustomFieldManager;
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.IssueInputParameters;
+import com.atlassian.jira.issue.IssueInputParametersImpl;
+import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
-import electric.soap.rpc.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +30,8 @@ public class IssueWorker {
         this.issueManager = issueManager;
     }
 
-    public ArrayList<MutableIssue> getMutableIssuesList(Issue issue, String cfName) {
-        String supplierOffers = getCfValue(cfName, issue);
+    public ArrayList<MutableIssue> getMutableIssuesList(Issue issue, Long customFieldId) {
+        String supplierOffers = getStringCustomFieldValue(customFieldId, issue);
         ArrayList<MutableIssue> issuesSO = new ArrayList<>();
         if (supplierOffers != null) {
             String[] offers = supplierOffers.split(",");
@@ -39,26 +43,29 @@ public class IssueWorker {
         return issuesSO;
     }
 
-    public ArrayList<MutableIssue> getMutableIssuesList(String issueId, String cfName) {
+    public ArrayList<MutableIssue> getMutableIssuesList(String issueId, Long customFieldId) {
         Issue issue = issueManager.getIssueObject(issueId);
-        return getMutableIssuesList(issue, cfName);
+        return getMutableIssuesList(issue, customFieldId);
     }
 
-    public String getCfValue(String cfName, Issue issue) {
-        CustomField customField = customFieldManager.getCustomFieldObjectByName(cfName);
-        try {
-            String cfValue = (customField != null ? customField.getValue(issue).toString() : null);
-            log.warn(cfValue);
-            return cfValue;
-        } catch (Exception e) {
-            log.warn("Field is empty");
-            return null;
-        }
+    public String getStringCustomFieldValue(Long customFieldId, Issue issue) {
+        CustomField customField = customFieldManager.getCustomFieldObject(customFieldId);
+        return (customField != null ? (String) customField.getValue(issue) : null);
     }
 
-    public String getCfValue(String cfName, String issueId) {
+    public Double getDoubleCustomFieldValue(Long customFieldId, Issue issue) {
+        CustomField customField = customFieldManager.getCustomFieldObject(customFieldId);
+        return (customField != null ? (Double) customField.getValue(issue) : null);
+    }
+
+    public Object getObjectCustomFieldValue(Long customFieldId, Issue issue) {
+        CustomField customField = customFieldManager.getCustomFieldObject(customFieldId);
+        return (customField != null ? customField.getValue(issue) : null);
+    }
+
+    public String getStringCustomFieldValue(Long customFieldId, String issueId) {
         Issue issue = issueManager.getIssueObject(issueId);
-        return getCfValue(cfName, issue);
+        return getStringCustomFieldValue(customFieldId, issue);
     }
 
     public IssueService.IssueResult approval(String issueId, int actionId) {
@@ -79,10 +86,10 @@ public class IssueWorker {
         }
     }
 
-    public Map<Integer, Object> issueMap(Issue issueId, String cfName) {
+    public Map<Integer, Object> issueMap(Issue issueId, Long customFieldId) {
         Map<Integer, Object> issueMap = new HashMap<>();
         int j = 0;
-        for (MutableIssue i : getMutableIssuesList(issueId, cfName)) {
+        for (MutableIssue i : getMutableIssuesList(issueId, customFieldId)) {
             issueMap.put(j++, i);
         }
         return issueMap;
