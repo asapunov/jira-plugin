@@ -47,9 +47,9 @@ public class ModelMapper {
             OrganisationModel organisationModel = new OrganisationModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
             organisationModel.setKey(org.getKey());
-            organisationModel.setType(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10029, org));
+            //organisationModel.setType(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10029, org));
             agreementModel.setOrganisation(organisationModel);
-            agreementModel.setAmount(Double.parseDouble(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
+            agreementModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());

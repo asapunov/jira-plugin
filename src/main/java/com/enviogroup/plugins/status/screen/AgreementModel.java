@@ -48,7 +48,4 @@ public class AgreementModel {
         this.organisation = organisation;
     }
 
-    public String getType() {
-        return organisation.getType();
-    }
 }
