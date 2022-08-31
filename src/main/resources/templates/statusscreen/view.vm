@@ -43,7 +43,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                             <td headers="amount">
                                 #set($finishAmountBuyer = $agreement.getAmount())
                                 #if($finishAmountBuyer)
-                                    $number.format($finishAmountBuyer.toString())
+                                    $number.format($finishAmountBuyer)
                                 #end
                             </td>
                         </tr>
@@ -110,7 +110,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
             #set($marginPercent = $margin / $finishAmountBuyer * 100)
             <div class="tender-margin">Маржа:
                 <strong>$number.format($margin) ($number.format($marginPercent) %)</strong>
-            </div>>
+            </div>
         #end
     </div>
 </div>
