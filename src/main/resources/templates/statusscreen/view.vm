@@ -22,7 +22,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
 
                                 <div class="aui-group">
                                      <div class="aui-item">
-                                         <span class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getName()
+                                         <span data-tooltip="$agreement.getOrganisation().getStatus()" class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getName()
                                      </div>
                                 </div>
                                 <div class="aui-group aui-group-split">
@@ -61,7 +61,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
 
                                     <div class="aui-group">
                                         <div class="aui-item">
-                                            <span class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getName()
+                                            <span data-tooltip="$agreement.getOrganisation().getStatus()" class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getName()
                                         </div>
                                     </div>
                                     <div class="aui-group aui-group-split">
