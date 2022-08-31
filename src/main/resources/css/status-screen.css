@@ -1,43 +1,8 @@
-#procedure {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-}
-
-.doc-container {
-    display: flex;
-}
-
-.documents-type-names {
-    padding-top: 10px;
-    padding-right: 5px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin-left: auto;
-    margin-right: auto;
+.centered {
     text-align: center;
 }
 
-.finish-amount {
-    align-self: flex-start;
-    margin-top: auto;
-    text-align: end;
-}
-
-.tender-margin {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 10px;
-}
-
-.field-group {
-
-}
-
-.finish-value {
-
+.aui-table-column-issue-key {
+    min-width: 70px;
 }
 
