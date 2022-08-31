@@ -12,8 +12,8 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         <h1 class="centered">Процедура № $model.getProcedureNumber()</h1>
         <div class="aui-group">
             <div class="aui-item">
-                <h2 class="centered">Договор с заказчиком</h2>
                 #if($model.getAgreement())
+                    <h2 class="centered">Договор с заказчиком</h2>
                     <table class="aui aui-table-sortable">
                         <thead>
                         <tr>
@@ -48,12 +48,12 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                         </tbody>
                     </table>
                 #else
-                    <h2>Договора нет</h2>
+                    <h2 class="centered">Договора с заказчиком нет</h2>
                 #end
             </div>
             <div class="aui-item">
-                <h2 class="centered">Договоры с поставщиками</h2>
                 #if(!$model.getAgreementsList().isEmpty())
+                <h2 class="centered">Договоры с поставщиками</h2>
                 <table class="aui aui-table-sortable">
                     <thead>
                         <tr>
@@ -91,7 +91,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                     </tbody>
                 </table>
                 #else
-                    <h2>Договоров нет</h2>
+                    <h2 class="centered">Договоров с поставщиками нет</h2>
                 #end
 
             </div>
