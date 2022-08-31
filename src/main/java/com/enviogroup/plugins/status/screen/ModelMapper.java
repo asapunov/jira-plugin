@@ -50,6 +50,24 @@ public class ModelMapper {
             organisationModel.setKey(org.getKey());
             LazyLoadedOption orgType = (LazyLoadedOption) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10029, org);
             organisationModel.setType(orgType.getValue());
+            organisationModel.setName(org.getSummary());
+            LazyLoadedOption orgStatus = (LazyLoadedOption) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10121, org);
+            if(orgStatus != null) {
+                String organisationStatus = orgStatus.getValue();
+                organisationModel.setStatus(organisationStatus);
+                if (ORGANISATION_STATUS_APPROVED.equals(organisationStatus)) {
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_APPROVED_STATUS);
+                } else if (ORGANISATION_STATUS_NOT_APPROVED.equals(organisationStatus)){
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_APPROVED_STATUS);
+                } else if (ORGANISATION_STATUS_NOT_VELIDATED.equals(organisationStatus)) {
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_VELIDATED_STATUS);
+                } else {
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_DEFAULT_STATUS);
+                }
+            } else {
+                organisationModel.setStatus(ORGANISATION_STATUS_NOT_SET);
+                organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_SET_STATUS);
+            }
             agreementModel.setOrganisation(organisationModel);
             agreementModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());

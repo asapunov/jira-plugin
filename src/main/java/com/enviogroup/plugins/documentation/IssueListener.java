@@ -7,6 +7,7 @@ import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class IssueListener implements InitializingBean, DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(IssueListener.class);
     private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
 
-    @JiraImport
+    @ComponentImport
     private final EventPublisher eventPublisher;
 
     @Autowired

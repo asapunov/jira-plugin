@@ -13,89 +13,87 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         <div class="aui-group">
             <div class="aui-item">
                 #if($model.getAgreement())
+
                     <h2 class="centered">Договор с заказчиком</h2>
-                    <table class="aui aui-table-sortable">
-                        <thead>
-                        <tr>
-                            <th id="id" class="aui-table-column-issue-key">Ключ</th>
-                            <th id="summary">Тема</th>
-                            <th id="status">Статус</th>
-                            <th id="action" class="aui-table-column-issue-key">Сумма</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        #set($agreement = $model.getAgreement())
-                        <tr class="aui-row-subtle">
-                            <td headers="id" class="aui-table-column-issue-key"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a></td>
-                            <td headers="summary">$agreement.getSummary()</td>
-                            <td headers="status" class="aui-table-column-issue-key">
-                                $soyRenderer.render(
-                                    'jira.webresources:issue-statuses',
-                                    'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
-                                    'issueStatus': $agreement.getStatus(),
-                                    'isSubtle': false,
-                                    'isCompact': false,
-                                    'maxWidth': 250
-                                })
-                            </td>
-                            <td headers="amount">
-                                #set($finishAmountBuyer = $agreement.getAmount())
-                        #if($finishAmountBuyer)
-                                $number.format($finishAmountBuyer)
-                            #end
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    #set($agreement = $model.getAgreement())
+                    <div class="aui-group">
+                        <div class="aui-item">
+                            <div class="zoned"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
+
+                                <div class="aui-group">
+                                     <div class="aui-item">
+                                         <span class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getName()
+                                     </div>
+                                </div>
+                                <div class="aui-group aui-group-split">
+                                    <div class="aui-item">
+                                        $soyRenderer.render(
+                                            'jira.webresources:issue-statuses',
+                                            'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                                            'issueStatus': $agreement.getStatus(),
+                                            'isSubtle': true,
+                                            'isCompact': false,
+                                            'maxWidth': 150
+                                        })
+                                    </div>
+                                    <div class="aui-item">
+                                         Стоимость: #set($finishAmountBuyer = $agreement.getAmount())
+                                         #if($finishAmountBuyer)
+                                             $number.format($finishAmountBuyer)
+                                         #end
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 #else
                     <h2 class="centered">Договора с заказчиком нет</h2>
                 #end
             </div>
-            <div class="aui-item">
+            <div class="aui-item aui-doc-panel">
                 #if(!$model.getAgreementsList().isEmpty())
-                <h2 class="centered">Договоры с поставщиками</h2>
-                <table class="aui aui-table-sortable">
-                    <thead>
-                        <tr>
-                            <th id="id" class="aui-table-column-issue-key">Ключ</th>
-                            <th id="summary">Тема</th>
-                            <th id="status">Статус</th>
-                            <th id="action" class="aui-table-column-issue-key">Сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        #set($finishAmountSeller = 0)
-                        #foreach($agreement in $model.getAgreementsList())
-                        <tr class="aui-row-subtle">
-                            <td headers="id" class="aui-table-column-issue-key"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a>
-                            </td>
-                            <td headers="summary">$agreement.getSummary()</td>
-                            <td headers="status" class="aui-table-column-issue-key">
-                                $soyRenderer.render(
-                                    'jira.webresources:issue-statuses',
-                                    'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
-                                    'issueStatus': $agreement.getStatus(),
-                                    'isSubtle': false,
-                                    'isCompact': false,
-                                    'maxWidth': 250
-                                })
-                            </td>
-                            <td headers="amount">
-                                #if($agreement.getAmount())
-                            $number.format($agreement.getAmount())
-                        #end
-                            </td>
-                        </tr>
-                            #set($finishAmountSeller = $finishAmountSeller + $agreement.getAmount())
-                        #end
-                    </tbody>
-                </table>
-                #else
-                    <h2 class="centered">Договоров с поставщиками нет</h2>
-                #end
+                    <h2 class="centered">Договоры с поставщиками</h2>
+                    #set($finishAmountSeller = 0)
+                    #foreach($agreement in $model.getAgreementsList())
+                        <div class="aui-group">
+                            <div class="aui-item">
+                                <div class="zoned"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
 
+                                    <div class="aui-group">
+                                        <div class="aui-item">
+                                            <span class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getName()
+                                        </div>
+                                    </div>
+                                    <div class="aui-group aui-group-split">
+                                        <div class="aui-item">
+                                            $soyRenderer.render(
+                                                'jira.webresources:issue-statuses',
+                                                'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                                                'issueStatus': $agreement.getStatus(),
+                                                'isSubtle': true,
+                                                'isCompact': false,
+                                                'maxWidth': 250
+                                            })
+                                        </div>
+                                        <div class="aui-item">
+                                            Стоимость:
+                                            #if($agreement.getAmount())
+                                                $number.format($agreement.getAmount())
+                                            #end
+                                            #set($finishAmountSeller = $finishAmountSeller + $agreement.getAmount())
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    #end
+                #else
+                #end
             </div>
         </div>
+
+
         <div class="aui-group centered">
             <div class="aui-item">
                 #if($finishAmountBuyer)
