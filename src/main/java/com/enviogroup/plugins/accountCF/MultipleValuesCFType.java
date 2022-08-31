@@ -17,7 +17,7 @@ import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
 import com.atlassian.jira.util.DateFieldFormat;
 import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.jira.util.velocity.NumberTool;
-import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
@@ -59,6 +59,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     public static final String DB_SEP = "###";
     // The type of data in the database, one entry per value in this field
     private static final PersistenceFieldType DB_TYPE = PersistenceFieldType.TYPE_UNLIMITED_TEXT;
+
     private final CustomFieldValuePersister persister;
     private final GenericConfigManager genericConfigManager;
     private final DatePickerConverter datePickerConverter;
@@ -66,11 +67,11 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
     private final DateFieldFormat dateFieldFormat;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-    public MultipleValuesCFType(@JiraImport CustomFieldValuePersister customFieldValuePersister,
-                                @JiraImport GenericConfigManager genericConfigManager,
-                                @JiraImport DatePickerConverter datePickerConverter,
-                                @JiraImport DateTimeFormatterFactory dateTimeFormatterFactory,
-                                @JiraImport DateFieldFormat dateFieldFormat) {
+    public MultipleValuesCFType(@ComponentImport CustomFieldValuePersister customFieldValuePersister,
+                                @ComponentImport GenericConfigManager genericConfigManager,
+                                @ComponentImport DatePickerConverter datePickerConverter,
+                                @ComponentImport DateTimeFormatterFactory dateTimeFormatterFactory,
+                                @ComponentImport DateFieldFormat dateFieldFormat) {
         this.persister = customFieldValuePersister;
         this.genericConfigManager = genericConfigManager;
         this.datePickerConverter = datePickerConverter;
