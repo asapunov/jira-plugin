@@ -91,7 +91,7 @@ public class ModelMapper {
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
         }
-        if (model.getAgreement().getValueAddedTax() == 0) {
+        if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
             for (AgreementModel am: model.getAgreementsList()) {
                 Double amount = am.getAmount();
                 if (amount != null) {

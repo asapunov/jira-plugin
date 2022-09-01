@@ -1,29 +1,50 @@
 package com.enviogroup.plugins.status.screen;
 
 public class CustomField {
-    /** Договоры (тендеры) */
+    /**
+     * Договоры (тендеры)
+     */
     public static final Long CUSTOM_FIELD_10327 = 10327L;
-    /** Предложения поставщиков */
+    /**
+     * Предложения поставщиков
+     */
     public static final Long CUSTOM_FIELD_11411 = 11411L;
-    /** № Процедуры */
+    /**
+     * № Процедуры
+     */
     public static final Long CUSTOM_FIELD_10132 = 10132L;
-    /** Сумма закупки в руб */
+    /**
+     * Сумма закупки в руб
+     */
     public static final Long CUSTOM_FIELD_10522 = 10522L;
-    /** Сумма нового предложения в руб */
+    /**
+     * Сумма нового предложения в руб
+     */
     public static final Long CUSTOM_FIELD_10056 = 10056L;
-    /** Сумма КП в руб */
+    /**
+     * Сумма КП в руб
+     */
     public static final Long CUSTOM_FIELD_10518 = 10518L;
-    /** Поставщик (договоры) */
+    /**
+     * Поставщик (договоры)
+     */
     public static final Long CUSTOM_FIELD_10069 = 10069L;
-    /** Тип организации */
+    /**
+     * Тип организации
+     */
     public static final Long CUSTOM_FIELD_10029 = 10029L;
-    /** Статус организации */
+    /**
+     * Статус организации
+     */
     public static final Long CUSTOM_FIELD_10121 = 10121L;
-    /** Сумма договора в руб с НДС */
+    /**
+     * Сумма договора в руб с НДС
+     */
     public static final Long CUSTOM_FIELD_10072 = 10072L;
-    /** Ссылка на тендер */
+    /**
+     * Ссылка на тендер
+     */
     public static final Long CUSTOM_FIELD_10047 = 10047L;
-    /** OGR-1 ЭНВИОГРУПП */
     /**
      * Заказчик (договоры)
      */
