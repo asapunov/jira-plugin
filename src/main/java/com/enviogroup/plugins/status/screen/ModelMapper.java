@@ -46,6 +46,9 @@ public class ModelMapper {
         }
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
+            if(!issueDoc.getIssueTypeId().equals(Long.toString(ISSUE_TYPE_ID_DOGOVOR))) {
+                continue;
+            }
             AgreementModel agreementModel = new AgreementModel();
             OrganisationModel organisationModel = new OrganisationModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
