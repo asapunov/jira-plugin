@@ -34,6 +34,8 @@ public class ModelMapper {
         model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, issue));
         /* Сумма нового предложения в руб*/
         Double newOffer = issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10056, issue);
+        /* Ссылка на тендер */
+        model.setUrl(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10047, issue));
 
         if (newOffer == null || newOffer.isNaN()) {
             /* Сумма КП в руб */
