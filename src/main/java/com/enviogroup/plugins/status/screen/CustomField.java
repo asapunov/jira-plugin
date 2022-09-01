@@ -24,6 +24,18 @@ public class CustomField {
     /** Ссылка на тендер */
     public static final Long CUSTOM_FIELD_10047 = 10047L;
     /** OGR-1 ЭНВИОГРУПП */
+    /**
+     * Заказчик (договоры)
+     */
+    public static final Long CUSTOM_FIELD_10067 = 10067L;
+    /**
+     * НДС %
+     */
+    public static final Long CUSTOM_FIELD_10113 = 10113L;
+
+    /**
+     * OGR-1 ЭНВИОГРУПП
+     */
     public static final String ORG_1 = "ORG-1";
 
     /* ID типа issue договора */
@@ -38,5 +50,7 @@ public class CustomField {
     public static final String ORGANISATION_STATUS_NOT_SET = "Не установлено";
     public static final String ORGANISATION_STATUS_NOT_SET_STATUS = "error";
     public static final String ORGANISATION_STATUS_DEFAULT_STATUS = "";
+    public static final String ORGANISATION_TYPE_CUSTOMER = "Заказчик";
+    public static final String ORGANISATION_TYPE_SUPPLIER = "Поставщик";
 
 }

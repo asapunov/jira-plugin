@@ -52,9 +52,16 @@ public class ModelMapper {
             AgreementModel agreementModel = new AgreementModel();
             OrganisationModel organisationModel = new OrganisationModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
+            if (org.getKey().equals(ORG_1)) {
+                org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10067)).get(0);
+                model.setAgreement(agreementModel);
+                organisationModel.setType(ORGANISATION_TYPE_CUSTOMER);
+            }
+            else {
+                model.addAgreement(agreementModel);
+                organisationModel.setType(ORGANISATION_TYPE_SUPPLIER);
+            }
             organisationModel.setKey(org.getKey());
-            LazyLoadedOption orgType = (LazyLoadedOption) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10029, org);
-            organisationModel.setType(orgType.getValue());
             organisationModel.setName(org.getSummary());
             LazyLoadedOption orgStatus = (LazyLoadedOption) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10121, org);
             if(orgStatus != null) {
@@ -73,15 +80,26 @@ public class ModelMapper {
                 organisationModel.setStatus(ORGANISATION_STATUS_NOT_SET);
                 organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_SET_STATUS);
             }
+            LazyLoadedOption vat = (LazyLoadedOption) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10113, org);
+            double vatDouble;
+            try {
+                vatDouble = Double.parseDouble(vat.getValue()) / 100;
+            } catch (Exception e){
+                vatDouble = 0D;
+            }
+            agreementModel.setValueAddedTax(vatDouble);
             agreementModel.setOrganisation(organisationModel);
             agreementModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
-            if (organisationModel.getKey().equals(ORG_1)) {
-                model.setAgreement(agreementModel);
-            } else {
-                model.addAgreement(agreementModel);
+        }
+        if (model.getAgreement().getValueAddedTax() == 0) {
+            for (AgreementModel am: model.getAgreementsList()) {
+                Double amount = am.getAmount();
+                if (amount != null) {
+                    am.setAmount(amount - amount * am.getValueAddedTax());
+                }
             }
         }
         Map<String, Object> modelMap = new HashMap<>();
