@@ -40,7 +40,7 @@
     <web-panel key="document" name="document" location="atl.jira.view.issue.left.context" weight="110">
         <context-provider class="com.enviogroup.plugins.documentation.DocumentationModuleValue"/>
         <resource type="velocity" name="view" location="templates/documentation/view.vm"/>
-        <label key="Документация"/>
+        <label key="Согласование поставщиков"/>
         <condition class="com.enviogroup.plugins.conditions.DirectPurchaseWebPanelCondition"/>
     </web-panel>
 
@@ -77,7 +77,7 @@
     <web-panel key="status-screen" name="Status Screen" location="atl.jira.view.issue.left.context" weight="120">
         <context-provider class="com.enviogroup.plugins.status.screen.StatusScreen"/>
         <resource type="velocity" name="view" location="templates/statusscreen/view.vm"/>
-        <label key="Экран для статуса Выиграли"/>
+        <label key="Документация"/>
         <condition class="com.enviogroup.plugins.conditions.TenderWebPanelCondition"/>
     </web-panel>
 

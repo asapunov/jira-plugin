@@ -1,4 +1,5 @@
 package com.enviogroup.plugins.status.screen;
+
 import com.atlassian.jira.issue.status.Status;
 
 public class AgreementModel {
@@ -7,6 +8,7 @@ public class AgreementModel {
     private Double amount;
     private Status status;
     private OrganisationModel organisation;
+    private Double valueAddedTax;
 
     public String getKey() {
         return key;
@@ -48,4 +50,11 @@ public class AgreementModel {
         this.organisation = organisation;
     }
 
+    public Double getValueAddedTax() {
+        return valueAddedTax;
+    }
+
+    public void setValueAddedTax(Double valueAddedTax) {
+        this.valueAddedTax = valueAddedTax;
+    }
 }
