@@ -59,6 +59,9 @@ public class CustomField {
      */
     public static final String ORG_1 = "ORG-1";
 
+    /* ID типа issue договора */
+    public static final Long ISSUE_TYPE_ID_DOGOVOR = 10111L;
+
     public static final String ORGANISATION_STATUS_APPROVED = "Прошла проверку";
     public static final String ORGANISATION_STATUS_APPROVED_STATUS = "success";
     public static final String ORGANISATION_STATUS_NOT_APPROVED = "Не прошла проверку";
