@@ -9,7 +9,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         </li>
     </ul>
     <div class="tabs-pane active-pane" id="tab-win-status-1">
-        <h1 class="centered">Процедура № $model.getProcedureNumber()</h1>
+        <h1 class="centered">Процедура № <a href="$model.getUrl()" target="_blank">$model.getProcedureNumber()</a></h1>
         <div class="aui-group">
             <div class="aui-item">
                 #if($model.getAgreement())
@@ -89,6 +89,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
 
                     #end
                 #else
+                    <h2 class="centered">Договоров с поставщиками нет</h2>
                 #end
             </div>
         </div>

@@ -21,6 +21,8 @@ public class CustomField {
     public static final Long CUSTOM_FIELD_10121 = 10121L;
     /** Сумма договора в руб с НДС */
     public static final Long CUSTOM_FIELD_10072 = 10072L;
+    /** Ссылка на тендер */
+    public static final Long CUSTOM_FIELD_10047 = 10047L;
     /** OGR-1 ЭНВИОГРУПП */
     public static final String ORG_1 = "ORG-1";
 

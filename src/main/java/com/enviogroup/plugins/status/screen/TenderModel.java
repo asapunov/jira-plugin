@@ -9,6 +9,16 @@ public class TenderModel {
     private AgreementModel agreement;
     private Double offer;
     private Double saleAmount;
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     private List<AgreementModel> agreementsList = new ArrayList<>();
 
     public TenderModel() {
