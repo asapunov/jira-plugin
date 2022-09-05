@@ -1,38 +1,14 @@
 package com.enviogroup.plugins.status.screen;
 
-import com.atlassian.jira.issue.status.Status;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AgreementModel {
-    private String key;
-    private String summary;
+public class AgreementModel extends IssueModel {
     private Double amount;
-    private Status status;
     private OrganisationModel organisation;
     private Double valueAddedTax;
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
+    private List<InvoiceModel> inputInvoicesList = new ArrayList<>();
+    private List<SpecificationModel> specificationsList = new ArrayList<>();
 
     public Double getAmount() {
         return amount;
@@ -57,4 +33,29 @@ public class AgreementModel {
     public void setValueAddedTax(Double valueAddedTax) {
         this.valueAddedTax = valueAddedTax;
     }
+
+    public List<SpecificationModel> getSpecificationsList() {
+        return specificationsList;
+    }
+
+    public void setSpecificationsList(List<SpecificationModel> specificationsList) {
+        this.specificationsList = specificationsList;
+    }
+
+    public void addSpecification(SpecificationModel specification) {
+        specificationsList.add(specification);
+    }
+
+    public List<InvoiceModel> getInputInvoicesList() {
+        return inputInvoicesList;
+    }
+
+    public void setInputInvoicesList(List<InvoiceModel> inputInvoices) {
+        this.inputInvoicesList = inputInvoices;
+    }
+
+    public void addInputInvoice(InvoiceModel inputInvoice) {
+        inputInvoicesList.add(inputInvoice);
+    }
+
 }

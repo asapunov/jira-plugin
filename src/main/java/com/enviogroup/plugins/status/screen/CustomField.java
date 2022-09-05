@@ -53,13 +53,39 @@ public class CustomField {
      * НДС %
      */
     public static final Long CUSTOM_FIELD_10113 = 10113L;
+    /**
+     * Договоры спецификации
+     */
+    public static final Long CUSTOM_FIELD_10106 = 10106L;
+    /**
+     * Спецификации договоры
+     */
+    public static final Long CUSTOM_FIELD_10107 = 10107L;
+    /**
+     * Сумма спецификации в руб с НДС
+     */
+    public static final Long CUSTOM_FIELD_10108 = 10108L;
+    /**
+     * Договор с конечным заказчиком (счета входящие)
+     */
+    public static final Long CUSTOM_FIELD_10404 = 10404L;
+    /**
+     * Сумма счета в руб с НДС
+     */
+    public static final Long CUSTOM_FIELD_10085 = 10085L;
+    /**
+     * Счета входящие договоры
+     */
+    public static final Long CUSTOM_FIELD_11201 = 11201L;
 
     /**
      * OGR-1 ЭНВИОГРУПП
      */
     public static final String ORG_1 = "ORG-1";
 
-    /* ID типа issue договора */
+    /**
+     * ID типа issue договора
+     */
     public static final Long ISSUE_TYPE_ID_DOGOVOR = 10111L;
 
     public static final String ORGANISATION_STATUS_APPROVED = "Прошла проверку";

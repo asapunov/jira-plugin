@@ -7,6 +7,7 @@ import com.atlassian.jira.issue.IssueInputParameters;
 import com.atlassian.jira.issue.IssueInputParametersImpl;
 import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.MutableIssue;
+import com.atlassian.jira.issue.customfields.option.LazyLoadedOption;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
 import org.slf4j.Logger;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_10121;
 
 public class IssueWorker {
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
@@ -66,6 +69,15 @@ public class IssueWorker {
     public String getStringCustomFieldValue(Long customFieldId, String issueId) {
         Issue issue = issueManager.getIssueObject(issueId);
         return getStringCustomFieldValue(customFieldId, issue);
+    }
+
+    public String getStringValueFromLazyLoadedOptionCustomField(Long customFieldId, Issue issue) {
+        LazyLoadedOption value = (LazyLoadedOption) getObjectCustomFieldValue(customFieldId, issue);
+        if (value != null) {
+            return value.getValue();
+        } else {
+            return null;
+        }
     }
 
     public IssueService.IssueResult approval(String issueId, int actionId) {

@@ -1,10 +1,13 @@
 package com.enviogroup.plugins.status.screen;
 
-public class OrganisationModel {
-    private String key;
+import com.atlassian.jira.issue.Issue;
+import com.enviogroup.plugins.documentation.IssueWorker;
+
+import static com.enviogroup.plugins.status.screen.CustomField.*;
+
+public class OrganisationModel extends IssueModel {
     private String type;
-    private String name;
-    private String status;
+    private String orgStatus;
     private String statusColor;
 
     public String getStatusColor() {
@@ -15,14 +18,6 @@ public class OrganisationModel {
         this.statusColor = statusColor;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getType() {
         return type;
     }
@@ -31,19 +26,11 @@ public class OrganisationModel {
         this.type = type;
     }
 
-    public String getName() {
-        return name;
+    public String getOrgStatus() {
+        return orgStatus;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setOrgStatus(String status) {
+        this.orgStatus = status;
     }
 }

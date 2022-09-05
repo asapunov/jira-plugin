@@ -3,8 +3,7 @@ package com.enviogroup.plugins.status.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TenderModel {
-    private String key;
+public class TenderModel extends IssueModel {
     private String procedureNumber;
     private AgreementModel agreement;
     private Double offer;
@@ -38,14 +37,6 @@ public class TenderModel {
 
     public void setAgreementsList(List<AgreementModel> agreementsList) {
         this.agreementsList = agreementsList;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getProcedureNumber() {
