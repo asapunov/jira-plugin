@@ -1,6 +1,7 @@
 <div class="aui-group">
     <div class="aui-item">
-        <div class="zoned"><a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
+        <div class="zoned">
+            <a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
 
             <div class="aui-group">
                 <div class="aui-item">
@@ -25,6 +26,14 @@
                     #end
                 </div>
             </div>
+            #foreach($specification in $agreement.getSpecificationsList())
+                #parse( "templates/statusscreen/specification.vm")
+            #end
+            #foreach($invoice in $agreement.getInputInvoicesList())
+                #parse( "templates/statusscreen/invoice.vm")
+            #end
         </div>
+
     </div>
+
 </div>

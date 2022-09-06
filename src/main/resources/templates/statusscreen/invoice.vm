@@ -1,0 +1,27 @@
+<div class="aui-group">
+    <div class="aui-item">
+        <div class="zonedlight">Счёт <a href="$baseURL/browse/$invoice.getKey()">$invoice.getKey()</a> $invoice.getSummary()
+
+
+            <div class="aui-group aui-group-split">
+                <div class="aui-item">
+                    $soyRenderer.render(
+                        'jira.webresources:issue-statuses',
+                        'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                        'issueStatus': $invoice.getStatus(),
+                        'isSubtle': true,
+                        'isCompact': false,
+                        'maxWidth': 150
+                    })
+                </div>
+                <div class="aui-item">
+                    Стоимость: #set($amount = $invoice.getAmount())
+                    #if($amount)
+                        $number.format($amount)
+                    #end
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
