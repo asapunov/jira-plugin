@@ -145,7 +145,6 @@ public class ModelMapper {
         financeModel.setFinanceExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10515, tenderIssue));
         financeModel.setLogisticExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10513, tenderIssue));
         financeModel.setTravelExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10514, tenderIssue));
-        financeModel.setSellPrice(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, tenderIssue));
         return financeModel;
     }
 

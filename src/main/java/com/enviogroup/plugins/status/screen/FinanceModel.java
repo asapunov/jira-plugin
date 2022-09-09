@@ -5,7 +5,6 @@ public class FinanceModel {
     private Double logisticExpenses;
     private Double financeExpenses;
     private Double travelExpenses;
-    private Double sellPrice;
 
     public Double getAdditionalExpenses() {
         return additionalExpenses;
@@ -39,11 +38,4 @@ public class FinanceModel {
         this.travelExpenses = travelExpenses;
     }
 
-    public Double getSellPrice() {
-        return sellPrice;
-    }
-
-    public void setSellPrice(Double sellPrice) {
-        this.sellPrice = sellPrice;
-    }
 }
