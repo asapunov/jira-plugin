@@ -77,6 +77,22 @@ public class CustomField {
      * Счета входящие договоры
      */
     public static final Long CUSTOM_FIELD_11201 = 11201L;
+    /**
+     * Доп расходы
+     */
+    public static final Long CUSTOM_FIELD_12101 = 12101L;
+    /**
+     * Командировочные расходы
+     */
+    public static final Long CUSTOM_FIELD_10514 = 10514L;
+    /**
+     * Логистические расходы
+     */
+    public static final Long CUSTOM_FIELD_10513 = 10513L;
+    /**
+     * Финансовые расходы
+     */
+    public static final Long CUSTOM_FIELD_10515 = 10515L;
 
     /**
      * OGR-1 ЭНВИОГРУПП

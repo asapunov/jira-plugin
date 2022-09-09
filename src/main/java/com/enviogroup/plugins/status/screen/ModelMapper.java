@@ -38,6 +38,7 @@ public class ModelMapper {
         } else {
             model.setOffer(newOffer);
         }
+        model.setFinanceModel(financeModelFactory(issue, issueWorker));
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
             if (!issueDoc.getIssueTypeId().equals(Long.toString(ISSUE_TYPE_ID_DOGOVOR))) {
@@ -136,6 +137,16 @@ public class ModelMapper {
             organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_SET_STATUS);
         }
         return organisationModel;
+    }
+
+    public FinanceModel financeModelFactory (Issue tenderIssue, IssueWorker issueWorker) {
+        FinanceModel financeModel = new FinanceModel();
+        financeModel.setAdditionalExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_12101, tenderIssue));
+        financeModel.setFinanceExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10515, tenderIssue));
+        financeModel.setLogisticExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10513, tenderIssue));
+        financeModel.setTravelExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10514, tenderIssue));
+        financeModel.setSellPrice(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, tenderIssue));
+        return financeModel;
     }
 
 }

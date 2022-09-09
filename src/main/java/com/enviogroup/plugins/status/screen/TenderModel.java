@@ -9,6 +9,7 @@ public class TenderModel extends IssueModel {
     private Double offer;
     private Double saleAmount;
     private String url;
+    private FinanceModel financeModel;
 
     public String getUrl() {
         return url;
@@ -67,4 +68,11 @@ public class TenderModel extends IssueModel {
         this.offer = offer;
     }
 
+    public FinanceModel getFinanceModel() {
+        return financeModel;
+    }
+
+    public void setFinanceModel(FinanceModel financeModel) {
+        this.financeModel = financeModel;
+    }
 }

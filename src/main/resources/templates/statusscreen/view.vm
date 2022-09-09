@@ -63,11 +63,6 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
     </div>
     <div class="tabs-pane" id="tab-win-status-2">
         <h2 class="centered">В разработке</h2>
-        #foreach($specification in $model.getAgreement().getSpecificationsList())
-            <p>$specification.getKey()</p>
-            <p>$specification.getSummary()</p>
-            <p>$specification.getAmount()</p>
-        #end
     </div>
 </div>
 
