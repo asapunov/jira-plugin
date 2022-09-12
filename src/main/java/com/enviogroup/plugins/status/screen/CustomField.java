@@ -97,6 +97,14 @@ public class CustomField {
      * Счета входящие спецификации
      */
     public static final Long CUSTOM_FIELD_10356 = 10356L;
+    /**
+     * Части счета
+     */
+    public static final Long CUSTOM_FIELD_11300 = 11300L;
+    /**
+     * Платежи по спецификаии
+     */
+    public static final Long CUSTOM_FIELD_12500 = 12500L;
 
     /**
      * OGR-1 ЭНВИОГРУПП

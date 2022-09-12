@@ -3,12 +3,10 @@ package com.enviogroup.plugins.status.screen;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
+import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
@@ -92,6 +90,7 @@ public class ModelMapper {
                 invoiceModel.setSummary(invoiceIssue.getSummary());
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
+                invoiceModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, invoiceIssue));
             }
             return invoiceList;
         } else {
@@ -110,6 +109,7 @@ public class ModelMapper {
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);
                 specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker,CUSTOM_FIELD_10356));
+                specificationModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, specificationIssue));
             }
             return specificationList;
         } else {
