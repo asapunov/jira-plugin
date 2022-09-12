@@ -93,6 +93,10 @@ public class CustomField {
      * Финансовые расходы
      */
     public static final Long CUSTOM_FIELD_10515 = 10515L;
+    /**
+     * Счета входящие спецификации
+     */
+    public static final Long CUSTOM_FIELD_10356 = 10356L;
 
     /**
      * OGR-1 ЭНВИОГРУПП

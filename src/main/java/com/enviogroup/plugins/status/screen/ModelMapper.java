@@ -67,7 +67,7 @@ public class ModelMapper {
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
-            agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker));
+            agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker,CUSTOM_FIELD_11201));
         }
         if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
             for (AgreementModel am : model.getAgreementsList()) {
@@ -82,10 +82,10 @@ public class ModelMapper {
         return modelMap;
     }
 
-    public List<InvoiceModel> invoiceModelListFactory(Issue agreementIssue, IssueWorker issueWorker) {
+    public List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
         List<InvoiceModel> invoiceList = new ArrayList<>();
-        if (!issueWorker.getMutableIssuesList(agreementIssue, CUSTOM_FIELD_11201).isEmpty()) {
-            for (Issue invoiceIssue : (issueWorker.getMutableIssuesList(agreementIssue, CUSTOM_FIELD_11201))) {
+        if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
+            for (Issue invoiceIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
                 InvoiceModel invoiceModel = new InvoiceModel();
                 invoiceModel.setKey(invoiceIssue.getKey());
                 invoiceModel.setStatus(invoiceIssue.getStatus());
@@ -109,6 +109,7 @@ public class ModelMapper {
                 specificationModel.setSummary(specificationIssue.getSummary());
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);
+                specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker,CUSTOM_FIELD_10356));
             }
             return specificationList;
         } else {
