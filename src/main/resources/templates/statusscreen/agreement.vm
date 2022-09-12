@@ -5,7 +5,7 @@
 
             <div class="aui-group">
                 <div class="aui-item">
-                    <span data-tooltip="$agreement.getOrganisation().getStatus()" class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getSummary()
+                    <span data-tooltip="$agreement.getOrganisation().getStatusColor()" class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getSummary()
                 </div>
             </div>
             <div class="aui-group aui-group-split">

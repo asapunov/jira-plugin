@@ -74,6 +74,7 @@
         </actions>
     </webwork1>
 
+    <!-- Панель тендера -->
     <web-panel key="status-screen" name="Status Screen" location="atl.jira.view.issue.left.context" weight="120">
         <context-provider class="com.enviogroup.plugins.status.screen.StatusScreen"/>
         <resource type="velocity" name="view" location="templates/statusscreen/view.vm"/>
