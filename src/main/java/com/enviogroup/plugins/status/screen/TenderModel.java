@@ -10,6 +10,7 @@ public class TenderModel extends IssueModel {
     private Double saleAmount;
     private String url;
     private FinanceModel financeModel;
+    private List<AgreementModel> agreementsList = new ArrayList<>();
 
     public String getUrl() {
         return url;
@@ -19,11 +20,8 @@ public class TenderModel extends IssueModel {
         this.url = url;
     }
 
-    private List<AgreementModel> agreementsList = new ArrayList<>();
-
     public TenderModel() {
     }
-
     public AgreementModel getAgreement() {
         return agreement;
     }

@@ -90,7 +90,7 @@ public class ModelMapper {
                 invoiceModel.setSummary(invoiceIssue.getSummary());
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
-                invoiceModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, invoiceIssue));
+                invoiceModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, invoiceIssue));
             }
             return invoiceList;
         } else {
@@ -109,7 +109,7 @@ public class ModelMapper {
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);
                 specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker,CUSTOM_FIELD_10356));
-                specificationModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, specificationIssue));
+                specificationModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
             }
             return specificationList;
         } else {

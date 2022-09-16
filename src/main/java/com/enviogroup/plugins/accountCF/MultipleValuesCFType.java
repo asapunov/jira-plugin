@@ -28,15 +28,7 @@ import org.apache.velocity.tools.generic.DateTool;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * All the other Multi* classes refer to Users or Options. This class,
@@ -262,8 +254,6 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                     // FieldValidationException
                     continue;
                 }
-                // Make sure the value can be stored safely later on
-
                 Date d = null;
                 Date dP = null;
                 if (!(StringUtils.isEmpty(dStr)) && (StringUtils.isEmpty(dpStr) || dpStr.equals("null"))) {
@@ -274,16 +264,16 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                         throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"dd.MM.yyyy\", " +
                                 "например. \"24.11.2021\"");
                     }
-                } else
+                } else {
                     try {
                         d = sdf.parse(dStr);
                         dP = sdf.parse(dpStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"dd.MM/yyyy\", " +
+                        throw new FieldValidationException("Вы не ввели верную дату. Пожалуйста, введите дату в формате \"dd.MM.yyyy\", " +
                                 "например. \"24.11.2021\"");
                     }
-
+                }
                 Double a = null;
                 Double aP = null;
                 if (!(StringUtils.isEmpty(aStr)) && (StringUtils.isEmpty(apStr)) || apStr == null)
@@ -293,7 +283,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                         // A value was provided but it was an invalid value
                         throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
                     }
-                else
+                else {
                     try {
                         a = Double.parseDouble(aStr);
                         aP = Double.parseDouble(apStr);
@@ -301,6 +291,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
                         // A value was provided but it was an invalid value
                         throw new FieldValidationException("Поля со значениями суммы должны быть числовыми");
                     }
+                }
                 value.add(new Carrier(d, a, dP, aP));
             }
             if (value.size() < 2) {

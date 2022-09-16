@@ -32,7 +32,7 @@
     </customfield-type>
 
     <web-resource key="jira-accountCF-resources" name="jira-account Web Resources">
-        <resource type="download" name="jira-custom-field.js" location="/js/accountCF/jira-custom-field.js"/>
+        <resource type="download" name="accountCF.js" location="/js/accountCF.js"/>
         <resource type="download" name="jira-custom-field.css" location="/css/jira-custom-field.css"/>
         <context>atl.general</context>
     </web-resource>
@@ -83,7 +83,7 @@
     </web-panel>
 
     <web-resource key="status-screen-resources" name="Status Screen Web Resources">
-        <resource type="download" name="status-screen.js" location="/js/accountCF/jira-custom-field.js"/>
+        <resource type="download" name="status-screen.js" location="/js/status-screen.js"/>
         <resource type="download" name="status-screen.css" location="/css/status-screen.css"/>
         <context>atl.general</context>
     </web-resource>

@@ -18,7 +18,6 @@ public class SpecificationModel extends IssueModel {
         this.amount = amount;
     }
 
-
     public List<InvoiceModel> getInvoiceModelList() {
         return invoiceModelList;
     }

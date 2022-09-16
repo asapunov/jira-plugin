@@ -145,9 +145,6 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
     </tr>
 
 </table>
-#set ($labelText = $i18n.getText('date.picker.config.default.date'))
-#datePopup("${field_uid}-new-datePost" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
-#datePopup("${field_uid}-new-date" $dateTimeFormat $dateFormat $timeFormat $dateTimePicker $currentMillis $currentCalendar)
 <input value="Добавить строку" id = "buttonAdd" onclick="createInput()" type="button" class="aui-button">
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
