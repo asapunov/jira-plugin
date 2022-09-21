@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
     <ModulePrefs
+            title_url="__MSG_gadget.title.url__"
+            description="__MSG_gadget.description__"
             title="JIRA Issues"
             author_email="adent@example.com"
             screenshot="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-screenshot.png"
