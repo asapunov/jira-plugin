@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs
+            title="JIRA Issues"
+            author_email="adent@example.com"
+            screenshot="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-screenshot.png"
+            thumbnail="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-thumbnail.png"
+            height="150">
+        <Optional feature="gadget-directory">
+            <Param name="categories">
+                Other
+            </Param>
+        </Optional>
+        <Require feature="dynamic-height"/>
+    </ModulePrefs>
+
+    <Content type="html" view="profile">
+        <![CDATA[
+        #requireResource("com.atlassian.jira.gadgets:common")
+        #includeResources()
+        <script type="text/javascript">
+         (function () {
+           var gadget = AJS.Gadget({
+               baseUrl: "__ATLASSIAN_BASE_URL__",
+               view: {
+                 template: function(args) {
+                    var gadget = this;
+                    var userDetails = AJS.$("<h1/>").text("Hello,
+                     "+args.user["fullName"]);
+                    gadget.getView().html(userDetails);
+               },
+               args: [{
+                 key: "user",
+                 ajaxOptions: function() {
+                   return {
+                     url: "/rest/gadget/1.0/currentUser"
+                   };
+                  }
+               }]
+             }
+          });
+        })();
+      </script>
+       Гаджет JIRA
+     ]]>
+    </Content>
+</Module>

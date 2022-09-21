@@ -5,5 +5,5 @@ AJS.$(document).change(function() {
     });
 });
 AJS.$(document).ready(function() {
-    AJS.$('#demo-range-always').datePicker({'overrideBrowserDefault': true});
+    AJS.$('#demo-range-2').datePicker({'overrideBrowserDefault': true});
 });

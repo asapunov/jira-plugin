@@ -85,7 +85,18 @@
     <web-resource key="status-screen-resources" name="Status Screen Web Resources">
         <resource type="download" name="status-screen.js" location="/js/status-screen.js"/>
         <resource type="download" name="status-screen.css" location="/css/status-screen.css"/>
+        <resource type="download" name="i18n/messages.xml"
+                  location="i18n/messages.xml">
+            <param name="content-type" value="text/xml; charset=UTF-8"/>
+        </resource>
         <context>atl.general</context>
     </web-resource>
+
+    <gadget key="tenders-gadget" name="Tenders Gadget"
+            location="gadgets/tenders-gadget.xml">
+        <description>Gadget describes tenders</description>
+    </gadget>
+
+
 
 </atlassian-plugin>
