@@ -1,7 +1,0 @@
-
-<messagebundle>
-    <msg name="gadget.title">Hello Gadget</msg>
-    <msg name="gadget.title.url">http://www.enviogroup.com</msg>
-    <msg name="gadget.description">Example Gadget</msg>
-    <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/com.plugins.customfield.jira-custom-field/i18n/messages.xml"/>
-</messagebundle>

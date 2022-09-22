@@ -1,0 +1,72 @@
+{namespace Dashboard.Item.Tenders.Templates}
+
+/**
+* @param pluginName
+* @param version
+*/
+{template .Static}
+ <div id="dynamic-content"/>
+ <div>Welcome to <span class="aui-lozenge aui-lozenge-success">{$pluginName}</span> v{$version}!</div>
+{/template}
+
+/**
+* @param issues
+*/
+{template .IssueList}
+   <table class="aui">
+       <thead>
+           <tr>
+               <th id="basic-icon"></th>
+               <th id="basic-fname">Issue key</th>
+               <th id="basic-lname">Номер</th>
+           </tr>
+       </thead>
+              <tbody>
+       {foreach $issue in $issues}
+                    <tr>
+                        <td headers="basic-number"><img src="{$issue.fields.issuetype.iconUrl}"/></td>
+                        <td headers="basic-fname">{$issue.key}</td>
+                        <td headers="basic-lname">{$issue.fields.customfield_10132}</td>
+                    </tr>
+       {/foreach}
+       </tbody>
+   </table>
+   <div class="buttons-container">
+       <div class="buttons">
+           <input class="button submit" type="submit" value="Refresh">
+       </div>
+   </div>
+{/template}
+
+/**
+*   Use this template if there is no issues in response
+*/
+{template .Empty}
+   No issues yet.
+   <div class="buttons-container">
+          <div class="buttons">
+              <input class="button submit" type="submit" value="Refresh">
+          </div>
+      </div>
+{/template}
+
+/**
+* configuration
+*/
+{template .Configuration}
+   <form class="aui">
+       <div class="field-group">
+           <label for="due-date-input">Due Date
+               <span class="aui-icon icon-required">(required)</span></label>
+           <input class="text medium-field" type="text"
+                  id="due-date-input" name="due-date-input" value="3w">
+           <div class="description">Syntax: 1(d|w|m) </div>
+       </div>
+       <div class="buttons-container">
+           <div class="buttons">
+               <input class="button submit" type="submit" value="Save" id="comment-save-button">
+               <a class="cancel" href="#">Cancel</a>
+           </div>
+       </div>
+   </form>
+{/template}
