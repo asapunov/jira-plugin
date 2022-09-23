@@ -22,13 +22,13 @@
            </tr>
        </thead>
               <tbody>
-       {foreach $issue in $issues}
+            {foreach $issue in $issues}
                     <tr>
                         <td headers="basic-number"><img src="{$issue.fields.issuetype.iconUrl}"/></td>
                         <td headers="basic-fname">{$issue.key}</td>
                         <td headers="basic-lname">{$issue.fields.customfield_10132}</td>
                     </tr>
-       {/foreach}
+            {/foreach}
        </tbody>
    </table>
    <div class="buttons-container">
