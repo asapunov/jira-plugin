@@ -21,14 +21,21 @@ import java.util.Map;
 import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_10121;
 
 public class IssueWorker {
-    private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
-    private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-    private static final IssueService issueService = ComponentAccessor.getIssueService();
-    private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
+    private  IssueManager issueManager = ComponentAccessor.getIssueManager();
+    private  ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+    private  IssueService issueService = ComponentAccessor.getIssueService();
+    private  CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
 
     public IssueWorker() {
+    }
+    public IssueWorker(IssueManager issueManager, ApplicationUser currentUser, IssueService issueService, CustomFieldManager customFieldManager) {
+        this.issueManager = issueManager;
+        this.currentUser = currentUser;
+        this.issueService = issueService;
+        this.customFieldManager = customFieldManager;
+
     }
 
     public ArrayList<MutableIssue> getMutableIssuesList(Issue issue, Long customFieldId) {
@@ -96,7 +103,7 @@ public class IssueWorker {
             if (transitionResult.isValid())
                 log.debug("Transitioned issue" + issue + "through action $actionId");
             else
-                log.debug("Transition result is not valid");
+                log.debug("Transitioned result is not valid");
             return transitionResult;
         } else {
             log.debug("The transitionValidation is not valid");

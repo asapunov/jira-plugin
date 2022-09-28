@@ -17,13 +17,6 @@
         <context>jira-custom-field</context>
     </web-resource>
 
-    <customfield-type name="Multiple Values" i18n-name-key="jira-custom-field.name" key="multiple"
-                      class="com.enviogroup.plugins.MultipleValuesCFType">
-        <resource type="velocity" name="view" location="templates/customfield/view.vm"/>
-        <resource type="velocity" name="edit" location="templates/customfield/edit.vm"/>
-        <resource type="velocity" name="xml" location="templates/customfield/xml.vm"/>
-    </customfield-type>
-
     <customfield-type name="Account" i18n-name-key="jira-cf-account.name" key="account"
                       class="com.enviogroup.plugins.accountCF.MultipleValuesCFType">
         <resource type="velocity" name="view" location="templates/accountCF/view.vm"/>

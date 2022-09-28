@@ -1,7 +1,5 @@
 package com.enviogroup.plugins.status.screen;
 
-import com.atlassian.jira.issue.status.Status;
-
 import javax.xml.bind.annotation.XmlElement;
 
 public abstract class IssueModel {
