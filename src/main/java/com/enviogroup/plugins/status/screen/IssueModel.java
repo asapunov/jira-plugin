@@ -2,10 +2,26 @@ package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.status.Status;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public abstract class IssueModel {
+    @XmlElement(name = "key", required = true)
     private String key;
+
+    @XmlElement(name = "summary")
     private String summary;
-    private Status status;
+
+    @XmlElement(name = "status", required = true)
+    private StatusModel status;
+
+
+    public IssueModel(String key) {
+        this.key = key;
+    }
+
+    protected IssueModel() {
+    }
+
 
     public String getKey() {
         return key;
@@ -23,11 +39,15 @@ public abstract class IssueModel {
         this.summary = summary;
     }
 
-    public Status getStatus() {
+    public StatusModel getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusModel status) {
         this.status = status;
+    }
+
+    public void setStatus(String status) {
+        this.status = new StatusModel(status);
     }
 }

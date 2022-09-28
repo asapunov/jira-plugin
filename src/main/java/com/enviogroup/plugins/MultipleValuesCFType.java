@@ -1,4 +1,4 @@
-package com.enviogroup.plugins.customfield;
+package com.enviogroup.plugins;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.customfields.CustomFieldType;

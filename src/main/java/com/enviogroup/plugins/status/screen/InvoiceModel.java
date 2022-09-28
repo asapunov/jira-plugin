@@ -2,8 +2,11 @@ package com.enviogroup.plugins.status.screen;
 
 import com.enviogroup.plugins.accountCF.Carrier;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Collection;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceModel extends IssueModel {
     private Double amount;
     private OrganisationModel invoiceProvider;

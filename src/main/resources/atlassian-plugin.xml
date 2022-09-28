@@ -18,7 +18,7 @@
     </web-resource>
 
     <customfield-type name="Multiple Values" i18n-name-key="jira-custom-field.name" key="multiple"
-                      class="com.enviogroup.plugins.customfield.MultipleValuesCFType">
+                      class="com.enviogroup.plugins.MultipleValuesCFType">
         <resource type="velocity" name="view" location="templates/customfield/view.vm"/>
         <resource type="velocity" name="edit" location="templates/customfield/edit.vm"/>
         <resource type="velocity" name="xml" location="templates/customfield/xml.vm"/>
@@ -118,6 +118,8 @@
         <context>atl.dashboard</context>
         <context>dashboard-item-tenders</context>
     </web-resource>
-
+    <rest name="Tenders Rest Resource" i18n-name-key="tenders-rest-resource.name" key="tenders-rest-resource" path="/tendersrestresource" version="1">
+        <description key="tenders-rest-resource.description">The Tenders Rest Resource Plugin</description>
+    </rest>
 
 </atlassian-plugin>

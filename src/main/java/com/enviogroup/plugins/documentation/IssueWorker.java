@@ -1,6 +1,7 @@
 package com.enviogroup.plugins.documentation;
 
 import com.atlassian.jira.bc.issue.IssueService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueInputParameters;
@@ -20,24 +21,25 @@ import java.util.Map;
 import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_10121;
 
 public class IssueWorker {
-    private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
-    private final IssueManager issueManager;
-    private final CustomFieldManager customFieldManager;
-    private final IssueService issueService;
-    private final ApplicationUser currentUser;
+    private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
+    private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+    private static final IssueService issueService = ComponentAccessor.getIssueService();
+    private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
-    public IssueWorker(ApplicationUser currentUser, IssueService issueService, CustomFieldManager customFieldManager, IssueManager issueManager) {
-        this.currentUser = currentUser;
-        this.issueService = issueService;
-        this.customFieldManager = customFieldManager;
-        this.issueManager = issueManager;
+    private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
+
+    public IssueWorker() {
     }
 
     public ArrayList<MutableIssue> getMutableIssuesList(Issue issue, Long customFieldId) {
         String supplierOffers = getStringCustomFieldValue(customFieldId, issue);
+        return getIssuesListFromStrings(supplierOffers);
+    }
+
+    private ArrayList<MutableIssue> getIssuesListFromStrings(String issueIdsListString) {
         ArrayList<MutableIssue> issuesSO = new ArrayList<>();
-        if (supplierOffers != null) {
-            String[] offers = supplierOffers.split(",");
+        if (issueIdsListString != null) {
+            String[] offers = issueIdsListString.split(",");
             for (String issues : offers) {
                 issues = issues.trim();
                 issuesSO.add(issueManager.getIssueObject(issues));
@@ -49,6 +51,10 @@ public class IssueWorker {
     public ArrayList<MutableIssue> getMutableIssuesList(String issueId, Long customFieldId) {
         Issue issue = issueManager.getIssueObject(issueId);
         return getMutableIssuesList(issue, customFieldId);
+    }
+
+    public Issue getIssue(String issueId) {
+        return issueManager.getIssueObject(issueId);
     }
 
     public String getStringCustomFieldValue(Long customFieldId, Issue issue) {

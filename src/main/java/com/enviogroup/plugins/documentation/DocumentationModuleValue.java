@@ -22,19 +22,13 @@ import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_1141
 public class DocumentationModuleValue extends AbstractJiraContextProvider {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
-    private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
-    private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-    private static final IssueService issueService = ComponentAccessor.getIssueService();
-    private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
-    private static final IssueWorker issueWorker = new IssueWorker(currentUser, issueService, customFieldManager, issueManager);
+    private static final IssueWorker issueWorker = new IssueWorker();
 
     @Override
     public Map<String, Object> getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
         Map<String, Object> contextMap = new HashMap<>();
         Issue issue = (Issue) jiraHelper.getContextParams().get("issue");
-        contextMap.put("customFieldManager", customFieldManager);
-        contextMap.put("issueManager", issueManager);
         contextMap.put("issue", issue);
         contextMap.put("number", numberTool);
         contextMap.put("baseURL", getJiraURL());

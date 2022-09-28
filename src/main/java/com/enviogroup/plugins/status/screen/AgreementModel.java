@@ -1,8 +1,11 @@
 package com.enviogroup.plugins.status.screen;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AgreementModel extends IssueModel {
     private Double amount;
     private OrganisationModel organisation;

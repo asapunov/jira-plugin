@@ -3,8 +3,12 @@ package com.enviogroup.plugins.status.screen;
 import com.atlassian.jira.issue.Issue;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganisationModel extends IssueModel {
     private String type;
     private String orgStatus;

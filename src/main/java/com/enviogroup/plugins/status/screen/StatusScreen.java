@@ -1,6 +1,7 @@
 package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.plugin.webfragment.contextproviders.AbstractJiraContextProvider;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.template.soy.SoyTemplateRendererProvider;
@@ -14,10 +15,13 @@ import java.util.Map;
 public class StatusScreen extends AbstractJiraContextProvider {
 
     private static final NumberTool numberTool = new NumberTool(new Locale("ru", "RU"));
+
     @Override
     public Map getContextMap(ApplicationUser applicationUser, JiraHelper jiraHelper) {
-        ModelMapper modelMapper = new ModelMapper(jiraHelper, new EntityConverter());
-        Map<String, Object> contextMap = new HashMap<>(modelMapper.getModelMap());
+        Issue issue = (Issue) jiraHelper.getContextParams().get("issue");
+        ModelMapper modelMapper = new ModelMapper();
+        Map<String, Object> contextMap = new HashMap<>();
+        contextMap.put("model", modelMapper.getModel(issue));
         contextMap.put("number", numberTool);
         contextMap.put("soyRenderer", ComponentAccessor.getComponent(SoyTemplateRendererProvider.class).getRenderer());
         contextMap.put("baseURL", ComponentAccessor.getApplicationProperties().getString("jira.baseurl"));

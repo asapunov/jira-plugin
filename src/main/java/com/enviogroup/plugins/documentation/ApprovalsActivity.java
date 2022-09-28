@@ -10,11 +10,7 @@ import com.atlassian.jira.web.action.JiraWebActionSupport;
 import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_11411;
 
 public class ApprovalsActivity extends JiraWebActionSupport {
-    private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
-    private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-    private static final IssueService issueService = ComponentAccessor.getIssueService();
-    private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
-    private final IssueWorker issueWorker = new IssueWorker(currentUser, issueService, customFieldManager, issueManager);
+    private final IssueWorker issueWorker = new IssueWorker();
     private String issueId;
     private String parentId;
 

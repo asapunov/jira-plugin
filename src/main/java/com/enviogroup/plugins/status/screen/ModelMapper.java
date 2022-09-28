@@ -11,20 +11,20 @@ import java.util.*;
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
 public class ModelMapper {
-    private final Map entityConverterMap;
-    private final IssueWorker issueWorker;
-    private final Issue issue;
-    private final Map<Integer, Object> documentsMap;
+    private final IssueWorker issueWorker = new IssueWorker();
 
-
-    public ModelMapper(JiraHelper jiraHelper, EntityConverter entityConverter) {
-        this.entityConverterMap = entityConverter.getEntityConverterMap(jiraHelper);
-        this.issueWorker = (IssueWorker) entityConverterMap.get("issueWorker");
-        this.issue = (Issue) entityConverterMap.get("issue");
-        this.documentsMap = (Map) entityConverterMap.get("documents");
+    public ModelMapper() {
     }
 
-    public Map<String, Object> getModelMap() {
+    public TenderModel getModel(String issueId) {
+        Issue issue = issueWorker.getIssue(issueId);
+        return getModel(issue);
+    }
+
+    public TenderModel getModel(Issue issue) {
+        if (issue == null) {
+            return new TenderModel();
+        }
         TenderModel model = new TenderModel();
         model.setKey(issue.getKey());
         model.setProcedureNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10132, issue));
@@ -37,6 +37,8 @@ public class ModelMapper {
             model.setOffer(newOffer);
         }
         model.setFinanceModel(financeModelFactory(issue, issueWorker));
+
+        Map<Integer, Object> documentsMap = issueWorker.issueMap(issue, CUSTOM_FIELD_10327);
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
             if (!issueDoc.getIssueTypeId().equals(Long.toString(ISSUE_TYPE_ID_DOGOVOR))) {
@@ -62,7 +64,7 @@ public class ModelMapper {
             agreementModel.setOrganisation(organisationModel);
             agreementModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());
-            agreementModel.setStatus(issueDoc.getStatus());
+            agreementModel.setStatus(issueDoc.getStatus().getSimpleStatus().getName());
             agreementModel.setSummary(issueDoc.getSummary());
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
             agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker,CUSTOM_FIELD_11201));
@@ -75,9 +77,7 @@ public class ModelMapper {
                 }
             }
         }
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("model", model);
-        return modelMap;
+        return model;
     }
 
     public List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
@@ -86,7 +86,7 @@ public class ModelMapper {
             for (Issue invoiceIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
                 InvoiceModel invoiceModel = new InvoiceModel();
                 invoiceModel.setKey(invoiceIssue.getKey());
-                invoiceModel.setStatus(invoiceIssue.getStatus());
+                invoiceModel.setStatus(invoiceIssue.getStatus().getSimpleStatus().getName());
                 invoiceModel.setSummary(invoiceIssue.getSummary());
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
@@ -104,7 +104,7 @@ public class ModelMapper {
             for (Issue specificationIssue : (issueWorker.getMutableIssuesList(agreementIssue, CUSTOM_FIELD_10107))) {
                 SpecificationModel specificationModel = new SpecificationModel();
                 specificationModel.setKey(specificationIssue.getKey());
-                specificationModel.setStatus(specificationIssue.getStatus());
+                specificationModel.setStatus(specificationIssue.getStatus().getSimpleStatus().getName());
                 specificationModel.setSummary(specificationIssue.getSummary());
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);

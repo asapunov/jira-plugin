@@ -1,8 +1,11 @@
 package com.enviogroup.plugins.status.screen;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TenderModel extends IssueModel {
     private String procedureNumber;
     private AgreementModel agreement;
@@ -11,6 +14,10 @@ public class TenderModel extends IssueModel {
     private String url;
     private FinanceModel financeModel;
     private List<AgreementModel> agreementsList = new ArrayList<>();
+
+    public TenderModel(String key) {
+        super(key);
+    }
 
     public String getUrl() {
         return url;
@@ -22,6 +29,7 @@ public class TenderModel extends IssueModel {
 
     public TenderModel() {
     }
+
     public AgreementModel getAgreement() {
         return agreement;
     }

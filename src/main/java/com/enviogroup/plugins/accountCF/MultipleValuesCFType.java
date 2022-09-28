@@ -96,7 +96,7 @@ public class MultipleValuesCFType extends AbstractCustomFieldType<Collection<Car
             d = sdf.parse(parts[0]);
             dP = sdf.parse(parts[2]);
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
         Double p = Double.parseDouble(parts[1]);
         Double a = null;

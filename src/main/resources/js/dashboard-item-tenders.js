@@ -19,17 +19,20 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
 
             self.issues = data.issues;
 
-            self.items = self.getIssues(data.issues);
-            if (self.issues === undefined || self.issues.length  === 0) {
-                $element.empty().html(Dashboard.Item.Tenders.Templates.Empty());
-            }
-            else {
-                $element.empty().html(Dashboard.Item.Tenders.Templates.IssueList({issues: self.issues}));
-            }
-            self.API.resize();
-            $element.find(".submit").click(function (event) {
-                event.preventDefault();
-                self.render(element, preferences);
+            this.getIssues(self.getIssues(data.issues)).done(function (dataModel) {
+                self.dataModelIssues = dataModel.issues;
+
+                if (self.dataModelIssues === undefined || self.dataModelIssues.length  === 0) {
+                    $element.empty().html(Dashboard.Item.Tenders.Templates.Empty());
+                }
+                else {
+                    $element.empty().html(Dashboard.Item.Tenders.Templates.IssueList({issues: self.dataModelIssues}));
+                }
+                self.API.resize();
+                $element.find(".submit").click(function (event) {
+                    event.preventDefault();
+                    self.render(element, preferences);
+                });
             });
         });
 
@@ -39,10 +42,8 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
     DashboardItem.prototype.requestData = function (preferences) {
         return $.ajax({
             method: "GET",
-            url: contextPath() + "/rest/api/2/search?maxResults=10&jql=project %3D CRM AND issuetype = Тендеры AND Status changed from \"Подготовка документации\" to \"Тендер подан\" during (-" + preferences['due-date-input'] + ", now()) "
-            //url: contextPath() + "/rest/api/2/search?jql=status in (\"Согласование с Ген Директором\", \"Согласование с ген директором (не выходим)\", \"Уторговывание (Согласование с ген директором)\")"
+            url: contextPath() + "/rest/api/2/search?jql=project %3D CRM AND issuetype = Тендеры AND Status changed from \"Подготовка документации\" to \"Тендер подан\" during (-" + preferences['due-date-input'] + ", now()) "
         });
-        //return getIssue(preferences['due-date-input']);
     };
 
     DashboardItem.prototype.renderEdit = function (context, preferences) {
@@ -68,23 +69,19 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
     };
 
     DashboardItem.prototype.getIssues = function (issues) {
-        var requests = [];
+        var issueIds = [];
         for (item in issues) {
-            var cb = $.ajax({
-                url: contextPath() + "/rest/api/2/issue/CRM-1944",
-                dataType: 'json',
-                type: 'GET'
-            });
-            requests.push(cb);
+            var issueId = issues[item].key;
+            issueIds.push(issueId);
         }
-
-        $.when.all(requests).then(function(schemas) {
-            //TODO: Get subtasks
-            console.log("DONE", this, schemas);
-        }, function(e) {
-            console.log("My ajax failed");
+        return $.ajax({
+            url: contextPath() + "/rest/tendersrestresource/1/tenders.json",
+            dataType: 'json',
+            data: {
+                keys: issueIds.join(',')
+            },
+            method: 'POST'
         });
-
     }
 
     function getPreferencesFromForm($form) {

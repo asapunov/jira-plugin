@@ -1,11 +1,14 @@
 package com.enviogroup.plugins.accountCF;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * This is the singular object for this custom field type.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Carrier {
 
     /**
