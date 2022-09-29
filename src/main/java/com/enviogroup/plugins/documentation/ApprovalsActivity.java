@@ -1,10 +1,5 @@
 package com.enviogroup.plugins.documentation;
 
-import com.atlassian.jira.bc.issue.IssueService;
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.issue.CustomFieldManager;
-import com.atlassian.jira.issue.IssueManager;
-import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 
 import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_11411;

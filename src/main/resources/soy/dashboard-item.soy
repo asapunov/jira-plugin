@@ -14,20 +14,38 @@
 */
 {template .IssueList}
    <table class="aui">
-       <thead>
-           <tr>
-               <th id="basic-icon"></th>
-               <th id="basic-fname">Issue key</th>
-               <th id="basic-lname">Номер</th>
-           </tr>
-       </thead>
+<!--       <thead>-->
+<!--           <tr>-->
+<!--               <th id="basic-icon"></th>-->
+<!--               <th id="basic-fname">Issue key</th>-->
+<!--               <th id="basic-lname">Номер</th>-->
+<!--           </tr>-->
+<!--       </thead>-->
               <tbody>
             {foreach $issue in $issues}
-                    <tr>
-                        <td headers="basic-number">{$issue.saleAmount}</td>
-                        <td headers="basic-fname">{$issue.key}</td>
-                        <td headers="basic-lname">{$issue.procedureNumber}</td>
-                    </tr>
+//                    <tr>
+//                        <td headers="basic-number">{$issue.saleAmount}</td>
+//                        <td headers="basic-fname">{$issue.key}</td>
+//                        <td headers="basic-lname">{$issue.procedureNumber}</td>
+//                    </tr>
+                    <div class="aui-group">
+                        <div class="aui-item">
+                            <div class="zoned">
+                                <a>{$issue.key} </a> {$issue.procedureNumber}
+                                <div class="aui-group aui-group-split">
+                                    <div class="aui-item">
+                                        Сумма продажи: {$issue.saleAmount}
+                                    </div>
+                                    <div class="aui-item">
+                                        <p>Сумма покупки: {$issue.offer}</p>
+                                        <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
+                                        <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
+                                        <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             {/foreach}
        </tbody>
    </table>

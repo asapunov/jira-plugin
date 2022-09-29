@@ -81,7 +81,8 @@
         <context>atl.general</context>
     </web-resource>
 
-    <dashboard-item key="tenders-dashboard-item" i18n-name-key="com.plugins.customfield.jira-custom-field.dashboard.item.title" configurable="true">
+    <dashboard-item key="tenders-dashboard-item"
+                    i18n-name-key="com.plugins.customfield.jira-custom-field.dashboard.item.title" configurable="true">
         <definition>
             <title key="com.plugins.customfield.jira-custom-field.dashboard.item.title"/>
             <categories>
@@ -90,10 +91,12 @@
             <author>
                 <name>Author's name</name>
             </author>
-            <thumbnail location="/download/resources/${atlassian.plugin.key}:dashboard-item-tenders-resources/images/pluginLogo.png"/>
+            <thumbnail
+                    location="/download/resources/${atlassian.plugin.key}:dashboard-item-tenders-resources/images/pluginLogo.png"/>
         </definition>
         <description key="com.plugins.customfield.jira-custom-field.dashboard.item.description"/>
-        <resource name="view" type="soy" location=":dashboard-item-tenders-resources/Dashboard.Item.Tenders.Templates.Static"/>
+        <resource name="view" type="soy"
+                  location=":dashboard-item-tenders-resources/Dashboard.Item.Tenders.Templates.Static"/>
         <context-provider class="com.enviogroup.plugins.dashboard.DashboardItemContextProvider"/>
         <amd-module>dashboard-items/tenders</amd-module>
     </dashboard-item>
