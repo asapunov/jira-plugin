@@ -24,9 +24,9 @@
               <tbody>
             {foreach $issue in $issues}
                     <tr>
-                        <td headers="basic-number"><img src="{$issue.fields.issuetype.iconUrl}"/></td>
+                        <td headers="basic-number">{$issue.saleAmount}</td>
                         <td headers="basic-fname">{$issue.key}</td>
-                        <td headers="basic-lname">{$issue.fields.customfield_10132}</td>
+                        <td headers="basic-lname">{$issue.procedureNumber}</td>
                     </tr>
             {/foreach}
        </tbody>

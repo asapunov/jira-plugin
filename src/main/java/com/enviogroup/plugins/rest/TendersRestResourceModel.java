@@ -1,6 +1,5 @@
 package com.enviogroup.plugins.rest;
 
-import com.enviogroup.plugins.documentation.IssueWorker;
 import com.enviogroup.plugins.status.screen.ModelMapper;
 import com.enviogroup.plugins.status.screen.TenderModel;
 
@@ -15,8 +14,8 @@ import java.util.List;
 @XmlRootElement(name = "message")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TendersRestResourceModel {
-    @XmlElement(name = "value")
-    private List<TenderModel> message;
+    @XmlElement(name = "tenders")
+    private List<TenderModel> tenders;
 
     @XmlAttribute
     private String key;
@@ -30,19 +29,19 @@ public class TendersRestResourceModel {
         for (String issueId : issueIds) {
             issues.add(modelMapper.getModel(issueId));
         }
-        this.message = issues;
+        this.tenders = issues;
     }
 
     public TendersRestResourceModel(String issueId) {
         this.key = issueId;
     }
 
-    public List<TenderModel> getMessage() {
-        return message;
+    public List<TenderModel> getTenders() {
+        return tenders;
     }
 
-    public void setMessage(List<TenderModel> message) {
-        this.message = message;
+    public void setTenders(List<TenderModel> tenders) {
+        this.tenders = tenders;
     }
 
     public String getKey() {

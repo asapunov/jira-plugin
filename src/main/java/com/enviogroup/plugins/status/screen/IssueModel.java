@@ -1,17 +1,11 @@
 package com.enviogroup.plugins.status.screen;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public abstract class IssueModel {
-    @XmlElement(name = "key", required = true)
     private String key;
 
-    @XmlElement(name = "summary")
     private String summary;
 
-    @XmlElement(name = "status", required = true)
     private StatusModel status;
-
 
     public IssueModel(String key) {
         this.key = key;

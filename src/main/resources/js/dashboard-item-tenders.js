@@ -19,8 +19,8 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
 
             self.issues = data.issues;
 
-            this.getIssues(self.getIssues(data.issues)).done(function (dataModel) {
-                self.dataModelIssues = dataModel.issues;
+            self.getIssues(data.issues).done(function (dataModel) {
+                self.dataModelIssues = dataModel.tenders;
 
                 if (self.dataModelIssues === undefined || self.dataModelIssues.length  === 0) {
                     $element.empty().html(Dashboard.Item.Tenders.Templates.Empty());
