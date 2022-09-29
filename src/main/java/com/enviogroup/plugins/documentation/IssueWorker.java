@@ -21,21 +21,14 @@ import java.util.Map;
 import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_10121;
 
 public class IssueWorker {
-    private  IssueManager issueManager = ComponentAccessor.getIssueManager();
-    private  ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-    private  IssueService issueService = ComponentAccessor.getIssueService();
-    private  CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
+    private IssueManager issueManager = ComponentAccessor.getIssueManager();
+    private ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+    private IssueService issueService = ComponentAccessor.getIssueService();
+    private CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
 
     private static final Logger log = LoggerFactory.getLogger(DocumentationModuleValue.class);
 
     public IssueWorker() {
-    }
-    public IssueWorker(IssueManager issueManager, ApplicationUser currentUser, IssueService issueService, CustomFieldManager customFieldManager) {
-        this.issueManager = issueManager;
-        this.currentUser = currentUser;
-        this.issueService = issueService;
-        this.customFieldManager = customFieldManager;
-
     }
 
     public ArrayList<MutableIssue> getMutableIssuesList(Issue issue, Long customFieldId) {

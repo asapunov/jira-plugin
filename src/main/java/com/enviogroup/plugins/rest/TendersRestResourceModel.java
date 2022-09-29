@@ -15,7 +15,6 @@ import java.util.List;
 @XmlRootElement(name = "message")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TendersRestResourceModel {
-    private static final IssueWorker issueWorker = new IssueWorker();
     @XmlElement(name = "value")
     private List<TenderModel> message;
 

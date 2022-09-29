@@ -10,11 +10,6 @@ import com.atlassian.jira.web.action.JiraWebActionSupport;
 import static com.enviogroup.plugins.status.screen.CustomField.CUSTOM_FIELD_11411;
 
 public class ApprovalsActivity extends JiraWebActionSupport {
-    private static final IssueManager issueManager = ComponentAccessor.getIssueManager();
-    private static final ApplicationUser currentUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-    private static final IssueService issueService = ComponentAccessor.getIssueService();
-    private static final CustomFieldManager customFieldManager = ComponentAccessor.getCustomFieldManager();
-    private final IssueWorker issueWorker = new IssueWorker(issueManager, currentUser, issueService, customFieldManager);
     private String issueId;
     private String parentId;
 
@@ -25,13 +20,15 @@ public class ApprovalsActivity extends JiraWebActionSupport {
 
     @Override
     protected String doExecute() throws Exception {
+        IssueWorker issueWorker = new IssueWorker();
         String issuesIds = issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_11411, this.parentId);
         String[] issuesIdsArray = issuesIds.split(", ");
         issueWorker.approval(issueId, 111);
         if (issuesIdsArray.length > 1) {
             for (String i : issuesIdsArray) {
-                if (!i.equals(issueId))
+                if (!i.equals(issueId)) {
                     issueWorker.approval(i, 121);
+                }
             }
         }
         return getRedirect("/browse/" + this.parentId);
