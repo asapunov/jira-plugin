@@ -9,8 +9,8 @@ import java.util.List;
 public class TenderModel extends IssueModel {
     private String procedureNumber;
     private AgreementModel agreement;
-    private Double offer;
     private Double saleAmount;
+    private Double buyAmount;
     private String url;
     private FinanceModel financeModel;
     private List<AgreementModel> agreementsList = new ArrayList<>();
@@ -58,20 +58,20 @@ public class TenderModel extends IssueModel {
         agreementsList.add(agreementModel);
     }
 
+    public Double getBuyAmount() {
+        return buyAmount;
+    }
+
+    public void setBuyAmount(Double buyAmount) {
+        this.buyAmount = buyAmount;
+    }
+
     public Double getSaleAmount() {
         return saleAmount;
     }
 
     public void setSaleAmount(Double saleAmount) {
         this.saleAmount = saleAmount;
-    }
-
-    public Double getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Double offer) {
-        this.offer = offer;
     }
 
     public FinanceModel getFinanceModel() {

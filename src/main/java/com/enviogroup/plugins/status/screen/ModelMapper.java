@@ -2,7 +2,6 @@ package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
-import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
@@ -27,14 +26,16 @@ public class ModelMapper {
         }
         TenderModel model = new TenderModel();
         model.setKey(issue.getKey());
+        model.setSummary(issue.getSummary());
+        model.setStatus(issue.getStatus().getSimpleStatus().getName());
         model.setProcedureNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10132, issue));
-        model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, issue));
-        Double newOffer = issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10056, issue);
+        model.setBuyAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, issue));
+        Double newSaleAmount = issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10056, issue);
         model.setUrl(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10047, issue));
-        if (newOffer == null || newOffer.isNaN()) {
-            model.setOffer(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10518, issue));
+        if (newSaleAmount == null || newSaleAmount.isNaN()) {
+            model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10518, issue));
         } else {
-            model.setOffer(newOffer);
+            model.setSaleAmount(newSaleAmount);
         }
         model.setFinanceModel(financeModelFactory(issue, issueWorker));
 

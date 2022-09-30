@@ -11,6 +11,10 @@ public abstract class IssueModel {
         this.key = key;
     }
 
+    public IssueModel(StatusModel status) {
+        this.status = status;
+    }
+
     protected IssueModel() {
     }
 
