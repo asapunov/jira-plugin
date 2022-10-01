@@ -22,11 +22,53 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
             self.getIssues(data.issues).done(function (dataModel) {
                 self.dataModelIssues = dataModel.tenders;
 
-                if (self.dataModelIssues === undefined || self.dataModelIssues.length  === 0) {
+                if (self.dataModelIssues === undefined || self.dataModelIssues.length === 0) {
                     $element.empty().html(Dashboard.Item.Tenders.Templates.Empty());
-                }
-                else {
-                    $element.empty().html(Dashboard.Item.Tenders.Templates.IssueList({issues: self.dataModelIssues}));
+                } else {
+
+                    var formatCurrency = new Intl.NumberFormat('ru', {
+                            style: 'currency',
+                            currency: 'RUB',
+                            minimumFractionDigits: 2
+                        });
+
+                    var data = {
+                        sumBuyAmount: 0,
+                        sumSaleAmount: 0,
+                        sumLogisticExpenses: 0,
+                        sumFinanceExpenses: 0,
+                        sumTravelExpenses: 0,
+                        totalExpenses: 0
+                    };
+                    for (var issueItemId in self.dataModelIssues) {
+                        var issueItem = self.dataModelIssues[issueItemId];
+                        data.sumBuyAmount = data.sumBuyAmount + (!issueItem.hasOwnProperty('buyAmount') ? 0 : issueItem.buyAmount);
+                        data.sumSaleAmount = data.sumSaleAmount + (!issueItem.hasOwnProperty('saleAmount') ? 0 : issueItem.saleAmount);
+                        if (issueItem.hasOwnProperty('financeModel')) {
+                            data.sumLogisticExpenses = data.sumLogisticExpenses + (!issueItem.financeModel.hasOwnProperty('logisticExpenses') ? 0 : issueItem.financeModel.logisticExpenses);
+                            data.sumFinanceExpenses = data.sumFinanceExpenses + (!issueItem.financeModel.hasOwnProperty('financeExpenses') ? 0 : issueItem.financeModel.financeExpenses);
+                            data.sumTravelExpenses = data.sumTravelExpenses + (!issueItem.financeModel.hasOwnProperty('travelExpenses') ? 0 : issueItem.financeModel.travelExpenses);
+                            issueItem.financeModel.logisticExpenses = formatCurrency.format(issueItem.financeModel.logisticExpenses);
+                            issueItem.financeModel.financeExpenses = formatCurrency.format(issueItem.financeModel.financeExpenses);
+                            issueItem.financeModel.travelExpenses = formatCurrency.format(issueItem.financeModel.travelExpenses);
+                        }
+                        issueItem.buyAmount = formatCurrency.format(issueItem.buyAmount);
+                        issueItem.saleAmount = formatCurrency.format(issueItem.saleAmount);
+
+                    }
+                    data.totalExpenses = data.totalExpenses + data.sumBuyAmount + data.sumLogisticExpenses + data.sumFinanceExpenses + data.sumTravelExpenses;
+                    data.sumBuyAmount = formatCurrency.format(data.sumBuyAmount);
+                    data.sumSaleAmount = formatCurrency.format(data.sumSaleAmount);
+                    data.sumLogisticExpenses = formatCurrency.format(data.sumLogisticExpenses);
+                    data.sumFinanceExpenses = formatCurrency.format(data.sumFinanceExpenses);
+                    data.sumTravelExpenses = formatCurrency.format(data.sumTravelExpenses);
+                    data.totalExpenses = formatCurrency.format(data.totalExpenses);
+
+                    $element.empty().html(Dashboard.Item.Tenders.Templates.IssueList({
+                        issues: self.dataModelIssues,
+                        data: data,
+                        context: contextPath()
+                    }));
                 }
                 self.API.resize();
                 $element.find(".submit").click(function (event) {
@@ -42,26 +84,28 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
     DashboardItem.prototype.requestData = function (preferences) {
         return $.ajax({
             method: "GET",
-            url: contextPath() + "/rest/api/2/search?jql=project %3D CRM AND issuetype = Тендеры AND Status changed from \"Подготовка документации\" to \"Тендер подан\" during (-" + preferences['due-date-input'] + ", now()) "
+            //url: contextPath() + "/rest/api/2/search?jql=project %3D CRM AND issuetype = Тендеры AND Status changed from \"Подготовка документации\" to \"Тендер подан\" during (-" + preferences['due-date-input'] + ", now()) "
+            url: contextPath() + "/rest/api/2/search?jql=project %3D CRM AND issuetype = Тендеры AND (status = Выиграли OR status = \"Контракт закрыт\") AND \"Дата подведения итогов\" >= \"2022/01/01\" ORDER BY cf[10049] ASC"
         });
     };
+
 
     DashboardItem.prototype.renderEdit = function (context, preferences) {
         var $element = this.$element = $(context).find("#dynamic-content");
         $element.empty().html(Dashboard.Item.Tenders.Templates.Configuration());
         this.API.once("afterRender", this.API.resize);
         var $form = $("form", $element);
-        $(".cancel", $form).click(_.bind(function() {
-            if(preferences['due-date-input'])
+        $(".cancel", $form).click(_.bind(function () {
+            if (preferences['due-date-input'])
                 this.API.closeEdit();
         }, this));
 
-        $form.submit(_.bind(function(event) {
+        $form.submit(_.bind(function (event) {
             event.preventDefault();
 
             var preferences = getPreferencesFromForm($form);
             var regexp = /^\d+([dwm])$/;
-            if(regexp.test(preferences['due-date-input'])) {
+            if (regexp.test(preferences['due-date-input'])) {
                 this.API.savePreferences(preferences);
                 this.API.showLoadingBar();
             }
@@ -88,24 +132,25 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
         var preferencesArray = $form.serializeArray();
         var preferencesObject = {};
 
-        preferencesArray.forEach(function(element) {
+        preferencesArray.forEach(function (element) {
             preferencesObject[element.name] = element.value;
         });
 
         return preferencesObject;
     }
+
     return DashboardItem;
 });
 
 // Put somewhere in your scripting environment
-if (jQuery.when.all===undefined) {
-    jQuery.when.all = function(deferreds) {
+if (jQuery.when.all === undefined) {
+    jQuery.when.all = function (deferreds) {
         var deferred = new jQuery.Deferred();
         $.when.apply(jQuery, deferreds).then(
-            function() {
+            function () {
                 deferred.resolve(Array.prototype.slice.call(arguments));
             },
-            function() {
+            function () {
                 deferred.fail(Array.prototype.slice.call(arguments));
             });
 

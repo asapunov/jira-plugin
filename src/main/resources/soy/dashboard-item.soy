@@ -5,86 +5,106 @@
 * @param version
 */
 {template .Static}
- <div id="dynamic-content"/>
- <div>Welcome to <span class="aui-lozenge aui-lozenge-success">{$pluginName}</span> v{$version}!</div>
+    <div id="dynamic-content"/>
+    <div>Welcome to <span class="aui-lozenge aui-lozenge-success">{$pluginName}</span> v{$version}!</div>
 {/template}
 
 /**
 * @param issues
+* @param data
+* @param context
 */
 {template .IssueList}
-   <table class="aui">
-<!--       <thead>-->
-<!--           <tr>-->
-<!--               <th id="basic-icon"></th>-->
-<!--               <th id="basic-fname">Issue key</th>-->
-<!--               <th id="basic-lname">Номер</th>-->
-<!--           </tr>-->
-<!--       </thead>-->
-              <tbody>
-            {foreach $issue in $issues}
-//                    <tr>
-//                        <td headers="basic-number">{$issue.saleAmount}</td>
-//                        <td headers="basic-fname">{$issue.key}</td>
-//                        <td headers="basic-lname">{$issue.procedureNumber}</td>
-//                    </tr>
-                    <div class="aui-group">
+
+    {foreach $issue in $issues}
+        <div class="aui-group">
+
+            <div class="aui-item">
+                <div class="zoned">
+                    <h3><a href="{$context}/browse/{$issue.key}" target="_blank">{$issue.key}</a> {$issue.summary}
+                        [ {$issue.procedureNumber} ]</h3>
+                    <div class="aui-group aui-group-split">
                         <div class="aui-item">
-                            <div class="zoned">
-                                <a>{$issue.key} </a> {$issue.procedureNumber}
-                                <div class="aui-group aui-group-split">
-                                    <div class="aui-item">
-                                        Сумма продажи: {$issue.saleAmount}
-                                    </div>
-                                    <div class="aui-item">
-                                        <p>Сумма покупки: {$issue.offer}</p>
-                                        <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
-                                        <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
-                                        <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            Сумма продажи: {$issue.saleAmount}
+                        </div>
+                        <div class="aui-item">
+                            <p>Сумма покупки: {$issue.buyAmount}</p>
+                            <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
+                            <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
+                            <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
                         </div>
                     </div>
-            {/foreach}
-       </tbody>
-   </table>
-   <div class="buttons-container">
-       <div class="buttons">
-           <input class="button submit" type="submit" value="Refresh">
-       </div>
-   </div>
+                </div>
+            </div>
+
+        </div>
+
+    {/foreach}
+
+    <div class="aui-group">
+        <div class="aui-item">
+            <div class="zoned">
+                <div class="aui-group">
+                    <div class="aui-item">
+                        Сумма продажи: {$data.sumSaleAmount}
+                    </div>
+                    <div class="aui-item">
+                        Сумма всех затрат: {$data.totalExpenses}
+                    </div>
+                    <div class="aui-item">
+                        Сумма покупки: {$data.sumBuyAmount}
+                    </div>
+                    <div class="aui-item">
+                        Логистические расходы: {$data.sumLogisticExpenses}
+                    </div>
+                    <div class="aui-item">
+                        Финансовые расходы: {$data.sumFinanceExpenses}
+                    </div>
+                    <div class="aui-item">
+                        Командировочные расходы: {$data.sumTravelExpenses}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Refresh">
+        </div>
+    </div>
 {/template}
 
 /**
 *   Use this template if there is no issues in response
 */
 {template .Empty}
-   No issues yet.
-   <div class="buttons-container">
-          <div class="buttons">
-              <input class="button submit" type="submit" value="Refresh">
-          </div>
-      </div>
+    No issues yet.
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Refresh">
+        </div>
+    </div>
 {/template}
 
 /**
 * configuration
 */
 {template .Configuration}
-   <form class="aui">
-       <div class="field-group">
-           <label for="due-date-input">Due Date
-               <span class="aui-icon icon-required">(required)</span></label>
-           <input class="text medium-field" type="text"
-                  id="due-date-input" name="due-date-input" value="3w">
-           <div class="description">Syntax: 1(d|w|m) </div>
-       </div>
-       <div class="buttons-container">
-           <div class="buttons">
-               <input class="button submit" type="submit" value="Save" id="comment-save-button">
-               <a class="cancel" href="#">Cancel</a>
-           </div>
-       </div>
-   </form>
+    <form class="aui">
+        <div class="field-group">
+            <label for="due-date-input">Due Date
+                <span class="aui-icon icon-required">(required)</span></label>
+            <input class="text medium-field" type="text"
+                   id="due-date-input" name="due-date-input" value="3w">
+            <div class="description">Syntax: 1(d|w|m)</div>
+        </div>
+        <div class="buttons-container">
+            <div class="buttons">
+                <input class="button submit" type="submit" value="Save" id="comment-save-button">
+                <a class="cancel" href="#">Cancel</a>
+            </div>
+        </div>
+    </form>
 {/template}
