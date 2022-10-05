@@ -1,5 +1,7 @@
 package com.enviogroup.plugins.status.screen;
 
+import com.atlassian.jira.issue.status.Status;
+
 public abstract class IssueModel {
     private String key;
 
@@ -9,10 +11,6 @@ public abstract class IssueModel {
 
     public IssueModel(String key) {
         this.key = key;
-    }
-
-    public IssueModel(StatusModel status) {
-        this.status = status;
     }
 
     protected IssueModel() {
@@ -43,7 +41,7 @@ public abstract class IssueModel {
         this.status = status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = new StatusModel(status);
     }
 }

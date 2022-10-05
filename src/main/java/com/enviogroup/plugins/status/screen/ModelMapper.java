@@ -28,7 +28,7 @@ public class ModelMapper {
         TenderModel model = new TenderModel();
         model.setKey(issue.getKey());
         model.setSummary(issue.getSummary());
-        model.setStatus(issue.getStatus().getSimpleStatus().getName());
+        model.setStatus(issue.getStatus());
         model.setProcedureNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10132, issue));
         model.setBuyAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, issue));
         Double newSaleAmount = issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10056, issue);
@@ -66,7 +66,7 @@ public class ModelMapper {
             agreementModel.setOrganisation(organisationModel);
             agreementModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issueDoc)));
             agreementModel.setKey(issueDoc.getKey());
-            agreementModel.setStatus(issueDoc.getStatus().getSimpleStatus().getName());
+            agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
             agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker,CUSTOM_FIELD_11201));
@@ -88,7 +88,7 @@ public class ModelMapper {
             for (Issue invoiceIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
                 InvoiceModel invoiceModel = new InvoiceModel();
                 invoiceModel.setKey(invoiceIssue.getKey());
-                invoiceModel.setStatus(invoiceIssue.getStatus().getSimpleStatus().getName());
+                invoiceModel.setStatus(invoiceIssue.getStatus());
                 invoiceModel.setSummary(invoiceIssue.getSummary());
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
@@ -106,7 +106,7 @@ public class ModelMapper {
             for (Issue specificationIssue : (issueWorker.getMutableIssuesList(agreementIssue, CUSTOM_FIELD_10107))) {
                 SpecificationModel specificationModel = new SpecificationModel();
                 specificationModel.setKey(specificationIssue.getKey());
-                specificationModel.setStatus(specificationIssue.getStatus().getSimpleStatus().getName());
+                specificationModel.setStatus(specificationIssue.getStatus());
                 specificationModel.setSummary(specificationIssue.getSummary());
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);

@@ -16,29 +16,47 @@
 */
 {template .IssueList}
 
-    {foreach $issue in $issues}
+    {foreach $issuePair in $issues}
         <div class="aui-group">
+            {foreach $issue in $issuePair}
+                <div class="aui-item">
+                    <div class="zoned">
+                        <h3>
+                            {call JIRA.Template.Util.Issue.Status.issueStatus}
+                                {param issueStatus: $issue.status /}
+                                {param isSubtle: false /}
+                                {param isCompact: false /}
+                            {/call}{sp}{sp}
+                            <a href="{$context}/browse/{$issue.key}" target="_blank">{$issue.key}</a>{sp}
 
-            <div class="aui-item">
-                <div class="zoned">
-                    <h3><a href="{$context}/browse/{$issue.key}" target="_blank">{$issue.key}</a> {$issue.summary}
-                        [ {$issue.procedureNumber} ]</h3>
-                    <div class="aui-group aui-group-split">
-                        <div class="aui-item">
-                            Сумма продажи: {$issue.saleAmount}
-                        </div>
-                        <div class="aui-item">
-                            <p>Сумма покупки: {$issue.buyAmount}</p>
-                            <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
-                            <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
-                            <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
+                            {$issue.summary}{sp}
+                            [ {$issue.procedureNumber} ]</h3>
+                        <div class="aui-group">
+                            <div class="aui-item ">
+                                <div class="zonedlight">
+                                    Сумма продажи: {$issue.saleAmount}
+                                </div>
+
+                            </div>
+                            <div class="aui-item ">
+                                <div class="zonedlight">
+                                    <p>Сумма покупки: {$issue.buyAmount}</p>
+                                    <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
+                                </div>
+                            </div>
+                            <div class="aui-item ">
+                                <div class="zonedlight">
+                                    <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
+                                    <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
+                                    <p>дополнительные расходы: {$issue.financeModel.travelExpenses}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {/foreach}
 
         </div>
-
     {/foreach}
 
     <div class="aui-group">

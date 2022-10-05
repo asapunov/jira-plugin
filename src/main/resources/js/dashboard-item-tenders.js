@@ -38,6 +38,7 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
                         sumLogisticExpenses: 0,
                         sumFinanceExpenses: 0,
                         sumTravelExpenses: 0,
+                        sumAdditionalExpenses: 0,
                         totalExpenses: 0
                     };
                     for (var issueItemId in self.dataModelIssues) {
@@ -48,9 +49,11 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
                             data.sumLogisticExpenses = data.sumLogisticExpenses + (!issueItem.financeModel.hasOwnProperty('logisticExpenses') ? 0 : issueItem.financeModel.logisticExpenses);
                             data.sumFinanceExpenses = data.sumFinanceExpenses + (!issueItem.financeModel.hasOwnProperty('financeExpenses') ? 0 : issueItem.financeModel.financeExpenses);
                             data.sumTravelExpenses = data.sumTravelExpenses + (!issueItem.financeModel.hasOwnProperty('travelExpenses') ? 0 : issueItem.financeModel.travelExpenses);
+                            data.sumAdditionalExpenses = data.sumAdditionalExpenses + (!issueItem.financeModel.hasOwnProperty('additionalExpenses') ? 0 : issueItem.financeModel.additionalExpenses);
                             issueItem.financeModel.logisticExpenses = formatCurrency.format(issueItem.financeModel.logisticExpenses);
                             issueItem.financeModel.financeExpenses = formatCurrency.format(issueItem.financeModel.financeExpenses);
                             issueItem.financeModel.travelExpenses = formatCurrency.format(issueItem.financeModel.travelExpenses);
+                            issueItem.financeModel.additionalExpenses = formatCurrency.format(issueItem.financeModel.additionalExpenses);
                         }
                         issueItem.buyAmount = formatCurrency.format(issueItem.buyAmount);
                         issueItem.saleAmount = formatCurrency.format(issueItem.saleAmount);
@@ -65,7 +68,11 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
                     data.totalExpenses = formatCurrency.format(data.totalExpenses);
 
                     $element.empty().html(Dashboard.Item.Tenders.Templates.IssueList({
-                        issues: self.dataModelIssues,
+                        issues: self.dataModelIssues.reduce(function(result, value, index, array) {
+                            if (index % 3 === 0)
+                                result.push(array.slice(index, index + 2));
+                            return result;
+                        }, []),
                         data: data,
                         context: contextPath()
                     }));
