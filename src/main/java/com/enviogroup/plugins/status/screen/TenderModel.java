@@ -14,6 +14,7 @@ public class TenderModel extends IssueModel {
     private String url;
     private FinanceModel financeModel;
     private List<AgreementModel> agreementsList = new ArrayList<>();
+    private boolean alarm;
 
     public TenderModel(String key) {
         super(key);
@@ -80,5 +81,13 @@ public class TenderModel extends IssueModel {
 
     public void setFinanceModel(FinanceModel financeModel) {
         this.financeModel = financeModel;
+    }
+
+    public boolean isAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(boolean alarm) {
+        this.alarm = alarm;
     }
 }

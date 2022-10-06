@@ -25,11 +25,14 @@
                     #end
                 </div>
             </div>
+            #set($amountInvoiceSpecification = 0)
             #foreach($specification in $agreement.getSpecificationsList())
                 #parse("templates/statusscreen/specification.vm")
+                #set($amountInvoiceSpecification = $specification.getAmount() + $amountInvoiceSpecification)
             #end
             #foreach($invoice in $agreement.getInputInvoicesList())
                 #parse("templates/statusscreen/invoice.vm")
+                #set($amountInvoiceSpecification = $invoice.getAmount() + $amountInvoiceSpecification)
             #end
         </div>
 

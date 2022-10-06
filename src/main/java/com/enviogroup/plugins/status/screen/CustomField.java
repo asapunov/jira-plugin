@@ -105,11 +105,35 @@ public class CustomField {
      * Платежи по спецификаии
      */
     public static final Long CUSTOM_FIELD_12500 = 12500L;
+    /**
+     * Заказчик спецификации
+     */
+    public static final Long CUSTOM_FIELD_10343 = 10343L;
+    /**
+     * Поставщик спецификаии
+     */
+    public static final Long CUSTOM_FIELD_10341 = 10341L;
+    /**
+     * Поставщик счета входящие
+     */
+    public static final Long CUSTOM_FIELD_10339 = 10339L;
+    /**
+     * Заказчик счета входящие
+     */
+    public static final Long CUSTOM_FIELD_10088 = 10088L;
+    /**
+     * Крайний срок поставки продукта
+     */
+    public static final Long CUSTOM_FIELD_10112 = 10112L;
 
     /**
      * OGR-1 ЭНВИОГРУПП
      */
     public static final String ORG_1 = "ORG-1";
+    /**
+     * OGR-2365 БАРС
+     */
+    public static final String ORG_2365 = "ORG-2365";
 
     /**
      * ID типа issue договора

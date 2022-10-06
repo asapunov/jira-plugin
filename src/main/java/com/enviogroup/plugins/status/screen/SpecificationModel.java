@@ -4,6 +4,7 @@ import com.enviogroup.plugins.accountCF.Carrier;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class SpecificationModel extends IssueModel {
     private OrganisationModel organisation;
     private List<InvoiceModel> invoiceModelList;
     private Collection<Carrier> detailedInformation;
+    private Timestamp deliveryTime;
 
     public Double getAmount() {
         return amount;
@@ -44,5 +46,13 @@ public class SpecificationModel extends IssueModel {
 
     public void setOrganisation(OrganisationModel organisation) {
         this.organisation = organisation;
+    }
+
+    public Timestamp getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(Timestamp deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 }

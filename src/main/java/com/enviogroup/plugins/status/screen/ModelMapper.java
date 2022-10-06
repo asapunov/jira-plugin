@@ -5,6 +5,7 @@ import com.atlassian.jira.issue.MutableIssue;
 import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ModelMapper {
             }
             AgreementModel agreementModel = new AgreementModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
-            if (org.getKey().equals(ORG_1)) {
+            if (isOrgOurs(org)) {
                 org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10067)).get(0);
                 model.setAgreement(agreementModel);
             } else {
@@ -71,16 +72,9 @@ public class ModelMapper {
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
-            agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker,CUSTOM_FIELD_11201));
+            agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker, CUSTOM_FIELD_11201));
         }
-        if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
-            for (AgreementModel am : model.getAgreementsList()) {
-                Double amount = am.getAmount();
-                if (amount != null) {
-                    am.setAmount(amount - amount * am.getValueAddedTax());
-                }
-            }
-        }
+        editModelsAmountsWithVAT(model);
         return model;
     }
 
@@ -94,7 +88,13 @@ public class ModelMapper {
                 invoiceModel.setSummary(invoiceIssue.getSummary());
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
-                invoiceModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, invoiceIssue));
+                invoiceModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, invoiceIssue));
+                try {
+                    Issue org = issueWorker.getMutableIssuesList(invoiceIssue, CUSTOM_FIELD_10339).get(0);
+                    invoiceModel.setOrganisation(organisationModelFactory(org, issueWorker));
+                } catch (Exception e) {
+                    invoiceModel.setOrganisation(null);
+                }
             }
             return invoiceList;
         } else {
@@ -112,10 +112,16 @@ public class ModelMapper {
                 specificationModel.setSummary(specificationIssue.getSummary());
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);
-                specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker,CUSTOM_FIELD_10356));
-                specificationModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
-              //  Issue org = isOrgOurs(issueWorker.get);
-               // specificationModel.setOrganisation(organisationModelFactory());
+                specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker, CUSTOM_FIELD_10356));
+                specificationModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
+                specificationModel.setDeliveryTime((Timestamp) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10112, specificationIssue));
+                try {
+                    Issue org = isOrgOurs((issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10341)).get(0)) ?
+                            issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10343).get(0) : issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10341).get(0);
+                    specificationModel.setOrganisation(organisationModelFactory(org, issueWorker));
+                } catch (Exception e) {
+                    specificationModel.setOrganisation(null);
+                }
             }
             return specificationList;
         } else {
@@ -146,7 +152,7 @@ public class ModelMapper {
         return organisationModel;
     }
 
-    public FinanceModel financeModelFactory (Issue tenderIssue, IssueWorker issueWorker) {
+    public FinanceModel financeModelFactory(Issue tenderIssue, IssueWorker issueWorker) {
         FinanceModel financeModel = new FinanceModel();
         financeModel.setAdditionalExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_12101, tenderIssue));
         financeModel.setFinanceExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10515, tenderIssue));
@@ -155,7 +161,35 @@ public class ModelMapper {
         return financeModel;
     }
 
-    public boolean isOrgOurs(Issue org) {
-        return org.getKey().equals(ORG_1);
+    private boolean isOrgOurs(Issue org) {
+        return org.getKey().equals(ORG_1) || org.getKey().equals(ORG_2365);
     }
+
+    private void editModelsAmountsWithVAT(TenderModel model) {
+        if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
+            for (AgreementModel am : model.getAgreementsList()) {
+                Double amount = am.getAmount();
+                if (amount != null) {
+                    am.setAmount(amount - amount * am.getValueAddedTax());
+                }
+                if (am.getSpecificationsList() != null) {
+                    for (SpecificationModel sp : am.getSpecificationsList()) {
+                        amount = sp.getAmount();
+                        if (amount != null) {
+                            sp.setAmount(amount - amount * am.getValueAddedTax());
+                        }
+                    }
+                }
+                if (am.getInputInvoicesList() != null) {
+                    for (InvoiceModel in : am.getInputInvoicesList()) {
+                        amount = in.getAmount();
+                        if (amount != null) {
+                            in.setAmount(amount - amount * am.getValueAddedTax());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
