@@ -2,11 +2,13 @@ package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
-import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
@@ -48,7 +50,7 @@ public class ModelMapper {
             }
             AgreementModel agreementModel = new AgreementModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
-            if (isOrgOurs(org)) {
+            if (org.getKey().equals(ORG_1)) {
                 org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10067)).get(0);
                 model.setAgreement(agreementModel);
             } else {
