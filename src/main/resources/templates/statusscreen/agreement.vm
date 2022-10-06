@@ -4,11 +4,9 @@
         <div class="zoned">
             <a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
 
-            <div class="aui-group">
-                <div class="aui-item">
-                    <span data-tooltip="$agreement.getOrganisation().getStatusColor()" class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$agreement.getOrganisation().getStatusColor()">$agreement.getOrganisation().getStatus()</span> Организация: <a href="$baseURL/browse/$agreement.getOrganisation().getKey()">$agreement.getOrganisation().getKey()</a> $agreement.getOrganisation().getSummary()
-                </div>
-            </div>
+            #set($organisation = $agreement.getOrganisation())
+            #parse("templates/statusscreen/organisation.vm")
+            #set($organisation = false)
             <div class="aui-group aui-group-split">
                 <div class="aui-item">
                     $soyRenderer.render(
@@ -28,10 +26,10 @@
                 </div>
             </div>
             #foreach($specification in $agreement.getSpecificationsList())
-                #parse( "templates/statusscreen/specification.vm")
+                #parse("templates/statusscreen/specification.vm")
             #end
             #foreach($invoice in $agreement.getInputInvoicesList())
-                #parse( "templates/statusscreen/invoice.vm")
+                #parse("templates/statusscreen/invoice.vm")
             #end
         </div>
 
