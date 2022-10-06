@@ -3,7 +3,6 @@ $webResourceManager.requireResourcesForContext("com.atlassian.auiplugin:aui-date
 $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
-<input class="aui-date-picker" id="demo-range-2" type="text" max="2012-01-25" min="2011-12-25" />
 <table id='mainTab' width="80%">
     ## All input elements for this custom field should have a name of
     ## $customField.id but each id should be unique
@@ -74,7 +73,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                            name="${field_uid}"
                            type="text"
 ##                           value="$!date.format('dd.MM.yyyy',$!carrier.getDate())"
-                           class = "aui-date-picker"
+                           class = "text long-field"
                            />
                 </td>
 

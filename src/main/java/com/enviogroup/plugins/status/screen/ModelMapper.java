@@ -48,7 +48,7 @@ public class ModelMapper {
             }
             AgreementModel agreementModel = new AgreementModel();
             Issue org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10069)).get(0);
-            if (org.getKey().equals(ORG_1)) {
+            if (isOrgOurs(org)) {
                 org = (issueWorker.getMutableIssuesList(issueDoc, CUSTOM_FIELD_10067)).get(0);
                 model.setAgreement(agreementModel);
             } else {
@@ -112,6 +112,8 @@ public class ModelMapper {
                 specificationList.add(specificationModel);
                 specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker,CUSTOM_FIELD_10356));
                 specificationModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
+              //  Issue org = isOrgOurs(issueWorker.get);
+               // specificationModel.setOrganisation(organisationModelFactory());
             }
             return specificationList;
         } else {
@@ -151,4 +153,7 @@ public class ModelMapper {
         return financeModel;
     }
 
+    public boolean isOrgOurs(Issue org) {
+        return org.getKey().equals(ORG_1);
+    }
 }

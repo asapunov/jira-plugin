@@ -10,6 +10,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SpecificationModel extends IssueModel {
     private Double amount;
+    private OrganisationModel organisation;
     private List<InvoiceModel> invoiceModelList;
     private Collection<Carrier> detailedInformation;
 
@@ -35,5 +36,13 @@ public class SpecificationModel extends IssueModel {
 
     public void setDetailedInformation(Collection<Carrier> detailedInformation) {
         this.detailedInformation = detailedInformation;
+    }
+
+    public OrganisationModel getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(OrganisationModel organisation) {
+        this.organisation = organisation;
     }
 }
