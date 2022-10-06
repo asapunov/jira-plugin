@@ -1,3 +1,4 @@
+#set($agreementAmount = false)
 <div class="aui-group">
     <div class="aui-item">
         <div class="zoned">
@@ -20,9 +21,9 @@
                     })
                 </div>
                 <div class="aui-item">
-                    Стоимость: #set($amount = $agreement.getAmount())
-                    #if($amount)
-                        $number.format($amount)
+                    #set($agreementAmount = $agreement.getAmount())
+                    #if($agreementAmount)
+                        Стоимость: $number.format($agreementAmount)
                     #end
                 </div>
             </div>

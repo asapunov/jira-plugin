@@ -2,11 +2,13 @@ package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
-import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
@@ -69,7 +71,7 @@ public class ModelMapper {
             agreementModel.setStatus(issueDoc.getStatus());
             agreementModel.setSummary(issueDoc.getSummary());
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
-            agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker,CUSTOM_FIELD_11201));
+            agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker, CUSTOM_FIELD_11201));
         }
         if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
             for (AgreementModel am : model.getAgreementsList()) {
@@ -92,7 +94,7 @@ public class ModelMapper {
                 invoiceModel.setSummary(invoiceIssue.getSummary());
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
-                invoiceModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, invoiceIssue));
+                invoiceModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, invoiceIssue));
             }
             return invoiceList;
         } else {
@@ -110,8 +112,8 @@ public class ModelMapper {
                 specificationModel.setSummary(specificationIssue.getSummary());
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
                 specificationList.add(specificationModel);
-                specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker,CUSTOM_FIELD_10356));
-                specificationModel.setDetailedInformation((Collection<Carrier>)issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
+                specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker, CUSTOM_FIELD_10356));
+                specificationModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
             }
             return specificationList;
         } else {
@@ -142,7 +144,7 @@ public class ModelMapper {
         return organisationModel;
     }
 
-    public FinanceModel financeModelFactory (Issue tenderIssue, IssueWorker issueWorker) {
+    public FinanceModel financeModelFactory(Issue tenderIssue, IssueWorker issueWorker) {
         FinanceModel financeModel = new FinanceModel();
         financeModel.setAdditionalExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_12101, tenderIssue));
         financeModel.setFinanceExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10515, tenderIssue));
