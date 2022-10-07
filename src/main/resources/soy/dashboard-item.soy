@@ -15,78 +15,90 @@
 * @param context
 */
 {template .IssueList}
-    <div class="aui-group">
-        <div class="aui-item">
-            <div class="aui-group">
-                <div class="aui-item">
-                    <div class="zoned">
-                        <div class="aui-group">
-                            <div class="aui-item">
-                                Сумма продажи: {$data.sumSaleAmount}
-                            </div>
-                            <div class="aui-item">
-                                Сумма всех затрат: {$data.totalExpenses}
-                            </div>
-                            <div class="aui-item">
-                                Сумма покупки: {$data.sumBuyAmount}
-                            </div>
-                            <div class="aui-item">
-                                Логистические расходы: {$data.sumLogisticExpenses}
-                            </div>
-                            <div class="aui-item">
-                                Финансовые расходы: {$data.sumFinanceExpenses}
-                            </div>
-                            <div class="aui-item">
-                                Командировочные расходы: {$data.sumTravelExpenses}
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content">
+                <div class="aui-group">
+                    <div class="aui-item">
+                        <div class="zoned">
+                            <div class="aui-group">
+                                <div class="aui-item">
+                                    Сумма продажи: {$data.sumSaleAmount}
+                                </div>
+                                <div class="aui-item">
+                                    Сумма всех затрат: {$data.totalExpenses}
+                                </div>
+                                <div class="aui-item">
+                                    Сумма покупки: {$data.sumBuyAmount}
+                                </div>
+                                <div class="aui-item">
+                                    Логистические расходы: {$data.sumLogisticExpenses}
+                                </div>
+                                <div class="aui-item">
+                                    Финансовые расходы: {$data.sumFinanceExpenses}
+                                </div>
+                                <div class="aui-item">
+                                    Командировочные расходы: {$data.sumTravelExpenses}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
-    {foreach $issuePair in $issues}
-        <div class="aui-group">
-            {foreach $issue in $issuePair}
-                <div class="aui-item">
-                    <div class="zoned">
-                        <h3>
-                            {call JIRA.Template.Util.Issue.Status.issueStatus}
-                                {param issueStatus: $issue.status /}
-                                {param isSubtle: false /}
-                                {param isCompact: false /}
-                            {/call}{sp}{sp}
-                            <a href="{$context}/browse/{$issue.key}" target="_blank">{$issue.key}</a>{sp}
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content">
+                {foreach $issuePair in $issues}
+                    <div class="aui-group">
+                        {foreach $issue in $issuePair}
+                            <div class="aui-item">
+                                <div class="zoned">
+                                    <h3>
+                                        {call JIRA.Template.Util.Issue.Status.issueStatus}
+                                            {param issueStatus: $issue.status /}
+                                            {param isSubtle: false /}
+                                            {param isCompact: false /}
+                                        {/call}{sp}{sp}
+                                        <a href="{$context}/browse/{$issue.key}" target="_blank">{$issue.key}</a>{sp}
 
-                            {$issue.summary}{sp}
-                            [ {$issue.procedureNumber} ]</h3>
-                        <div class="aui-group">
-                            <div class="aui-item ">
-                                <div class="zonedlight">
-                                    Сумма продажи: {$issue.saleAmount}
-                                </div>
+                                        {$issue.summary}{sp}
+                                        [ {$issue.procedureNumber} ]</h3>
 
-                            </div>
-                            <div class="aui-item ">
-                                <div class="zonedlight">
-                                    <p>Сумма покупки: {$issue.buyAmount}</p>
-                                    <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
+                                    <button class="aui-button" data-aui-trigger aria-controls="test-{$issue.key}">
+                                        Click me
+                                    </button>
+                                    <div id="test-{$issue.key}" class="aui-group">
+                                        <div class="aui-item ">
+                                            <div class="zonedlight">
+                                                Сумма продажи: {$issue.saleAmount}
+                                            </div>
+
+                                        </div>
+                                        <div class="aui-item ">
+                                            <div class="zonedlight">
+                                                <p>Сумма покупки: {$issue.buyAmount}</p>
+                                                <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
+                                            </div>
+                                        </div>
+                                        <div class="aui-item ">
+                                            <div class="zonedlight">
+                                                <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
+                                                <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
+                                                <p>дополнительные расходы: {$issue.financeModel.travelExpenses}</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="aui-item ">
-                                <div class="zonedlight">
-                                    <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
-                                    <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
-                                    <p>дополнительные расходы: {$issue.financeModel.travelExpenses}</p>
-                                </div>
-                            </div>
-                        </div>
+                        {/foreach}
+
                     </div>
-                </div>
-            {/foreach}
-
+                {/foreach}
+            </section>
         </div>
-    {/foreach}
+    </div>
 {/template}
 
 /**
