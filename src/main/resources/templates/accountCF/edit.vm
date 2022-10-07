@@ -1,5 +1,3 @@
-$webResourceManager.requireResourcesForContext("jira-accountCF-resources")
-$webResourceManager.requireResourcesForContext("com.atlassian.auiplugin:aui-date-picker")
 $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
 #set ($field_uid = $customField.id)
@@ -27,26 +25,26 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
             </td>
             <td>
                 <input id="${field_uid}-full-amount"
-                name="${field_uid}"
-                type="text"
-                value=""
-                class = "text long-field"/>
+                       name="${field_uid}"
+                       type="text"
+                       value=""
+                       class = "text long-field"/>
             </td>
         </tr>
     #else
         <tr width="80%">
             <td>
-            Полная сумма счета
+                Полная сумма счета
             </td>
             <td>
                 <input id="${field_uid}-full-amount"
-                name="${field_uid}"
-                type="text"
-                value="$!number.format($carriers.get(0).getFullAmount())"
-                class = "text long-field"/>
+                       name="${field_uid}"
+                       type="text"
+                       value="$!number.format($carriers.get(0).getFullAmount())"
+                       class = "text long-field"/>
             </td>
         </tr>
-#end
+    #end
     <tr width="80%">
         <td>
             Дата оплаты счета
@@ -67,40 +65,40 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
         #set ($i = 0)
         #foreach ($carrier in $carriers)
             #if ($i > 0)
-            <tr width="80%">
-                <td>
-                    <input id="date"
-                           name="${field_uid}"
-                           type="text"
-##                           value="$!date.format('dd.MM.yyyy',$!carrier.getDate())"
-                           class = "text long-field"
-                           />
-                </td>
+                <tr width="80%">
+                    <td>
+                        <input id="date"
+                               name="${field_uid}"
+                               type="text"
+                               value="$!date.format('dd.MM.yyyy',$!carrier.getDate())"
+                               class = "text long-field"
+                        />
+                    </td>
 
-                <td>
+                    <td>
 
-                    <input id="${field_uid}-amount-${velocityCount}"
-                           name="${field_uid}"
-                           type="text"
-                           value="$number.format($carrier.getAmount())"
-                           class = "text long-field"/>
-                </td>
-                <td>
+                        <input id="${field_uid}-amount-${velocityCount}"
+                               name="${field_uid}"
+                               type="text"
+                               value="$number.format($carrier.getAmount())"
+                               class = "text long-field"/>
+                    </td>
+                    <td>
 
-                    <input id = "${field_uid}-datePost-${velocityCount}"
-                           name = "${field_uid}"
-                           type = "text"
-                           value = "$!date.format('dd.MM.yyyy',$!carrier.getDatePost())"
-                           class = "text long-field"/>
-                </td>
-                <td>
-                    <input id = "${field_uid}-amountPost-${velocityCount}"
-                    name = "${field_uid}"
-                    type = "text"
-                    value = "$!number.format($!carrier.getAmountPost())"
-                    class = "text long-field"/>
-                </td>
-            </tr>
+                        <input id = "${field_uid}-datePost-${velocityCount}"
+                               name = "${field_uid}"
+                               type = "text"
+                               value = "$!date.format('dd.MM.yyyy',$!carrier.getDatePost())"
+                               class = "text long-field"/>
+                    </td>
+                    <td>
+                        <input id = "${field_uid}-amountPost-${velocityCount}"
+                               name = "${field_uid}"
+                               type = "text"
+                               value = "$!number.format($!carrier.getAmountPost())"
+                               class = "text long-field"/>
+                    </td>
+                </tr>
             #end
             #set($i = ($i + 1))
         #end
@@ -114,7 +112,7 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
                    type ="text"
                    value =""
                    autocomplete="off"
-                   class = "text medium-field datepicker-input"/>
+                   class = "text medium-field"/>
         </td>
 
         <td>
@@ -126,20 +124,20 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
         </td>
         <td>
             <input id="${field_uid}-new-datePost"
-                name="$customField.id"
-                type="text"
-                value=""
-                autocomplete="off"
-                class = "text medium-field datepicker-input"
+                   name="$customField.id"
+                   type="text"
+                   value=""
+                   autocomplete="off"
+                   class = "text medium-field"
             />
-         </td>
+        </td>
 
         <td>
             <input id="${field_uid}-new-amountPost"
-            name="${field_uid}"
-            type="text"
-            value=""
-            class = "text long-field"/>
+                   name="${field_uid}"
+                   type="text"
+                   value=""
+                   class = "text long-field"/>
         </td>
 
     </tr>
@@ -149,23 +147,18 @@ $!{auiparams.put("controlHeaderClass", "aui-field-datepicker")}
 #customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
 $!{auiparams.clear()}
 
-<script>
-    AJS.$(document).ready(function() {
-        AJS.$('#demo-range-2').datePicker({'overrideBrowserDefault': true});
-    });
-</script>
 
 <script>
     let i = 1;
 
     function createInput(){
         if (i<=15){
-        let a = "${field_uid}";
-        i++;
-        var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\"  /> "  +
-                "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_s" + i + "\" /> " +
-                "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> " +
-                "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
-            $input.appendTo('#mainTab');
-    }}
+            let a = "${field_uid}";
+            i++;
+            var $input = $("<tr>" + "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\"  /> "  +
+                    "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_s" + i + "\" /> " +
+                    "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_t" + i + "\" /> " +
+                    "<td>" + "<input  type=\"text\" value=\"\" class = \"text long-field\" name=\"" + a + "\" id=\"" + a + " new_f" + i + "\" /> "+ "</tr>");
+                $input.appendTo('#mainTab');
+        }}
 </script>

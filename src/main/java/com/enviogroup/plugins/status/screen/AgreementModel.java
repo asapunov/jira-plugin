@@ -12,6 +12,7 @@ public class AgreementModel extends IssueModel {
     private Double valueAddedTax;
     private List<InvoiceModel> inputInvoicesList = new ArrayList<>();
     private List<SpecificationModel> specificationsList = new ArrayList<>();
+    private boolean alarm;
 
     public Double getAmount() {
         return amount;
@@ -61,4 +62,11 @@ public class AgreementModel extends IssueModel {
         inputInvoicesList.add(inputInvoice);
     }
 
+    public boolean isAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(boolean alarm) {
+        this.alarm = alarm;
+    }
 }

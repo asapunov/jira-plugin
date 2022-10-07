@@ -1,9 +1,13 @@
 #set($agreementAmount = false)
 <div class="aui-group">
     <div class="aui-item">
+        #if($agreement.isAlarm())
+            <div class="rightered">
+                <span class="aui-icon aui-icon-small aui-iconfont-warning" original-title="workbox-empty">icon</span>
+            </div>
+        #end
         <div class="zoned">
             <a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
-
             #set($organisation = $agreement.getOrganisation())
             #parse("templates/statusscreen/organisation.vm")
             #set($organisation = false)

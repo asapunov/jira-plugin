@@ -38,10 +38,12 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                         #set($amountBuyerAgreement = $amountBuyerAgreement + $agreement.getAmount())
                         #set($amountBuyerInvoiceSpecification = $amountInvoiceSpecification + $amountBuyerInvoiceSpecification)
                     #end
+                    #set($financeModel = $model.getFinanceModel())
+                    #parse("templates/statusscreen/expenses.vm")
                     #if($amountBuyerInvoiceSpecification != 0 && $amountSellerInvoiceSpecification)
-                        #set($finishAmountBuyer = $amountBuyerInvoiceSpecification)
+                        #set($finishAmountBuyer = $amountBuyerInvoiceSpecification + $expenses)
                     #else
-                        #set($finishAmountBuyer = $amountBuyerAgreement)
+                        #set($finishAmountBuyer = $amountBuyerAgreement + $expenses)
                     #end
                 #else
                     <h2 class="centered">Договоров с поставщиками нет</h2>

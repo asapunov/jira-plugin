@@ -2,6 +2,8 @@ package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.status.Status;
 
+import java.util.Objects;
+
 public abstract class IssueModel {
     private String key;
 
@@ -43,5 +45,20 @@ public abstract class IssueModel {
 
     public void setStatus(Status status) {
         this.status = new StatusModel(status);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IssueModel that = (IssueModel) o;
+        return key.equals(that.key) &&
+                Objects.equals(summary, that.summary) &&
+                Objects.equals(status, that.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, summary, status);
     }
 }

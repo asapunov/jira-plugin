@@ -12,6 +12,7 @@ public class InvoiceModel extends IssueModel {
     private OrganisationModel organisation;
     private OrganisationModel invoiceProvider;
     private Collection<Carrier> detailedInformation;
+    private String type;
 
     public Double getAmount() {
         return amount;
@@ -43,5 +44,13 @@ public class InvoiceModel extends IssueModel {
 
     public void setOrganisation(OrganisationModel organisation) {
         this.organisation = organisation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

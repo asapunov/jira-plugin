@@ -125,6 +125,11 @@ public class CustomField {
      * Крайний срок поставки продукта
      */
     public static final Long CUSTOM_FIELD_10112 = 10112L;
+    /**
+     * Тип счета
+     */
+    public static final Long CUSTOM_FIELD_10543 = 10543L;
+
 
     /**
      * OGR-1 ЭНВИОГРУПП
@@ -151,5 +156,10 @@ public class CustomField {
     public static final String ORGANISATION_STATUS_DEFAULT_STATUS = "";
     public static final String ORGANISATION_TYPE_CUSTOMER = "Заказчик";
     public static final String ORGANISATION_TYPE_SUPPLIER = "Поставщик";
+
+    /**
+     * Коэффициент НДС
+     */
+    public static final Double VAT_COEFFICIENT = 5.0 / 6.0;
 
 }

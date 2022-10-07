@@ -73,8 +73,9 @@ public class ModelMapper {
             agreementModel.setSummary(issueDoc.getSummary());
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
             agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker, CUSTOM_FIELD_11201));
+            setAgreementAlarm(agreementModel);
         }
-        editModelsAmountsWithVAT(model);
+        editModelAmountWithVAT(model);
         return model;
     }
 
@@ -89,6 +90,7 @@ public class ModelMapper {
                 invoiceModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10085, invoiceIssue)));
                 invoiceList.add(invoiceModel);
                 invoiceModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_11300, invoiceIssue));
+                invoiceModel.setType(issueWorker.getStringValueFromLazyLoadedOptionCustomField(CUSTOM_FIELD_10543, invoiceIssue));
                 try {
                     Issue org = issueWorker.getMutableIssuesList(invoiceIssue, CUSTOM_FIELD_10339).get(0);
                     invoiceModel.setOrganisation(organisationModelFactory(org, issueWorker));
@@ -165,7 +167,7 @@ public class ModelMapper {
         return org.getKey().equals(ORG_1) || org.getKey().equals(ORG_2365);
     }
 
-    private void editModelsAmountsWithVAT(TenderModel model) {
+    private void editModelAmountWithVAT(TenderModel model) {
         if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
             for (AgreementModel am : model.getAgreementsList()) {
                 Double amount = am.getAmount();
@@ -176,7 +178,7 @@ public class ModelMapper {
                     for (SpecificationModel sp : am.getSpecificationsList()) {
                         amount = sp.getAmount();
                         if (amount != null) {
-                            sp.setAmount(amount - amount * am.getValueAddedTax());
+                            sp.setAmount(amount - amount * VAT_COEFFICIENT);
                         }
                     }
                 }
@@ -184,7 +186,7 @@ public class ModelMapper {
                     for (InvoiceModel in : am.getInputInvoicesList()) {
                         amount = in.getAmount();
                         if (amount != null) {
-                            in.setAmount(amount - amount * am.getValueAddedTax());
+                            in.setAmount(amount - amount * VAT_COEFFICIENT);
                         }
                     }
                 }
@@ -192,4 +194,21 @@ public class ModelMapper {
         }
     }
 
+    private void setAgreementAlarm(AgreementModel agreementModel) {
+        agreementModel.setAlarm(false);
+        try {
+            if (agreementModel.getInputInvoicesList() != null && agreementModel.getSpecificationsList() != null) {
+                for (SpecificationModel specification : agreementModel.getSpecificationsList()) {
+                    for (InvoiceModel invoice : agreementModel.getInputInvoicesList()) {
+                        if (specification.getOrganisation().equals(invoice.getOrganisation())) {
+                            agreementModel.setAlarm(true);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
 }
+
