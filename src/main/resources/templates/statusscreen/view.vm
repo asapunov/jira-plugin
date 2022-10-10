@@ -5,7 +5,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
             <a href="#tab-win-status-1">Тендерная инфомация</a>
         </li>
         <li class="menu-item">
-            <a href="#tab-win-status-2">Финансы</a>
+            <a href="#tab-win-status-2">Отгрузки</a>
         </li>
     </ul>
     <div class="tabs-pane active-pane" id="tab-win-status-1">
@@ -70,16 +70,23 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                 #if($model.getAgreement() && !$model.getAgreementsList().isEmpty() && $amountSellerAgreement && $amountBuyerAgreement )
                     #set($margin = $finishAmountSeller - $finishAmountBuyer)
                     #set($marginPercent = $margin / $finishAmountSeller * 100)
-                    <h2 class="centered">Маржа: <strong>$number.format($margin) ($number.format($marginPercent) %)</strong></h2>
+                    <h2 class="centered">Маржа: <strong>$number.format($margin) ($number.format($marginPercent)
+                        %)</strong></h2>
                 #end
             </div>
         </div>
     </div>
     <div class="tabs-pane" id="tab-win-status-2">
-        <h2 class="centered">В разработке</h2>
-        #set ($specification = $model.getAgreement().getSpecificationsList().get(0))
-        <p>$specification.getAmount()</p>
-        <p> $specification.getDetailedInformation().get(0).getFullAmount()</p>
+        ##        <h2 class="centered">В разработке</h2>
+    #set($agreement = $model.getAgreement())
+    #foreach($shipment in $agreement.getShipmentsList())
+        #parse("templates/statusscreen/shipments.vm")
+    #end
+    #foreach($agreement in $model.getAgreementsList())
+        #foreach($shipment in $agreement.getShipmentsList())
+            #parse("templates/statusscreen/shipments.vm")
+        #end
+    #end
     </div>
 </div>
 

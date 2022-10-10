@@ -1,0 +1,23 @@
+<div class="aui-group">
+    <div class="aui-item">
+        <div class="zonedlight">Отгрузка <a
+                href="$baseURL/browse/$shipment.getKey()">$shipment.getKey()</a> $shipment.getSummary()
+
+            #set($organisation = $shipment.getOrganisation())
+            #parse("templates/statusscreen/organisation.vm")
+            #set($organisation = false)
+            <div class="aui-group">
+                <div class="aui-item">
+                    $soyRenderer.render(
+                        'jira.webresources:issue-statuses',
+                        'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                        'issueStatus': $shipment.getStatus(),
+                        'isSubtle': true,
+                        'isCompact': false,
+                        'maxWidth': 150
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

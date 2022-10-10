@@ -129,6 +129,18 @@ public class CustomField {
      * Тип счета
      */
     public static final Long CUSTOM_FIELD_10543 = 10543L;
+    /**
+     * Отгрузки договора
+     */
+    public static final Long CUSTOM_FIELD_10099 = 10099L;
+    /**
+     * Заказчик (отгрузки)
+     */
+    public static final Long CUSTOM_FIELD_10348 = 10348L;
+    /**
+     * Поставщик (отгрузки)
+     */
+    public static final Long CUSTOM_FIELD_10346 = 10346L;
 
 
     /**

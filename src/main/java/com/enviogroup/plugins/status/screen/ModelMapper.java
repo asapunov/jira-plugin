@@ -74,6 +74,7 @@ public class ModelMapper {
             agreementModel.setSpecificationsList(specificationModelListFactory(issueDoc, issueWorker));
             agreementModel.setInputInvoicesList(invoiceModelListFactory(issueDoc, issueWorker, CUSTOM_FIELD_11201));
             setAgreementAlarm(agreementModel);
+            agreementModel.setShipmentsList(shipmentModelListFactory(issueDoc, issueWorker));
         }
         editModelAmountWithVAT(model);
         return model;
@@ -113,7 +114,6 @@ public class ModelMapper {
                 specificationModel.setStatus(specificationIssue.getStatus());
                 specificationModel.setSummary(specificationIssue.getSummary());
                 specificationModel.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10108, specificationIssue)));
-                specificationList.add(specificationModel);
                 specificationModel.setInvoiceModelList(invoiceModelListFactory(specificationIssue, issueWorker, CUSTOM_FIELD_10356));
                 specificationModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
                 specificationModel.setDeliveryTime((Timestamp) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10112, specificationIssue));
@@ -124,8 +124,32 @@ public class ModelMapper {
                 } catch (Exception e) {
                     specificationModel.setOrganisation(null);
                 }
+                specificationList.add(specificationModel);
             }
             return specificationList;
+        } else {
+            return null;
+        }
+    }
+
+    public List<ShipmentModel> shipmentModelListFactory(Issue agreementIssue, IssueWorker issueWorker) {
+        List<ShipmentModel> shipmentModelList = new ArrayList<>();
+        if (!issueWorker.getMutableIssuesList(agreementIssue, CUSTOM_FIELD_10099).isEmpty()) {
+            for (Issue shipmentIssue : (issueWorker.getMutableIssuesList(agreementIssue, CUSTOM_FIELD_10099))) {
+                ShipmentModel shipmentModel = new ShipmentModel();
+                shipmentModel.setKey(shipmentIssue.getKey());
+                shipmentModel.setStatus(shipmentIssue.getStatus());
+                shipmentModel.setSummary(shipmentIssue.getSummary());
+                try {
+                    Issue org = isOrgOurs((issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10346)).get(0)) ?
+                            issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10348).get(0) : issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10346).get(0);
+                    shipmentModel.setOrganisation(organisationModelFactory(org, issueWorker));
+                } catch (Exception e) {
+                    shipmentModel.setOrganisation(null);
+                }
+                shipmentModelList.add(shipmentModel);
+            }
+            return shipmentModelList;
         } else {
             return null;
         }
@@ -162,6 +186,7 @@ public class ModelMapper {
         financeModel.setTravelExpenses(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10514, tenderIssue));
         return financeModel;
     }
+
 
     private boolean isOrgOurs(Issue org) {
         return org.getKey().equals(ORG_1) || org.getKey().equals(ORG_2365);
