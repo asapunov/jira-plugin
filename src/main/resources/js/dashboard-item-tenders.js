@@ -69,7 +69,7 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
 
                     $element.empty().html(Dashboard.Item.Tenders.Templates.IssueList({
                         issues: self.dataModelIssues.reduce(function(result, value, index, array) {
-                            if (index % 3 === 0)
+                            if (index % 2 === 0)
                                 result.push(array.slice(index, index + 2));
                             return result;
                         }, []),
@@ -92,7 +92,7 @@ define('dashboard-items/tenders', ['underscore', 'jquery', 'wrm/context-path'], 
         return $.ajax({
             method: "GET",
             //url: contextPath() + "/rest/api/2/search?jql=project %3D CRM AND issuetype = Тендеры AND Status changed from \"Подготовка документации\" to \"Тендер подан\" during (-" + preferences['due-date-input'] + ", now()) "
-            url: contextPath() + "/rest/api/2/search?maxResults=1000&jql=project %3D CRM AND issuetype = Тендеры AND (status = Выиграли OR status = \"Контракт закрыт\") AND \"Дата подведения итогов\" >= \"2022/01/01\" ORDER BY cf[10049] ASC"
+            url: contextPath() + "/rest/api/2/search?fields=key&maxResults=1000&jql=project %3D CRM AND issuetype = Тендеры AND (status = Выиграли OR status = \"Контракт закрыт\") AND \"Дата подведения итогов\" >= \"2022/01/01\" ORDER BY cf[10049] ASC"
         });
     };
 
