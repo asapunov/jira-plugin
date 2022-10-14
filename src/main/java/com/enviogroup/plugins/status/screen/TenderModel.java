@@ -14,6 +14,7 @@ public class TenderModel extends IssueModel {
     private String url;
     private FinanceModel financeModel;
     private List<AgreementModel> agreementsList = new ArrayList<>();
+    private List<InvoiceModel> invoicesList = new ArrayList<>();
 
     public TenderModel(String key) {
         super(key);
@@ -82,4 +83,11 @@ public class TenderModel extends IssueModel {
         this.financeModel = financeModel;
     }
 
+    public List<InvoiceModel> getInvoicesList() {
+        return invoicesList;
+    }
+
+    public void setInvoicesList(List<InvoiceModel> invoicesList) {
+        this.invoicesList = invoicesList;
+    }
 }

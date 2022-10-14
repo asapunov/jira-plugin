@@ -1,11 +1,11 @@
 #set($agreementAmount = false)
 <div class="aui-group">
     <div class="aui-item">
-        #if($agreement.isAlarm())
-            <div class="rightered">
-                <span class="aui-icon aui-icon-small aui-iconfont-warning" original-title="workbox-empty">icon</span>
-            </div>
-        #end
+        ##        #if($agreement.isAlarm())
+        ##            <div class="rightered">
+        ##                <span class="aui-icon aui-icon-small aui-iconfont-warning" original-title="workbox-empty">icon</span>
+        ##            </div>
+        ##        #end
         <div class="zoned">
             <a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
             #set($organisation = $agreement.getOrganisation())
@@ -31,13 +31,15 @@
             </div>
             #set($amountInvoiceSpecification = 0)
             #foreach($specification in $agreement.getSpecificationsList())
-                #parse("templates/statusscreen/specification.vm")
-                #set($amountInvoiceSpecification = $specification.getAmount() + $amountInvoiceSpecification)
+                #if(!$specification.getStatus().getId().equals("10501"))
+                    #parse("templates/statusscreen/specification.vm")
+                    #set($amountSpecification = $specification.getAmount() + $amountSpecification)
+                #end
             #end
-            #foreach($invoice in $agreement.getInputInvoicesList())
-                #parse("templates/statusscreen/invoice.vm")
-                #set($amountInvoiceSpecification = $invoice.getAmount() + $amountInvoiceSpecification)
-            #end
+            ##            #foreach($invoice in $agreement.getInputInvoicesList())
+            ##                #parse("templates/statusscreen/invoice.vm")
+            ##                #set($amountInvoice = $invoice.getAmount() + $amountInvoice)
+            ##            #end
         </div>
 
     </div>

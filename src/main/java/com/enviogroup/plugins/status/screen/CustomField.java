@@ -141,7 +141,10 @@ public class CustomField {
      * Поставщик (отгрузки)
      */
     public static final Long CUSTOM_FIELD_10346 = 10346L;
-
+    /**
+     * Счета входящие тендеры
+     */
+    public static final Long CUSTOM_FIELD_10229 = 10229L;
 
     /**
      * OGR-1 ЭНВИОГРУПП

@@ -14,15 +14,18 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
             <div class="aui-item">
                 #if($model.getAgreement())
                     <h2 class="centered">Договор с заказчиком</h2>
-
                     #set($agreement = $model.getAgreement())
                     #parse( "templates/statusscreen/agreement.vm" )
                     #set($amountSellerAgreement = $agreement.getAmount())
-                    #set($amountSellerInvoiceSpecification = $amountInvoiceSpecification)
-                    #if($amountSellerInvoiceSpecification != 0 && $amountSellerInvoiceSpecification)
-                        #set($finishAmountSeller = $amountSellerInvoiceSpecification)
+                    #set($amountSellerSpecification = $amountSpecification)
+                    #if($amountSellerSpecification != 0 && $amountSellerSpecification)
+                        #set($finishAmountSeller = $amountSellerSpecification)
                     #else
-                        #set($finishAmountSeller = $amountSellerAgreement)
+                        #if($amountSellerAgreement != 0 && $amountSellerAgreement)
+                            #set($finishAmountSeller = $amountSellerAgreement)
+                        #else
+                            #set($finishAmountSeller = $model.setSaleAmount())
+                        #end
                     #end
                 #else
                     <h2 class="centered">Договора с заказчиком нет</h2>
@@ -32,18 +35,27 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                 #if(!$model.getAgreementsList().isEmpty())
                     <h2 class="centered">Договоры с поставщиками</h2>
                     #set($amountBuyerAgreement = 0)
-                    #set($amountBuyerInvoiceSpecification = 0)
+                    #set($amountBuyerSpecification = 0)
+                    #set($fullInvoiceAmount = 0)
                     #foreach($agreement in $model.getAgreementsList())
-                        #parse( "templates/statusscreen/agreement.vm" )
-                        #set($amountBuyerAgreement = $amountBuyerAgreement + $agreement.getAmount())
-                        #set($amountBuyerInvoiceSpecification = $amountInvoiceSpecification + $amountBuyerInvoiceSpecification)
+                        #if(!$agreement.getStatus().getId().equals("10501"))
+                            #parse( "templates/statusscreen/agreement.vm" )
+                            #set($amountBuyerAgreement = $amountBuyerAgreement + $agreement.getAmount())
+                            #set($amountBuyerSpecification = $amountSpecification + $amountBuyerSpecification)
+                        #end
+                    #end
+                    #foreach($invoice in $model.getInvoicesList())
+                        #if(!$invoice.getStatus().getId().equals("10501"))
+                            #parse("templates/statusscreen/invoice.vm")
+                            #set($fullInvoiceAmount = $fullInvoiceAmount + $invoiceAmount)
+                        #end
                     #end
                     #set($financeModel = $model.getFinanceModel())
                     #parse("templates/statusscreen/expenses.vm")
                     #if($amountBuyerInvoiceSpecification != 0 && $amountSellerInvoiceSpecification)
-                        #set($finishAmountBuyer = $amountBuyerInvoiceSpecification + $expenses)
+                        #set($finishAmountBuyer = $amountBuyerInvoiceSpecification + $fullInvoiceAmount + $expenses)
                     #else
-                        #set($finishAmountBuyer = $amountBuyerAgreement + $expenses)
+                        #set($finishAmountBuyer = $amountBuyerAgreement + $fullInvoiceAmount + $expenses)
                     #end
                 #else
                     <h2 class="centered">Договоров с поставщиками нет</h2>
@@ -80,11 +92,15 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         ##        <h2 class="centered">В разработке</h2>
     #set($agreement = $model.getAgreement())
     #foreach($shipment in $agreement.getShipmentsList())
-        #parse("templates/statusscreen/shipments.vm")
+        #if(!$shipment.getStatus().getId().equals("10501"))
+            #parse("templates/statusscreen/shipments.vm")
+        #end
     #end
     #foreach($agreement in $model.getAgreementsList())
         #foreach($shipment in $agreement.getShipmentsList())
-            #parse("templates/statusscreen/shipments.vm")
+            #if(!$shipment.getStatus().getId().equals("10501"))
+                #parse("templates/statusscreen/shipments.vm")
+            #end
         #end
     #end
     </div>

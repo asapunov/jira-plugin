@@ -1,7 +1,7 @@
 #set($invoiceAmount = false)
 <div class="aui-group">
     <div class="aui-item">
-        <div class="zonedlight">Счёт <a href="$baseURL/browse/$invoice.getKey()">$invoice.getKey()</a> $invoice.getSummary()
+        <div class="zoned">Счёт <a href="$baseURL/browse/$invoice.getKey()">$invoice.getKey()</a> $invoice.getSummary()
 
             #set($organisation = $invoice.getOrganisation())
             #parse("templates/statusscreen/organisation.vm")

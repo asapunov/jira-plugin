@@ -36,6 +36,7 @@ public class ModelMapper {
         model.setBuyAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10522, issue));
         Double newSaleAmount = issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10056, issue);
         model.setUrl(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10047, issue));
+        model.setInvoicesList(invoiceModelListFactory(issue, issueWorker, CUSTOM_FIELD_10229));
         if (newSaleAmount == null || newSaleAmount.isNaN()) {
             model.setSaleAmount(issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10518, issue));
         } else {
@@ -207,14 +208,14 @@ public class ModelMapper {
                         }
                     }
                 }
-                if (am.getInputInvoicesList() != null) {
-                    for (InvoiceModel in : am.getInputInvoicesList()) {
-                        amount = in.getAmount();
-                        if (amount != null) {
-                            in.setAmount(amount - amount * VAT_COEFFICIENT);
-                        }
-                    }
-                }
+//                if (am.getInputInvoicesList() != null) {
+//                    for (InvoiceModel in : am.getInputInvoicesList()) {
+//                        amount = in.getAmount();
+//                        if (amount != null) {
+//                            in.setAmount(amount - amount * VAT_COEFFICIENT);
+//                        }
+//                    }
+//                }
             }
         }
     }
