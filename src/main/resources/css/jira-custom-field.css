@@ -4,10 +4,10 @@ form.ajs-dirty-warning-exempt.aui {
     align-items: flex-start;
 }
 
-div.save-options{
-    position: relative!important;
-    align-self: end;
-    margin-left: 8px;
-    width: fit-content;
-    height: min-content;
-}
+/*div.save-options{*/
+/*    position: relative!important;*/
+/*    align-self: end;*/
+/*    margin-left: 8px;*/
+/*    width: min-content;*/
+/*    height: min-content;*/
+/*}*/

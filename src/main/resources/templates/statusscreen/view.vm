@@ -52,8 +52,8 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                     #end
                     #set($financeModel = $model.getFinanceModel())
                     #parse("templates/statusscreen/expenses.vm")
-                    #if($amountBuyerInvoiceSpecification != 0 && $amountSellerInvoiceSpecification)
-                        #set($finishAmountBuyer = $amountBuyerInvoiceSpecification + $fullInvoiceAmount + $expenses)
+                    #if($amountBuyerSpecification != 0 && $amountBuyerSpecification)
+                        #set($finishAmountBuyer = $amountBuyerSpecification + $fullInvoiceAmount + $expenses)
                     #else
                         #set($finishAmountBuyer = $amountBuyerAgreement + $fullInvoiceAmount + $expenses)
                     #end

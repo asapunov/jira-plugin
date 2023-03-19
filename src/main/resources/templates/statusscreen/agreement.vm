@@ -29,7 +29,7 @@
                     #end
                 </div>
             </div>
-            #set($amountInvoiceSpecification = 0)
+            #set($amountSpecification = 0)
             #foreach($specification in $agreement.getSpecificationsList())
                 #if(!$specification.getStatus().getId().equals("10501"))
                     #parse("templates/statusscreen/specification.vm")
