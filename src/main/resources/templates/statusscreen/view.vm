@@ -24,7 +24,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                         #if($amountSellerAgreement != 0 && $amountSellerAgreement)
                             #set($finishAmountSeller = $amountSellerAgreement)
                         #else
-                            #set($finishAmountSeller = $model.setSaleAmount())
+                            #set($finishAmountSeller = $model.getSaleAmount())
                         #end
                     #end
                 #else
@@ -35,13 +35,17 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                 #if(!$model.getAgreementsList().isEmpty())
                     <h2 class="centered">Договоры с поставщиками</h2>
                     #set($amountBuyerAgreement = 0)
-                    #set($amountBuyerSpecification = 0)
                     #set($fullInvoiceAmount = 0)
+                    #set($endAgreementAmount = 0)
                     #foreach($agreement in $model.getAgreementsList())
+##                        Если задача не имеет статус "Архив" (10501)
                         #if(!$agreement.getStatus().getId().equals("10501"))
                             #parse( "templates/statusscreen/agreement.vm" )
-                            #set($amountBuyerAgreement = $amountBuyerAgreement + $agreement.getAmount())
-                            #set($amountBuyerSpecification = $amountSpecification + $amountBuyerSpecification)
+                            #if($amountSpecification != 0 && $amountSpecification)
+                                #set($endAgreementAmount = $amountSpecification + $endAgreementAmount)
+                            #else
+                                #set($endAgreementAmount = $agreement.getAmount() + $endAgreementAmount)
+                            #end
                         #end
                     #end
                     #foreach($invoice in $model.getInvoicesList())
@@ -52,11 +56,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                     #end
                     #set($financeModel = $model.getFinanceModel())
                     #parse("templates/statusscreen/expenses.vm")
-                    #if($amountBuyerSpecification != 0 && $amountBuyerSpecification)
-                        #set($finishAmountBuyer = $amountBuyerSpecification + $fullInvoiceAmount + $expenses)
-                    #else
-                        #set($finishAmountBuyer = $amountBuyerAgreement + $fullInvoiceAmount + $expenses)
-                    #end
+                        #set($finishAmountBuyer = $endAgreementAmount + $fullInvoiceAmount + $expenses)
                 #else
                     <h2 class="centered">Договоров с поставщиками нет</h2>
                 #end

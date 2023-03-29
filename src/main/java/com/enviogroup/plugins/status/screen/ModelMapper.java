@@ -119,8 +119,7 @@ public class ModelMapper {
                 specificationModel.setDetailedInformation((Collection<Carrier>) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_12500, specificationIssue));
                 specificationModel.setDeliveryTime((Timestamp) issueWorker.getObjectCustomFieldValue(CUSTOM_FIELD_10112, specificationIssue));
                 try {
-                    Issue org = isOrgOurs((issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10341)).get(0)) ?
-                            issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10343).get(0) : issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10341).get(0);
+                    Issue org = isOrgOurs((issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10341)).get(0)) ? issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10343).get(0) : issueWorker.getMutableIssuesList(specificationIssue, CUSTOM_FIELD_10341).get(0);
                     specificationModel.setOrganisation(organisationModelFactory(org, issueWorker));
                 } catch (Exception e) {
                     specificationModel.setOrganisation(null);
@@ -142,8 +141,7 @@ public class ModelMapper {
                 shipmentModel.setStatus(shipmentIssue.getStatus());
                 shipmentModel.setSummary(shipmentIssue.getSummary());
                 try {
-                    Issue org = isOrgOurs((issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10346)).get(0)) ?
-                            issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10348).get(0) : issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10346).get(0);
+                    Issue org = isOrgOurs((issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10346)).get(0)) ? issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10348).get(0) : issueWorker.getMutableIssuesList(shipmentIssue, CUSTOM_FIELD_10346).get(0);
                     shipmentModel.setOrganisation(organisationModelFactory(org, issueWorker));
                 } catch (Exception e) {
                     shipmentModel.setOrganisation(null);
@@ -194,30 +192,33 @@ public class ModelMapper {
     }
 
     private void editModelAmountWithVAT(TenderModel model) {
-        if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() == 0) {
-            for (AgreementModel am : model.getAgreementsList()) {
-                Double amount = am.getAmount();
-                if (amount != null) {
-                    am.setAmount(amount - amount * am.getValueAddedTax());
-                }
-                if (am.getSpecificationsList() != null) {
-                    for (SpecificationModel sp : am.getSpecificationsList()) {
-                        amount = sp.getAmount();
-                        if (amount != null) {
-                            sp.setAmount(amount - amount * VAT_COEFFICIENT);
-                        }
+        if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() != 0) {
+            Double agreementAmount = model.getAgreement().getAmount();
+            model.getAgreement().setAmount(agreementAmount * VAT_COEFFICIENT);
+        }
+        for (AgreementModel am : model.getAgreementsList()) {
+            Double agreementAmount = am.getAmount();
+            if (agreementAmount != null) {
+                am.setAmount(agreementAmount * VAT_COEFFICIENT);
+            }
+            if (am.getSpecificationsList() != null) {
+                for (SpecificationModel sp : am.getSpecificationsList()) {
+                    Double specificationAmount = sp.getAmount();
+                    if (specificationAmount != null) {
+                        sp.setAmount(specificationAmount * VAT_COEFFICIENT);
                     }
                 }
+            }
+        }
 //                if (am.getInputInvoicesList() != null) {
 //                    for (InvoiceModel in : am.getInputInvoicesList()) {
 //                        amount = in.getAmount();
 //                        if (amount != null) {
-//                            in.setAmount(amount - amount * VAT_COEFFICIENT);
+//                            in.setAmount(amount * VAT_COEFFICIENT);
 //                        }
 //                    }
 //                }
-            }
-        }
+
     }
 
     private void setAgreementAlarm(AgreementModel agreementModel) {
