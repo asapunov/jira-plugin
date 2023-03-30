@@ -177,4 +177,30 @@ public class CustomField {
      */
     public static final Double VAT_COEFFICIENT = 5.0 / 6.0;
 
+    /**
+     * Id типа задачи "Письмо входящее"
+     */
+    public static final String INPUT_LETTER_ISSUE_TYPE_ID = "10401";
+    /**
+     * Id типа задачи "Письмо исходящее"
+     */
+    public static final String OUTPUT_LETTER_ISSUE_TYPE_ID = "10400";
+
+    /**
+     * Письмо входящее ответное
+     */
+    public static final Long CUSTOM_FIELD_12300 = 12300L;
+    /**
+     * Письмо входящее
+     */
+    public static final Long CUSTOM_FIELD_10541 = 10541L;
+    /**
+     * Письмо исходящее ответное
+     */
+    public static final Long CUSTOM_FIELD_10542 = 10542L;
+    /**
+     * Письмо исходящее
+     */
+    public static final Long CUSTOM_FIELD_12301 = 12301L;
+
 }

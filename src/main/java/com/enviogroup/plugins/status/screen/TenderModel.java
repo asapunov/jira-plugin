@@ -1,5 +1,7 @@
 package com.enviogroup.plugins.status.screen;
 
+import com.enviogroup.plugins.status.screen.letters.BaseLetterModel;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ public class TenderModel extends IssueModel {
     private FinanceModel financeModel;
     private List<AgreementModel> agreementsList = new ArrayList<>();
     private List<InvoiceModel> invoicesList = new ArrayList<>();
+
+    private List<BaseLetterModel> lettersList = new ArrayList<>();
 
     public TenderModel(String key) {
         super(key);
@@ -89,5 +93,17 @@ public class TenderModel extends IssueModel {
 
     public void setInvoicesList(List<InvoiceModel> invoicesList) {
         this.invoicesList = invoicesList;
+    }
+
+    public List<BaseLetterModel> getLettersList() {
+        return lettersList;
+    }
+
+    public void setLettersList(List<BaseLetterModel> lettersList) {
+        this.lettersList = lettersList;
+    }
+
+    public void addLetter(BaseLetterModel letter){
+        this.lettersList.add(letter);
     }
 }
