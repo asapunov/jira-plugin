@@ -81,63 +81,62 @@ public class ModelMapper {
         return model;
     }
 
-    public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
-        List<BaseLetterModel> lettersList = new ArrayList<>();
-        if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
-            for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
-                String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
-                if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
-                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, issueWorker, 0);
-                    if (inputLetter != null) {
-                        lettersList.add(inputLetter);
-                    }
-                } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
-                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, issueWorker, 0);
-                    if (outputLetter != null) {
-                        lettersList.add(outputLetter);
-                    }
-                }
-            }
-            return lettersList;
-        }
-        else {
-            return null;
-        }
-    }
-
-    public OutputLetterModel outputLetterModelFactory(Issue issue, IssueWorker issueWorker, int i) {
-        OutputLetterModel outputLetter = new InputLetterModel();
-        outputLetter.setKey(issue.getKey());
-        outputLetter.setStatus(issue.getStatus());
-        outputLetter.setSummary(issue.getSummary());
-        //outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0), issueWorker));
-        i++;
-        outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), issueWorker, i));
-        if (outputLetter.getParentInputLetter() == null) {
-            return outputLetter;
-        } else {
-            return null;
-        }
-    }
-
-    public InputLetterModel inputLetterModelFactory(Issue issue, IssueWorker issueWorkerm, int i) {
-        //TODO: Пока не придумал как остановить если собщения замкнуться в круг
-        if (i > 20) {
-            return null;
-        }
-        InputLetterModel inputLetter = new InputLetterModel();
-        inputLetter.setKey(issue.getKey());
-        inputLetter.setStatus(issue.getStatus());
-        inputLetter.setSummary(issue.getSummary());
-        //inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0), issueWorker));
-        i++;
-        inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), issueWorker, i));
-        if (inputLetter.getParentOutputLetter() == null) {
-            return inputLetter;
-        } else {
-            return null;
-        }
-    }
+//    public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
+//        List<BaseLetterModel> lettersList = new ArrayList<>();
+//        if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
+//            for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
+//                String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
+//                if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
+//                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, 0);
+//                    if (inputLetter != null) {
+//                        lettersList.add(inputLetter);
+//                    }
+//                } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
+//                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, 0);
+//                    if (outputLetter != null) {
+//                        lettersList.add(outputLetter);
+//                    }
+//                }
+//            }
+//            return lettersList;
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    private OutputLetterModel outputLetterModelFactory(Issue issue, int i) {
+//        OutputLetterModel outputLetter = new InputLetterModel();
+//        outputLetter.setKey(issue.getKey());
+//        outputLetter.setStatus(issue.getStatus());
+//        outputLetter.setSummary(issue.getSummary());
+//        //outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0)));
+//        i++;
+//        outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), i));
+//        if (outputLetter.getParentInputLetter() == null) {
+//            return outputLetter;
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    private InputLetterModel inputLetterModelFactory(Issue issue, int i) {
+//        //TODO: Пока не придумал как остановить если сообщения замкнуться в круг
+//        if (i > 20) {
+//            return null;
+//        }
+//        InputLetterModel inputLetter = new InputLetterModel();
+//        inputLetter.setKey(issue.getKey());
+//        inputLetter.setStatus(issue.getStatus());
+//        inputLetter.setSummary(issue.getSummary());
+//        //inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0)));
+//        i++;
+//        inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), i));
+//        if (inputLetter.getParentOutputLetter() == null) {
+//            return inputLetter;
+//        } else {
+//            return null;
+//        }
+//    }
 
     public List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
         List<InvoiceModel> invoiceList = new ArrayList<>();
@@ -219,14 +218,19 @@ public class ModelMapper {
         String orgStatus = issueWorker.getStringValueFromLazyLoadedOptionCustomField(CUSTOM_FIELD_10121, orgIssue);
         if (orgStatus != null) {
             organisationModel.setOrgStatus(orgStatus);
-            if (ORGANISATION_STATUS_APPROVED.equals(orgStatus)) {
-                organisationModel.setStatusColor(ORGANISATION_STATUS_APPROVED_STATUS);
-            } else if (ORGANISATION_STATUS_NOT_APPROVED.equals(orgStatus)) {
-                organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_APPROVED_STATUS);
-            } else if (ORGANISATION_STATUS_NOT_VELIDATED.equals(orgStatus)) {
-                organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_VELIDATED_STATUS);
-            } else {
-                organisationModel.setStatusColor(ORGANISATION_STATUS_DEFAULT_STATUS);
+            switch (orgStatus) {
+                case ORGANISATION_STATUS_APPROVED:
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_APPROVED_STATUS);
+                    break;
+                case ORGANISATION_STATUS_NOT_APPROVED:
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_APPROVED_STATUS);
+                    break;
+                case ORGANISATION_STATUS_NOT_VELIDATED:
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_NOT_VELIDATED_STATUS);
+                    break;
+                default:
+                    organisationModel.setStatusColor(ORGANISATION_STATUS_DEFAULT_STATUS);
+                    break;
             }
         } else {
             organisationModel.setOrgStatus(ORGANISATION_STATUS_NOT_SET);
@@ -253,30 +257,37 @@ public class ModelMapper {
         if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() != 0) {
             Double agreementAmount = model.getAgreement().getAmount();
             model.getAgreement().setAmount(agreementAmount * VAT_COEFFICIENT);
+            for (SpecificationModel specificationModel : model.getAgreement().getSpecificationsList()) {
+                Double specificationAmount = specificationModel.getAmount();
+                if (specificationAmount != null) {
+                    specificationModel.setAmount(specificationAmount * VAT_COEFFICIENT);
+                }
+            }
         }
         for (AgreementModel am : model.getAgreementsList()) {
-            Double agreementAmount = am.getAmount();
-            if (agreementAmount != null) {
-                am.setAmount(agreementAmount * VAT_COEFFICIENT);
-            }
-            if (am.getSpecificationsList() != null) {
-                for (SpecificationModel sp : am.getSpecificationsList()) {
-                    Double specificationAmount = sp.getAmount();
-                    if (specificationAmount != null) {
-                        sp.setAmount(specificationAmount * VAT_COEFFICIENT);
+            if (am.getValueAddedTax() != 0) {
+                Double agreementAmount = am.getAmount();
+                if (agreementAmount != null) {
+                    am.setAmount(agreementAmount * VAT_COEFFICIENT);
+                }
+                if (am.getSpecificationsList() != null) {
+                    for (SpecificationModel sp : am.getSpecificationsList()) {
+                        Double specificationAmount = sp.getAmount();
+                        if (specificationAmount != null) {
+                            sp.setAmount(specificationAmount * VAT_COEFFICIENT);
+                        }
                     }
                 }
             }
         }
-//                if (am.getInputInvoicesList() != null) {
-//                    for (InvoiceModel in : am.getInputInvoicesList()) {
-//                        amount = in.getAmount();
-//                        if (amount != null) {
-//                            in.setAmount(amount * VAT_COEFFICIENT);
-//                        }
-//                    }
+//        if (am.getInputInvoicesList() != null) {
+//            for (InvoiceModel in : am.getInputInvoicesList()) {
+//                amount = in.getAmount();
+//                if (amount != null) {
+//                    in.setAmount(amount * VAT_COEFFICIENT);
 //                }
-
+//            }
+//        }
     }
 
     private void setAgreementAlarm(AgreementModel agreementModel) {
