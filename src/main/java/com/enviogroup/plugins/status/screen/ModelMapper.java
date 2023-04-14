@@ -257,10 +257,12 @@ public class ModelMapper {
         if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() != 0) {
             Double agreementAmount = model.getAgreement().getAmount();
             model.getAgreement().setAmount(agreementAmount * VAT_COEFFICIENT);
-            for (SpecificationModel specificationModel : model.getAgreement().getSpecificationsList()) {
-                Double specificationAmount = specificationModel.getAmount();
-                if (specificationAmount != null) {
-                    specificationModel.setAmount(specificationAmount * VAT_COEFFICIENT);
+            if (model.getAgreement().getSpecificationsList() != null) {
+                for (SpecificationModel sp : model.getAgreement().getSpecificationsList()) {
+                    Double specificationAmount = sp.getAmount();
+                    if (specificationAmount != null) {
+                        sp.setAmount(specificationAmount * VAT_COEFFICIENT);
+                    }
                 }
             }
         }
