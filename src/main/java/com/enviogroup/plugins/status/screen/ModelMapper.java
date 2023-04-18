@@ -4,12 +4,12 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
-import com.enviogroup.plugins.status.screen.letters.BaseLetterModel;
-import com.enviogroup.plugins.status.screen.letters.InputLetterModel;
-import com.enviogroup.plugins.status.screen.letters.OutputLetterModel;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
@@ -77,7 +77,11 @@ public class ModelMapper {
             setAgreementAlarm(agreementModel);
             agreementModel.setShipmentsList(shipmentModelListFactory(issueDoc, issueWorker));
         }
-        editModelAmountWithVAT(model);
+        try {
+            editModelAmountWithVAT(model);
+        } catch (Exception ignored) {
+
+        }
         return model;
     }
 
@@ -257,7 +261,7 @@ public class ModelMapper {
         if (model.getAgreement() != null && model.getAgreement().getValueAddedTax() != 0) {
             Double agreementAmount = model.getAgreement().getAmount();
             model.getAgreement().setAmount(agreementAmount * VAT_COEFFICIENT);
-            if (model.getAgreement().getSpecificationsList() != null) {
+            if (model.getAgreement().getSpecificationsList() != null && !model.getAgreement().getSpecificationsList().isEmpty()) {
                 for (SpecificationModel sp : model.getAgreement().getSpecificationsList()) {
                     Double specificationAmount = sp.getAmount();
                     if (specificationAmount != null) {
@@ -266,17 +270,19 @@ public class ModelMapper {
                 }
             }
         }
-        for (AgreementModel am : model.getAgreementsList()) {
-            if (am.getValueAddedTax() != 0) {
-                Double agreementAmount = am.getAmount();
-                if (agreementAmount != null) {
-                    am.setAmount(agreementAmount * VAT_COEFFICIENT);
-                }
-                if (am.getSpecificationsList() != null) {
-                    for (SpecificationModel sp : am.getSpecificationsList()) {
-                        Double specificationAmount = sp.getAmount();
-                        if (specificationAmount != null) {
-                            sp.setAmount(specificationAmount * VAT_COEFFICIENT);
+        if (model.getAgreementsList() != null && !model.getAgreementsList().isEmpty()) {
+            for (AgreementModel am : model.getAgreementsList()) {
+                if (am.getValueAddedTax() != 0) {
+                    Double agreementAmount = am.getAmount();
+                    if (agreementAmount != null) {
+                        am.setAmount(agreementAmount * VAT_COEFFICIENT);
+                    }
+                    if (am.getSpecificationsList() != null && !am.getSpecificationsList().isEmpty()) {
+                        for (SpecificationModel sp : am.getSpecificationsList()) {
+                            Double specificationAmount = sp.getAmount();
+                            if (specificationAmount != null) {
+                                sp.setAmount(specificationAmount * VAT_COEFFICIENT);
+                            }
                         }
                     }
                 }
