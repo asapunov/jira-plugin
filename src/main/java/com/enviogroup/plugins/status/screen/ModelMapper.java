@@ -4,12 +4,12 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.enviogroup.plugins.accountCF.Carrier;
 import com.enviogroup.plugins.documentation.IssueWorker;
+import com.enviogroup.plugins.status.screen.letters.BaseLetterModel;
+import com.enviogroup.plugins.status.screen.letters.InputLetterModel;
+import com.enviogroup.plugins.status.screen.letters.OutputLetterModel;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.enviogroup.plugins.status.screen.CustomField.*;
 
@@ -85,62 +85,62 @@ public class ModelMapper {
         return model;
     }
 
-//    public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
-//        List<BaseLetterModel> lettersList = new ArrayList<>();
-//        if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
-//            for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
-//                String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
-//                if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
-//                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, 0);
-//                    if (inputLetter != null) {
-//                        lettersList.add(inputLetter);
-//                    }
-//                } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
-//                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, 0);
-//                    if (outputLetter != null) {
-//                        lettersList.add(outputLetter);
-//                    }
-//                }
-//            }
-//            return lettersList;
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    private OutputLetterModel outputLetterModelFactory(Issue issue, int i) {
-//        OutputLetterModel outputLetter = new InputLetterModel();
-//        outputLetter.setKey(issue.getKey());
-//        outputLetter.setStatus(issue.getStatus());
-//        outputLetter.setSummary(issue.getSummary());
-//        //outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0)));
-//        i++;
-//        outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), i));
-//        if (outputLetter.getParentInputLetter() == null) {
-//            return outputLetter;
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    private InputLetterModel inputLetterModelFactory(Issue issue, int i) {
-//        //TODO: Пока не придумал как остановить если сообщения замкнуться в круг
-//        if (i > 20) {
-//            return null;
-//        }
-//        InputLetterModel inputLetter = new InputLetterModel();
-//        inputLetter.setKey(issue.getKey());
-//        inputLetter.setStatus(issue.getStatus());
-//        inputLetter.setSummary(issue.getSummary());
-//        //inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0)));
-//        i++;
-//        inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), i));
-//        if (inputLetter.getParentOutputLetter() == null) {
-//            return inputLetter;
-//        } else {
-//            return null;
-//        }
-//    }
+    public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
+        List<BaseLetterModel> lettersList = new ArrayList<>();
+        if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
+            for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
+                String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
+                if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
+                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, 0);
+                    if (inputLetter != null) {
+                        lettersList.add(inputLetter);
+                    }
+                } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
+                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, 0);
+                    if (outputLetter != null) {
+                        lettersList.add(outputLetter);
+                    }
+                }
+            }
+            return lettersList;
+        } else {
+            return null;
+        }
+    }
+
+    private OutputLetterModel outputLetterModelFactory(Issue issue, int i) {
+        OutputLetterModel outputLetter = new InputLetterModel();
+        outputLetter.setKey(issue.getKey());
+        outputLetter.setStatus(issue.getStatus());
+        outputLetter.setSummary(issue.getSummary());
+        //outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0)));
+        i++;
+        outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), i));
+        if (outputLetter.getParentInputLetter() == null) {
+            return outputLetter;
+        } else {
+            return null;
+        }
+    }
+
+    private InputLetterModel inputLetterModelFactory(Issue issue, int i) {
+
+        if (i > 20) {
+            return null;
+        }
+        InputLetterModel inputLetter = new InputLetterModel();
+        inputLetter.setKey(issue.getKey());
+        inputLetter.setStatus(issue.getStatus());
+        inputLetter.setSummary(issue.getSummary());
+        //inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0)));
+        i++;
+        inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), i));
+        if (inputLetter.getParentOutputLetter() == null) {
+            return inputLetter;
+        } else {
+            return null;
+        }
+    }
 
     public List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
         List<InvoiceModel> invoiceList = new ArrayList<>();
