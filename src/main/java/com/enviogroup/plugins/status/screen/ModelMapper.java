@@ -43,7 +43,8 @@ public class ModelMapper {
             model.setSaleAmount(newSaleAmount);
         }
         model.setFinanceModel(financeModelFactory(issue, issueWorker));
-
+        List<BaseLetterModel> pepe = lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000);
+        model.setLettersList(pepe);
         Map<Integer, Object> documentsMap = issueWorker.issueMap(issue, CUSTOM_FIELD_10327);
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
@@ -91,12 +92,12 @@ public class ModelMapper {
             for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
                 String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
                 if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
-                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, 0);
+                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue);
                     if (inputLetter != null) {
                         lettersList.add(inputLetter);
                     }
                 } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
-                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, 0);
+                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue);
                     if (outputLetter != null) {
                         lettersList.add(outputLetter);
                     }
@@ -108,37 +109,35 @@ public class ModelMapper {
         }
     }
 
-    private OutputLetterModel outputLetterModelFactory(Issue issue, int i) {
+    private final List<BaseLetterModel> letterModels = new ArrayList<>();
+
+    private OutputLetterModel outputLetterModelFactory(Issue issue) {
         OutputLetterModel outputLetter = new InputLetterModel();
         outputLetter.setKey(issue.getKey());
         outputLetter.setStatus(issue.getStatus());
         outputLetter.setSummary(issue.getSummary());
-        //outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0)));
-        i++;
-        outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), i));
-        if (outputLetter.getParentInputLetter() == null) {
-            return outputLetter;
-        } else {
+        outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0)));
+        outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0)));
+        if (letterModels.contains(outputLetter)) {
             return null;
+        } else {
+            letterModels.add(outputLetter);
+            return outputLetter;
         }
     }
 
-    private InputLetterModel inputLetterModelFactory(Issue issue, int i) {
-
-        if (i > 20) {
-            return null;
-        }
+    private InputLetterModel inputLetterModelFactory(Issue issue) {
         InputLetterModel inputLetter = new InputLetterModel();
         inputLetter.setKey(issue.getKey());
         inputLetter.setStatus(issue.getStatus());
         inputLetter.setSummary(issue.getSummary());
-        //inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0)));
-        i++;
-        inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), i));
-        if (inputLetter.getParentOutputLetter() == null) {
-            return inputLetter;
-        } else {
+        inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0)));
+        inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0)));
+        if (letterModels.contains(inputLetter)) {
             return null;
+        } else {
+            letterModels.add(inputLetter);
+            return inputLetter;
         }
     }
 

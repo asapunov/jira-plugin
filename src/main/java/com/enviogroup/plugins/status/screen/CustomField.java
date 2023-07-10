@@ -202,5 +202,8 @@ public class CustomField {
      * Письмо исходящее
      */
     public static final Long CUSTOM_FIELD_12301 = 12301L;
-
+    /**
+     * Письма связанные с тендером
+     */
+    public static final Long CUSTOM_FIELD_11000 = 11000L;
 }
