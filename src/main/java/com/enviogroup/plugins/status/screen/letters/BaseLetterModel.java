@@ -12,4 +12,24 @@ public class BaseLetterModel extends IssueModel {
     public void setLetterType(String letterType) {
         this.letterType = letterType;
     }
+
+    private BaseLetterModel childLetter;
+
+    private BaseLetterModel parentLetter;
+
+    public BaseLetterModel getChildLetter() {
+        return childLetter;
+    }
+
+    public void setChildLetter(BaseLetterModel childLetter) {
+        this.childLetter = childLetter;
+    }
+
+    public BaseLetterModel getParentLetter() {
+        return parentLetter;
+    }
+
+    public void setParentLetter(BaseLetterModel parentLetter) {
+        this.parentLetter = parentLetter;
+    }
 }

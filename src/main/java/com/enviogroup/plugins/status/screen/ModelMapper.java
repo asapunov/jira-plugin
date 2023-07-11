@@ -92,13 +92,13 @@ public class ModelMapper {
             for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
                 String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
                 if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
-                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue);
-                    if (inputLetter != null && !letterModels.contains(inputLetter)) {
+                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, null);
+                    if (inputLetter != null) {
                         lettersList.add(inputLetter);
                     }
                 } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
-                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue);
-                    if (outputLetter != null && !letterModels.contains(outputLetter)) {
+                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, null);
+                    if (outputLetter != null) {
                         lettersList.add(outputLetter);
                     }
                 }
@@ -109,44 +109,50 @@ public class ModelMapper {
         }
     }
 
-    private final List<BaseLetterModel> letterModels = new ArrayList<>();
+    private final List<String> letterModels = new ArrayList<>();
 
-    private OutputLetterModel outputLetterModelFactory(Issue issue) {
+    private OutputLetterModel outputLetterModelFactory(Issue issue, InputLetterModel parentModel) {
+        if (letterModels.contains(issue.getKey())) {
+            return null;
+        }
         OutputLetterModel outputLetter = new OutputLetterModel();
         outputLetter.setKey(issue.getKey());
         outputLetter.setStatus(issue.getStatus());
         outputLetter.setSummary(issue.getSummary());
-        if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).isEmpty()) {
-            outputLetter.setChildInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0)));
+        if (parentModel != null) {
+            outputLetter.setParentLetter(parentModel);
+        } else if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).isEmpty()) {
+            outputLetter.setParentLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), null));
         }
-//        if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).isEmpty()) {
-//            outputLetter.setParentInputLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0)));
-//        }
-//        if (letterModels.contains(outputLetter)) {
-//            return null;
-//        } else {
-            letterModels.add(outputLetter);
-            return outputLetter;
-//        }
+        if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).isEmpty()) {
+            outputLetter.setChildLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0), outputLetter));
+        }
+        letterModels.add(outputLetter.getKey());
+        return outputLetter;
+
     }
 
-    private InputLetterModel inputLetterModelFactory(Issue issue) {
+    private InputLetterModel inputLetterModelFactory(Issue issue, OutputLetterModel parentModel) {
+        if (letterModels.contains(issue.getKey())) {
+            return null;
+        }
         InputLetterModel inputLetter = new InputLetterModel();
         inputLetter.setKey(issue.getKey());
         inputLetter.setStatus(issue.getStatus());
         inputLetter.setSummary(issue.getSummary());
+        if (parentModel != null) {
+            inputLetter.setParentLetter(parentModel);
+        } else if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).isEmpty()) {
+            inputLetter.setParentLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), null));
+        }
         if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).isEmpty()) {
-            inputLetter.setChildOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0)));
+            inputLetter.setChildLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0), inputLetter));
         }
 //        if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).isEmpty()) {
 //            inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0)));
 //        }
-        if (letterModels.contains(inputLetter)) {
-            return null;
-        } else {
-            letterModels.add(inputLetter);
-            return inputLetter;
-        }
+        letterModels.add(inputLetter.getKey());
+        return inputLetter;
     }
 
     public List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
