@@ -43,8 +43,8 @@ public class ModelMapper {
             model.setSaleAmount(newSaleAmount);
         }
         model.setFinanceModel(financeModelFactory(issue, issueWorker));
-        List<BaseLetterModel> pepe = lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000);
-        model.setLettersList(pepe);
+        List<BaseLetterModel> baseLetters = lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000);
+        model.setLettersList(baseLetters);
         Map<Integer, Object> documentsMap = issueWorker.issueMap(issue, CUSTOM_FIELD_10327);
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
@@ -87,7 +87,7 @@ public class ModelMapper {
     }
 
     public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
-        List<BaseLetterModel> lettersList = new ArrayList<>();
+        List<BaseLetterModel> lettersList = new LinkedList<>();
         if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
             for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
                 String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
@@ -148,14 +148,11 @@ public class ModelMapper {
         if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).isEmpty()) {
             inputLetter.setChildLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0), inputLetter));
         }
-//        if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).isEmpty()) {
-//            inputLetter.setParentOutputLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0)));
-//        }
         letterModels.add(inputLetter.getKey());
         return inputLetter;
     }
 
-    public List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
+    private List<InvoiceModel> invoiceModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
         List<InvoiceModel> invoiceList = new ArrayList<>();
         if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
             for (Issue invoiceIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
@@ -327,5 +324,18 @@ public class ModelMapper {
 
         }
     }
+
+//    /**
+//     * Сортирует цепь писем так, чтобы
+//     *
+//     * @param letterModel Модель пиьсма
+//     * @return
+//     */
+//    private BaseLetterModel sortLetterChain (BaseLetterModel letterModel) {
+//        while (letterModel.getParentLetter() != null) {
+//            letterModel = letterModel.getParentLetter();
+//        }
+//        return letterModel;
+//    }
 }
 

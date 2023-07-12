@@ -1,10 +1,11 @@
 package com.enviogroup.plugins.status.screen;
 
 import com.atlassian.jira.issue.status.Status;
+import com.enviogroup.plugins.status.screen.iterfaces.IssueModelImpl;
 
 import java.util.Objects;
 
-public abstract class IssueModel {
+public abstract class IssueModel implements IssueModelImpl {
     private String key;
 
     private String summary;

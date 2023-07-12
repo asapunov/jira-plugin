@@ -32,4 +32,44 @@ public class BaseLetterModel extends IssueModel {
     public void setParentLetter(BaseLetterModel parentLetter) {
         this.parentLetter = parentLetter;
     }
+
+    public int getChildCount() {
+        BaseLetterModel letterModel = this;
+        int i = 0;
+        while (letterModel.getChildLetter() != null) {
+            letterModel = letterModel.getChildLetter();
+            i++;
+        }
+        return i;
+    }
+
+    public int getParentCount() {
+        BaseLetterModel letterModel = this;
+        int i = 0;
+        while (letterModel.getParentLetter() != null) {
+            letterModel = letterModel.getParentLetter();
+            i++;
+        }
+        return i;
+    }
+
+    public int getSize() {
+        return getChildCount() + getParentCount();
+    }
+
+    public BaseLetterModel getFirstParent() {
+        BaseLetterModel letterModel = this;
+        while (letterModel.getParentLetter() != null) {
+            letterModel = letterModel.getParentLetter();
+        }
+        return letterModel;
+    }
+
+    public BaseLetterModel getLastChild() {
+        BaseLetterModel letterModel = this;
+        while (letterModel.getChildLetter() != null) {
+            letterModel = letterModel.getChildLetter();
+        }
+        return letterModel;
+    }
 }

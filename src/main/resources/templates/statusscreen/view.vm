@@ -104,6 +104,22 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         #end
     #end
     </div>
+    <div class="tabs-pane" id="tab-win-status-3">
+        ##        <h2 class="centered">В разработке</h2>
+    #set($agreement = $model.getAgreement())
+    #foreach($shipment in $agreement.getShipmentsList())
+        #if(!$shipment.getStatus().getId().equals("10501"))
+            #parse("templates/statusscreen/shipments.vm")
+        #end
+    #end
+    #foreach($agreement in $model.getAgreementsList())
+        #foreach($shipment in $agreement.getShipmentsList())
+            #if(!$shipment.getStatus().getId().equals("10501"))
+                #parse("templates/statusscreen/shipments.vm")
+            #end
+        #end
+    #end
+    </div>
 </div>
 
 
