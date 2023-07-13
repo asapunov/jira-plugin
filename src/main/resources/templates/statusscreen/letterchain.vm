@@ -1,0 +1,41 @@
+<div class="aui-group">
+
+    <div class="aui-item">
+        <div class="zoned">
+            <a href="$baseURL/browse/$agreement.getKey()">$agreement.getKey()</a> $agreement.getSummary()
+            #set($organisation = $agreement.getOrganisation())
+            #parse("templates/statusscreen/organisation.vm")
+            #set($organisation = false)
+            <div class="aui-group aui-group-split">
+                <div class="aui-item">
+                    $soyRenderer.render(
+                        'jira.webresources:issue-statuses',
+                        'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                        'issueStatus': $agreement.getStatus(),
+                        'isSubtle': true,
+                        'isCompact': false,
+                        'maxWidth': 150
+                    })
+                </div>
+                <div class="aui-item">
+                    #set($agreementAmount = $agreement.getAmount())
+                    #if($agreementAmount)
+                        Стоимость: $number.format($agreementAmount)
+                    #end
+                </div>
+            </div>
+            #set($amountSpecification = 0)
+            #foreach($specification in $agreement.getSpecificationsList())
+                #if(!$specification.getStatus().getId().equals("10501"))
+                    #parse("templates/statusscreen/specification.vm")
+                    #set($amountSpecification = $specification.getAmount() + $amountSpecification)
+                #end
+            #end
+            ##            #foreach($invoice in $agreement.getInputInvoicesList())
+            ##                #parse("templates/statusscreen/invoice.vm")
+            ##                #set($amountInvoice = $invoice.getAmount() + $amountInvoice)
+            ##            #end
+        </div>
+
+    </div>
+</div>

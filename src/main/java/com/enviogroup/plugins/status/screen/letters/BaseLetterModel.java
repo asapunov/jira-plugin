@@ -2,6 +2,9 @@ package com.enviogroup.plugins.status.screen.letters;
 
 import com.enviogroup.plugins.status.screen.IssueModel;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class BaseLetterModel extends IssueModel {
     private String letterType;
 
@@ -71,5 +74,12 @@ public class BaseLetterModel extends IssueModel {
             letterModel = letterModel.getChildLetter();
         }
         return letterModel;
+    }
+
+    public List<BaseLetterModel> getChainAsLinkedList() {
+        BaseLetterModel letterModel = this;
+        LinkedList<BaseLetterModel> letterChain = new LinkedList<>();
+        letterChain.add(letterModel);
+        while (letterModel.getChildLetter() != null)
     }
 }

@@ -7,6 +7,9 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         <li class="menu-item">
             <a href="#tab-win-status-2">Отгрузки</a>
         </li>
+        <li class="menu-item">
+            <a href="#tab-win-status-3">Цепочки писем</a>
+        </li>
     </ul>
     <div class="tabs-pane active-pane" id="tab-win-status-1">
         <h1 class="centered">Процедура № <a href="$model.getUrl()" target="_blank">$model.getProcedureNumber()</a></h1>
@@ -38,7 +41,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                     #set($fullInvoiceAmount = 0)
                     #set($endAgreementAmount = 0)
                     #foreach($agreement in $model.getAgreementsList())
-##                        Если задача не имеет статус "Архив" (10501)
+                        ##                        Если задача не имеет статус "Архив" (10501)
                         #if(!$agreement.getStatus().getId().equals("10501"))
                             #parse( "templates/statusscreen/agreement.vm" )
                             #if($amountSpecification != 0 && $amountSpecification)
@@ -56,7 +59,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
                     #end
                     #set($financeModel = $model.getFinanceModel())
                     #parse("templates/statusscreen/expenses.vm")
-                        #set($finishAmountBuyer = $endAgreementAmount + $fullInvoiceAmount + $expenses)
+                    #set($finishAmountBuyer = $endAgreementAmount + $fullInvoiceAmount + $expenses)
                 #else
                     <h2 class="centered">Договоров с поставщиками нет</h2>
                 #end
@@ -88,6 +91,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
             </div>
         </div>
     </div>
+
     <div class="tabs-pane" id="tab-win-status-2">
         ##        <h2 class="centered">В разработке</h2>
     #set($agreement = $model.getAgreement())
@@ -104,21 +108,11 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
         #end
     #end
     </div>
+
     <div class="tabs-pane" id="tab-win-status-3">
-        ##        <h2 class="centered">В разработке</h2>
-    #set($agreement = $model.getAgreement())
-    #foreach($shipment in $agreement.getShipmentsList())
-        #if(!$shipment.getStatus().getId().equals("10501"))
-            #parse("templates/statusscreen/shipments.vm")
+        #foreach($letterChain in $model.getLettersList())
+            #parse("templates/statusscreen/letterChain.vm")
         #end
-    #end
-    #foreach($agreement in $model.getAgreementsList())
-        #foreach($shipment in $agreement.getShipmentsList())
-            #if(!$shipment.getStatus().getId().equals("10501"))
-                #parse("templates/statusscreen/shipments.vm")
-            #end
-        #end
-    #end
     </div>
 </div>
 

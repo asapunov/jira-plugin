@@ -43,8 +43,8 @@ public class ModelMapper {
             model.setSaleAmount(newSaleAmount);
         }
         model.setFinanceModel(financeModelFactory(issue, issueWorker));
-        List<BaseLetterModel> baseLetters = lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000);
-        model.setLettersList(baseLetters);
+        List<BaseLetterModel> sortedLetters = sortLetterChain(lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000));
+        model.setLettersList(sortedLetters);
         Map<Integer, Object> documentsMap = issueWorker.issueMap(issue, CUSTOM_FIELD_10327);
         for (Map.Entry entry : documentsMap.entrySet()) {
             Issue issueDoc = (MutableIssue) entry.getValue();
@@ -325,17 +325,16 @@ public class ModelMapper {
         }
     }
 
-//    /**
-//     * Сортирует цепь писем так, чтобы
-//     *
-//     * @param letterModel Модель пиьсма
-//     * @return
-//     */
-//    private BaseLetterModel sortLetterChain (BaseLetterModel letterModel) {
-//        while (letterModel.getParentLetter() != null) {
-//            letterModel = letterModel.getParentLetter();
-//        }
-//        return letterModel;
-//    }
+    /**
+     * Сортирует список цепочек по количесту писем в ней
+     *
+     * @param letterModels Список цепочек пиьсем
+     * @return Отсортированный список
+     */
+    private List<BaseLetterModel> sortLetterChain(List<BaseLetterModel> letterModels) {
+        letterModels.replaceAll(BaseLetterModel::getFirstParent);
+        letterModels.sort(Comparator.comparingInt(BaseLetterModel::getSize).reversed());
+        return letterModels;
+    }
 }
 
