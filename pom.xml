@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.plugins.customfield</groupId>
     <artifactId>jira-custom-field</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
     <organization>
         <name>Enviogroup</name>
         <url>http://www.enviogroup.ru/</url>

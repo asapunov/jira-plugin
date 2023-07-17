@@ -6,6 +6,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BaseLetterModel extends IssueModel {
+
+
+    public BaseLetterModel() {
+
+    }
+
+
+    public BaseLetterModel(BaseLetterModel that) {
+        this.childLetter = that.getChildLetter();
+        this.parentLetter = that.getParentLetter();
+        this.letterType = that.getLetterType();
+        this.setKey(that.getKey());
+        this.setSummary(that.getSummary());
+        this.setStatus(that.getStatus());
+    }
+
     private String letterType;
 
     public String getLetterType() {
@@ -76,10 +92,11 @@ public class BaseLetterModel extends IssueModel {
         return letterModel;
     }
 
-    public List<BaseLetterModel> getChainAsLinkedList() {
-        BaseLetterModel letterModel = this;
-        LinkedList<BaseLetterModel> letterChain = new LinkedList<>();
-        letterChain.add(letterModel);
-        while (letterModel.getChildLetter() != null)
-    }
+//    LinkedList<BaseLetterModel> letterChain = new LinkedList<>();
+//    public List<BaseLetterModel> getChainAsLinkedList() {
+//        BaseLetterModel letterModel = this;
+//
+//        letterChain.add(letterModel);
+//        while (letterModel.getChildLetter() != null)
+//    }
 }

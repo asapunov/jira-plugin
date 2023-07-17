@@ -111,7 +111,7 @@ $webResourceManager.requireResourcesForContext("status-screen-resources")
 
     <div class="tabs-pane" id="tab-win-status-3">
         #foreach($letterChain in $model.getLettersList())
-            #parse("templates/statusscreen/letterChain.vm")
+            #parse("templates/statusscreen/letterchain.vm")
         #end
     </div>
 </div>

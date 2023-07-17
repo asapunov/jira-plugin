@@ -18,7 +18,7 @@ public class TenderModel extends IssueModel {
     private List<AgreementModel> agreementsList = new ArrayList<>();
     private List<InvoiceModel> invoicesList = new ArrayList<>();
 
-    private List<BaseLetterModel> lettersList = new ArrayList<>();
+    private List<List<BaseLetterModel>> lettersList = new ArrayList<>();
 
     public TenderModel(String key) {
         super(key);
@@ -95,15 +95,11 @@ public class TenderModel extends IssueModel {
         this.invoicesList = invoicesList;
     }
 
-    public List<BaseLetterModel> getLettersList() {
+    public List<List<BaseLetterModel>> getLettersList() {
         return lettersList;
     }
 
-    public void setLettersList(List<BaseLetterModel> lettersList) {
+    public void setLettersList(List<List<BaseLetterModel>> lettersList) {
         this.lettersList = lettersList;
-    }
-
-    public void addLetter(BaseLetterModel letter){
-        this.lettersList.add(letter);
     }
 }

@@ -43,7 +43,7 @@ public class ModelMapper {
             model.setSaleAmount(newSaleAmount);
         }
         model.setFinanceModel(financeModelFactory(issue, issueWorker));
-        List<BaseLetterModel> sortedLetters = sortLetterChain(lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000));
+        List<List<BaseLetterModel>> sortedLetters = sortLetterChain(lettersModelListFactory(issue, issueWorker, CUSTOM_FIELD_11000));
         model.setLettersList(sortedLetters);
         Map<Integer, Object> documentsMap = issueWorker.issueMap(issue, CUSTOM_FIELD_10327);
         for (Map.Entry entry : documentsMap.entrySet()) {
@@ -331,10 +331,19 @@ public class ModelMapper {
      * @param letterModels Список цепочек пиьсем
      * @return Отсортированный список
      */
-    private List<BaseLetterModel> sortLetterChain(List<BaseLetterModel> letterModels) {
+    private List<List<BaseLetterModel>> sortLetterChain(List<BaseLetterModel> letterModels) {
         letterModels.replaceAll(BaseLetterModel::getFirstParent);
         letterModels.sort(Comparator.comparingInt(BaseLetterModel::getSize).reversed());
-        return letterModels;
+        List<List<BaseLetterModel>> lettersChains = new ArrayList<>();
+        for (BaseLetterModel letterModel : letterModels) {
+            List<BaseLetterModel> chain = new LinkedList<>();
+            while (letterModel != null) {
+                chain.add(new BaseLetterModel(letterModel));
+                letterModel = letterModel.getChildLetter();
+            }
+            lettersChains.add(chain);
+        }
+        return lettersChains;
     }
 }
 
