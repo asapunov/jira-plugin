@@ -14,5 +14,12 @@ public class InputLetterModel extends OutputLetterModel {
         this.senderOrg = senderOrg;
     }
 
+    private static final String INPUT_LETTER_TYPE = "Входящее письмо";
+
+    @Override
+    public String getLetterType() {
+        return INPUT_LETTER_TYPE;
+    }
+
 
 }

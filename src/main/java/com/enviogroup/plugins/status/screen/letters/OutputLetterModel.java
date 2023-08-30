@@ -9,4 +9,10 @@ public class OutputLetterModel extends BaseLetterModel {
         return recipientOrg;
     }
 
+    private static final String OUTPUT_LETTER_TYPE = "Исходящее письмо";
+
+    @Override
+    public String getLetterType() {
+        return OUTPUT_LETTER_TYPE;
+    }
 }

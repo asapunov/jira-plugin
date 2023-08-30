@@ -332,6 +332,9 @@ public class ModelMapper {
      * @return Отсортированный список
      */
     private List<List<BaseLetterModel>> sortLetterChain(List<BaseLetterModel> letterModels) {
+        if (letterModels == null) {
+            return null;
+        }
         letterModels.replaceAll(BaseLetterModel::getFirstParent);
         letterModels.sort(Comparator.comparingInt(BaseLetterModel::getSize).reversed());
         List<List<BaseLetterModel>> lettersChains = new ArrayList<>();
