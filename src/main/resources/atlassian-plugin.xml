@@ -118,4 +118,12 @@
         <description key="tenders-rest-resource.description">The Tenders Rest Resource Plugin</description>
     </rest>
 
+    <!-- Панель тендера -->
+    <web-panel key="tender_right" name="document" location="atl.jira.view.issue.right.context" weight="110">
+        <context-provider class="com.enviogroup.plugins.panel.tender.RightPanel"/>
+        <resource type="velocity" name="view" location="templates/panel/tender/view.vm"/>
+        <label key="Панель"/>
+        <condition class="com.enviogroup.plugins.conditions.TenderWebPanelCondition"/>
+    </web-panel>
+
 </atlassian-plugin>
