@@ -1,37 +1,34 @@
 #if ($issue)
-    #set($NMC = $customFieldManager.getCustomFieldObjectByName('Сумма НМЦ в руб')) ## Сумма НМЦ в руб
-    #set($KP = $customFieldManager.getCustomFieldObjectByName('Сумма КП в руб')) ## Сумма КП в руб
-    #set($procurement = $customFieldManager.getCustomFieldObjectByName('Сумма закупки в руб')) ## Сумма закупки в руб
-    #set($margin = $customFieldManager.getCustomFieldObjectByName('Маржа в руб')) ## Маржа в руб
-    #set($marginPercent = $customFieldManager.getCustomFieldObjectByName('Маржа в %')) ## Маржа в %
-    #set($issueDocKey = $cf_10200.getValue($issue))
-    #set($issueDoc = $issueManager.getIssueObject($issueDocKey))
-    #macro (mac $field, $issue)
-        #if($field.getValue($issue).toString())
-            <p>$field.getName(): $number.format($field.getValue($issue).toString())</p>
+<table class="aui aui-table-sortable">
+    <thead>
+    <tr>
+        <th id="id" class="aui-table-column-issue-key">№</th>
+        <th id="summary">Тема</th>
+        <th id="status">Статус</th>
+        <th id="action">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach($so in $supplierOffers)
+        <tr class="aui-row-subtle">
+            <td headers="id"><a href="$baseURL/browse/$so.getKey()">$so.getKey()</a></td>
+            <td headers="summary">$so.getSummary()</td>
+            <td headers="status">
+                $soyRenderer.render(
+                    'jira.webresources:issue-statuses', 'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                    'issueStatus': $so.getStatus(),
+                    'isSubtle': false,
+                    'isCompact': false,
+                    'maxWidth': 250
+                })
+            </td>
+            <td headers="action">
+                <a id="button-$so.getKey()" class=""
+                   href="$baseURL/secure/AcceptPriceAction.jspa?issueId=$so.getKey()&parentId=$issue.getKey()">Согласовать</a>
+            </td>
+        </tr>
         #end
-    #end
-
-    #mac($NMC, $issue)
-    #mac($KP, $issue)
-    #mac($procurement, $issue)
-    #if($margin.getValue($issue).toString())
-    <p>Маржа: $margin.format($margin.getValue($issue).toString()) руб.
-        $marginPercent.format($marginPercent.getValue($issue).toString())%
-    </p>
-    #end
-##    <p>$NMC.getName(): $number.format($NMC.getValue($issue).toString()) </p>
-##    #if($KP.getValue($issue).toString())
-##    <p>$KP.getName(): $number.format($KP.getValue($issue).toString()) </p>
-##    #end
-##    #if($procurement.getValue($issue).toString())
-##    <p> $number.format($procurement.getValue($issue).toString())</p>
-##    #end
-##    #if($margin.getValue($issue).toString())
-##    <p> Маржа: $number.format($margin.getValue($issue).toString())</p>
-##    #end
-##    #if($marginPercent.getValue($issue).toString())
-##    <p> $number.format($marginPercent.getValue($issue).toString())</p>
-##    #end
+    </tbody>
+</table>
 
 #end

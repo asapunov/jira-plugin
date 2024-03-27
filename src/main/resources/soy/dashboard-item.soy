@@ -1,0 +1,131 @@
+{namespace Dashboard.Item.Tenders.Templates}
+
+/**
+* @param pluginName
+* @param version
+*/
+{template .Static}
+    <div id="dynamic-content"/>
+    <div>Welcome to <span class="aui-lozenge aui-lozenge-success">{$pluginName}</span> v{$version}!</div>
+{/template}
+
+/**
+* @param issues
+* @param data
+* @param context
+*/
+{template .IssueList}
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content">
+                <div class="aui-group">
+                    <div class="aui-item">
+                        <div class="zoned">
+                            <div class="aui-group">
+                                <div class="aui-item">
+                                    Сумма продажи: {$data.sumSaleAmount}
+                                </div>
+                                <div class="aui-item">
+                                    Сумма всех затрат: {$data.totalExpenses}
+                                </div>
+                                <div class="aui-item">
+                                    Сумма покупки: {$data.sumBuyAmount}
+                                </div>
+                                <div class="aui-item">
+                                    Логистические расходы: {$data.sumLogisticExpenses}
+                                </div>
+                                <div class="aui-item">
+                                    Финансовые расходы: {$data.sumFinanceExpenses}
+                                </div>
+                                <div class="aui-item">
+                                    Командировочные расходы: {$data.sumTravelExpenses}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content">
+                {foreach $issuePair in $issues}
+                    <div class="aui-group">
+                        {foreach $issue in $issuePair}
+                            <div class="aui-item">
+                                <div class="zoned">
+                                    <h3>
+                                        {call JIRA.Template.Util.Issue.Status.issueStatus}
+                                            {param issueStatus: $issue.status /}
+                                            {param isSubtle: false /}
+                                            {param isCompact: false /}
+                                        {/call}{sp}{sp}
+                                        <a href="{$context}/browse/{$issue.key}" target="_blank">{$issue.key}</a>{sp}
+
+                                        {$issue.summary}{sp}
+                                        [ {$issue.procedureNumber} ]</h3>
+                                    <div id="test-{$issue.key}" class="aui-group">
+                                        <div class="aui-item ">
+                                            <div class="zonedlight">
+                                                Сумма продажи: {$issue.saleAmount}
+                                            </div>
+
+                                        </div>
+                                        <div class="aui-item ">
+                                            <div class="zonedlight">
+                                                <p>Сумма покупки: {$issue.buyAmount}</p>
+                                                <p>Финансовые расходы: {$issue.financeModel.financeExpenses}</p>
+                                            </div>
+                                        </div>
+                                        <div class="aui-item ">
+                                            <div class="zonedlight">
+                                                <p>Логистические расходы: {$issue.financeModel.logisticExpenses}</p>
+                                                <p>Командировочные расходы: {$issue.financeModel.travelExpenses}</p>
+                                                <p>дополнительные расходы: {$issue.financeModel.travelExpenses}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {/foreach}
+
+                    </div>
+                {/foreach}
+            </section>
+        </div>
+    </div>
+{/template}
+
+/**
+*   Use this template if there is no issues in response
+*/
+{template .Empty}
+    No issues yet.
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Refresh">
+        </div>
+    </div>
+{/template}
+
+/**
+* configuration
+*/
+{template .Configuration}
+    <form class="aui">
+        <div class="field-group">
+            <label for="due-date-input">Due Date
+                <span class="aui-icon icon-required">(required)</span></label>
+            <input class="text medium-field" type="text"
+                   id="due-date-input" name="due-date-input" value="3w">
+            <div class="description">Syntax: 1(d|w|m)</div>
+        </div>
+        <div class="buttons-container">
+            <div class="buttons">
+                <input class="button submit" type="submit" value="Save" id="comment-save-button">
+                <a class="cancel" href="#">Cancel</a>
+            </div>
+        </div>
+    </form>
+{/template}

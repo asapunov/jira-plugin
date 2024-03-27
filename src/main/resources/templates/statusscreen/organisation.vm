@@ -1,0 +1,10 @@
+#if($organisation)
+<div class="aui-group">
+    <div class="aui-item">
+        <span data-tooltip="$organisation.getStatusColor()"
+              class="aui-lozenge jira-issue-status-lozenge-compact aui-lozenge-$organisation.getStatusColor()">$organisation.getStatus()</span>
+        Организация: <a
+            href="$baseURL/browse/$organisation.getKey()">$organisation.getKey()</a> $organisation.getSummary()
+    </div>
+</div>
+#end

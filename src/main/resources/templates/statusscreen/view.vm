@@ -1,0 +1,120 @@
+$webResourceManager.requireResourcesForContext("status-screen-resources")
+<div class="aui-tabs horizontal-tabs" xmlns="http://www.w3.org/1999/html">
+    <ul class="tabs-menu">
+        <li class="menu-item active-tab">
+            <a href="#tab-win-status-1">Тендерная инфомация</a>
+        </li>
+        <li class="menu-item">
+            <a href="#tab-win-status-2">Отгрузки</a>
+        </li>
+        <li class="menu-item">
+            <a href="#tab-win-status-3">Цепочки писем</a>
+        </li>
+    </ul>
+    <div class="tabs-pane active-pane" id="tab-win-status-1">
+        <h1 class="centered">Процедура № <a href="$model.getUrl()" target="_blank">$model.getProcedureNumber()</a></h1>
+        <div class="aui-group">
+            <div class="aui-item">
+                #if($model.getAgreement())
+                    <h2 class="centered">Договор с заказчиком</h2>
+                    #set($agreement = $model.getAgreement())
+                    #parse( "templates/statusscreen/agreement.vm" )
+                    #set($amountSellerAgreement = $agreement.getAmount())
+                    #set($amountSellerSpecification = $amountSpecification)
+                    #if($amountSellerSpecification != 0 && $amountSellerSpecification)
+                        #set($finishAmountSeller = $amountSellerSpecification)
+                    #else
+                        #if($amountSellerAgreement != 0 && $amountSellerAgreement)
+                            #set($finishAmountSeller = $amountSellerAgreement)
+                        #else
+                            #set($finishAmountSeller = $model.getSaleAmount())
+                        #end
+                    #end
+                #else
+                    <h2 class="centered">Договора с заказчиком нет</h2>
+                #end
+            </div>
+            <div class="aui-item aui-doc-panel">
+                #if(!$model.getAgreementsList().isEmpty())
+                    <h2 class="centered">Договоры с поставщиками</h2>
+                    #set($amountBuyerAgreement = 0)
+                    #set($fullInvoiceAmount = 0)
+                    #set($endAgreementAmount = 0)
+                    #foreach($agreement in $model.getAgreementsList())
+                        ##                        Если задача не имеет статус "Архив" (10501)
+                        #if(!$agreement.getStatus().getId().equals("10501"))
+                            #parse( "templates/statusscreen/agreement.vm" )
+                            #if($amountSpecification != 0 && $amountSpecification)
+                                #set($endAgreementAmount = $amountSpecification + $endAgreementAmount)
+                            #else
+                                #set($endAgreementAmount = $agreement.getAmount() + $endAgreementAmount)
+                            #end
+                        #end
+                    #end
+                    #foreach($invoice in $model.getInvoicesList())
+                        #if(!$invoice.getStatus().getId().equals("10501"))
+                            #parse("templates/statusscreen/invoice.vm")
+                            #set($fullInvoiceAmount = $fullInvoiceAmount + $invoiceAmount)
+                        #end
+                    #end
+                    #set($financeModel = $model.getFinanceModel())
+                    #parse("templates/statusscreen/expenses.vm")
+                    #set($finishAmountBuyer = $endAgreementAmount + $fullInvoiceAmount + $expenses)
+                #else
+                    <h2 class="centered">Договоров с поставщиками нет</h2>
+                #end
+            </div>
+        </div>
+
+
+        <div class="aui-group centered">
+            <div class="aui-item">
+                #if($finishAmountSeller)
+                    <h3>Итоговая сумма: <strong class="finish-value">$number.format($finishAmountSeller)</strong></h3>
+                #end
+            </div>
+            <div class="aui-item">
+                #if($finishAmountBuyer)
+                    <h3>Итоговая сумма: <strong class="finish-value">$number.format($finishAmountBuyer)</strong></h3>
+                #end
+            </div>
+        </div>
+
+        <div class="aui-group">
+            <div class="aui-item">
+                #if($model.getAgreement() && !$model.getAgreementsList().isEmpty() && $amountSellerAgreement && $amountBuyerAgreement )
+                    #set($margin = $finishAmountSeller - $finishAmountBuyer)
+                    #set($marginPercent = $margin / $finishAmountSeller * 100)
+                    <h2 class="centered">Маржа: <strong>$number.format($margin) ($number.format($marginPercent)
+                        %)</strong></h2>
+                #end
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs-pane" id="tab-win-status-2">
+        ##        <h2 class="centered">В разработке</h2>
+    #set($agreement = $model.getAgreement())
+    #foreach($shipment in $agreement.getShipmentsList())
+        #if(!$shipment.getStatus().getId().equals("10501"))
+            #parse("templates/statusscreen/shipments.vm")
+        #end
+    #end
+    #foreach($agreement in $model.getAgreementsList())
+        #foreach($shipment in $agreement.getShipmentsList())
+            #if(!$shipment.getStatus().getId().equals("10501"))
+                #parse("templates/statusscreen/shipments.vm")
+            #end
+        #end
+    #end
+    </div>
+
+    <div class="tabs-pane" id="tab-win-status-3">
+        #foreach($letterChain in $model.getLettersList())
+            #parse("templates/statusscreen/letterchain.vm")
+        #end
+    </div>
+</div>
+
+
+

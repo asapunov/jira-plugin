@@ -1,0 +1,25 @@
+<div class="aui-group">
+    <div class="aui-item">
+        <div class="zoned">
+            <h3 class="centered">Расходы</h3>
+            <div class="aui-group">
+                <div class="aui-item">
+                    <div class="zonedlight">
+                        #set($financeExpenses = $financeModel.getFinanceExpenses())
+                        <p>Финансовые: $number.format($financeExpenses)</p>
+                        <div class="aui-group aui-group-split">
+                            <div class="aui-item">
+                                #set($travelExpenses = $financeModel.getTravelExpenses())
+                                <p>Командировочные: $number.format($travelExpenses)</p>
+                            </div>
+                            <div class="aui-item">
+                                #set($expenses = $financeExpenses + $travelExpenses)
+                                <p>Стоимость: $number.format($expenses)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

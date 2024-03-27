@@ -1,0 +1,48 @@
+<div class="aui-group">
+    <div class="aui-item">
+        <div class="zonedlight">Спецификация <a
+                href="$baseURL/browse/$specification.getKey()">$specification.getKey()</a> $specification.getSummary()
+
+            #set($organisation = $specification.getOrganisation())
+            #parse("templates/statusscreen/organisation.vm")
+            #set($organisation = false)
+            ##            TODO: отформатировать вывод даты
+            #if($specification.getDeliveryTime())
+                <p>Срок поставки:
+                    <time>$specification.getDeliveryTime()</time>
+                </p>
+            #end
+            <div class="aui-group aui-group-split">
+                <div class="aui-item">
+                    $soyRenderer.render(
+                        'jira.webresources:issue-statuses',
+                        'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                        'issueStatus': $specification.getStatus(),
+                        'isSubtle': true,
+                        'isCompact': false,
+                        'maxWidth': 150
+                    })
+                </div>
+                <div class="aui-item">
+                    Стоимость: #set($amount = $specification.getAmount())
+                    #if($amount)
+                        $number.format($amount)
+                    #end
+                </div>
+            </div>
+            #set ($amountInvoice = 0)
+            #foreach($invoice in $specification.getInvoiceModelList())
+                #if(!$invoice.getStatus().getId().equals("10501"))
+                    #parse("templates/statusscreen/invoice.vm")
+                    #set($amountInvoice = $invoice.getAmount() + $amountInvoice)
+                #end
+            #end
+            <div class="rightered">
+                #if($amountInvoice != 0)
+                    Сумма счетов по спецификации: $number.format($amountInvoice)
+                #end
+            </div>
+        </div>
+
+    </div>
+</div>

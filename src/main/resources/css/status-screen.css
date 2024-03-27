@@ -1,0 +1,26 @@
+.centered {
+    text-align: center;
+}
+
+.rightered {
+    text-align: end;
+}
+
+.aui-table-column-issue-key {
+    min-width: 70px;
+}
+
+
+.aui-item div.zoned {
+    background: #f5f5f5;
+    border-radius: 3.01px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.aui-item div.zonedlight {
+    background: #fdfdfd;
+    border-radius: 3.01px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}

@@ -2,7 +2,7 @@
     <plugin-info>
         <description>${project.description}</description>
         <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
         <param name="plugin-icon">images/pluginIcon.png</param>
         <param name="plugin-logo">images/pluginLogo.png</param>
     </plugin-info>
@@ -17,29 +17,105 @@
         <context>jira-custom-field</context>
     </web-resource>
 
-    <customfield-type name="Multiple Values" i18n-name-key="jira-custom-field.name" key="multiple" class="com.plugins.customfield.MultipleValuesCFType">
-        <resource type="velocity" name="view" location="templates/customfield/view.vm"/>
-        <resource type="velocity" name="edit" location="templates/customfield/edit.vm"/>
-        <resource type="velocity" name="xml" location="templates/customfield/xml.vm"/>
-    </customfield-type>
-
-    <customfield-type name="Account" i18n-name-key="jira-cf-account.name" key="account" class="com.plugins.accountCF.MultipleValuesCFType">
+    <customfield-type name="Account" i18n-name-key="jira-cf-account.name" key="account"
+                      class="com.enviogroup.plugins.accountCF.MultipleValuesCFType">
         <resource type="velocity" name="view" location="templates/accountCF/view.vm"/>
         <resource type="velocity" name="edit" location="templates/accountCF/edit.vm"/>
         <resource type="velocity" name="xml" location="templates/accountCF/xml.vm"/>
     </customfield-type>
 
     <web-resource key="jira-accountCF-resources" name="jira-account Web Resources">
-        <resource type="download" name="jira-custom-field.js" location="/js/accountCF/jira-custom-field.js"/>
+        <resource type="download" name="accountCF.js" location="/js/accountCF.js"/>
         <resource type="download" name="jira-custom-field.css" location="/css/jira-custom-field.css"/>
         <context>atl.general</context>
     </web-resource>
 
-    <web-panel key="document" name="document" location="atl.jira.view.issue.left.context" weight = "110">
-        <context-provider class = "com.plugins.documentation.DocumentationModuleValue"/>
+    <web-panel key="document" name="document" location="atl.jira.view.issue.left.context" weight="110">
+        <context-provider class="com.enviogroup.plugins.documentation.DocumentationModuleValue"/>
         <resource type="velocity" name="view" location="templates/documentation/view.vm"/>
-        <label key="Документация"/>
+        <label key="Согласование поставщиков"/>
+        <condition class="com.enviogroup.plugins.conditions.DirectPurchaseWebPanelCondition"/>
     </web-panel>
 
+
+    <webwork1 key="AcceptPriceActionWebwork" name="Accept price action" class="java.lang.Object">
+        <actions>
+            <action name="com.enviogroup.plugins.documentation.ApprovalsActivity" alias="AcceptPriceAction">
+                <view name="error">/templates/acceptPrice/error.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+
+    <!-- Конфигурация -->
+    <web-section key="admin_handler_config_section" location="admin_plugins_menu">
+        <label key="Plugin - Admin Configuration"/>
+    </web-section>
+
+    <web-item key="plugin-admin-config-link" section="admin_plugins_menu/admin_handler_config_section">
+        <label key="Plugin Configuration"/>
+        <link linkId="handler.plugin.configuration.link" key="plugin-configuration">
+            /secure/admin/plugins/handler/PluginAdminConfigAction.jspa
+        </link>
+    </web-item>
+
+    <webwork1 key="admin-config" name="Administration Configuration" class="java.lang.Object" roles-required="admin">
+        <actions>
+            <action name="com.enviogroup.plugins.admin.PluginAdminConfigAction" alias="PluginAdminConfigAction">
+                <view name="input" type="velocity">/templates/admin/plugin-admin-config.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <!-- Панель тендера -->
+    <web-panel key="status-screen" name="Status Screen" location="atl.jira.view.issue.left.context" weight="120">
+        <context-provider class="com.enviogroup.plugins.status.screen.StatusScreen"/>
+        <resource type="velocity" name="view" location="templates/statusscreen/view.vm"/>
+        <label key="Документация"/>
+        <condition class="com.enviogroup.plugins.conditions.TenderWebPanelCondition"/>
+    </web-panel>
+
+    <web-resource key="status-screen-resources" name="Status Screen Web Resources">
+        <resource type="download" name="status-screen.js" location="/js/status-screen.js"/>
+        <resource type="download" name="status-screen.css" location="/css/status-screen.css"/>
+        <context>atl.general</context>
+    </web-resource>
+
+    <dashboard-item key="tenders-dashboard-item"
+                    i18n-name-key="com.plugins.customfield.jira-custom-field.dashboard.item.title" configurable="true">
+        <definition>
+            <title key="com.plugins.customfield.jira-custom-field.dashboard.item.title"/>
+            <categories>
+                <category>Other</category>
+            </categories>
+            <author>
+                <name>Author's name</name>
+            </author>
+            <thumbnail
+                    location="/download/resources/${atlassian.plugin.key}:dashboard-item-tenders-resources/images/pluginLogo.png"/>
+        </definition>
+        <description key="com.plugins.customfield.jira-custom-field.dashboard.item.description"/>
+        <resource name="view" type="soy"
+                  location=":dashboard-item-tenders-resources/Dashboard.Item.Tenders.Templates.Static"/>
+        <context-provider class="com.enviogroup.plugins.dashboard.DashboardItemContextProvider"/>
+        <amd-module>dashboard-items/tenders</amd-module>
+    </dashboard-item>
+
+    <web-resource key="dashboard-item-tenders-resources" name="dashboard-item-tenders Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <transformation extension="soy">
+            <transformer key="soyTransformer"/>
+        </transformation>
+        <resource type="download" name="dashboard-item-tenders.css" location="/css/dashboard-item-tenders.css"/>
+        <resource type="download" name="dashboard-item-tenders.js" location="/js/dashboard-item-tenders.js"/>
+        <resource type="download" name="images/" location="/images"/>
+        <resource type="download" location="soy/dashboard-item.soy" name="soy/dashboard-item-tenders.soy.js"/>
+        <resource type="soy" location="/soy/dashboard-item.soy" name="Dashboard.Item.Tenders.Templates.Static"/>
+        <context>atl.dashboard</context>
+        <context>dashboard-item-tenders</context>
+    </web-resource>
+    <rest name="Tenders Rest Resource" i18n-name-key="tenders-rest-resource.name" key="tenders-rest-resource" path="/tendersrestresource" version="1">
+        <description key="tenders-rest-resource.description">The Tenders Rest Resource Plugin</description>
+    </rest>
 
 </atlassian-plugin>
