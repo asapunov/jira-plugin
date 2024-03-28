@@ -122,8 +122,9 @@
     <web-panel key="tender_right" name="document" location="atl.jira.view.issue.right.context" weight="110">
         <context-provider class="com.enviogroup.plugins.panel.tender.RightPanel"/>
         <resource type="velocity" name="view" location="templates/panel/tender/view.vm"/>
-        <label key="Панель"/>
+        <label key="Информация"/>
         <condition class="com.enviogroup.plugins.conditions.TenderWebPanelCondition"/>
+        <condition class="com.enviogroup.plugins.conditions.ChiefUserWebPanelCondition"/>
     </web-panel>
 
 </atlassian-plugin>
