@@ -30,12 +30,14 @@ public class RightPanel extends AbstractJiraContextProvider {
             CustomField customField = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(Constants.SYSTEM_LABLES_FIELD);
             TreeSet<Label> treeSet = (TreeSet<Label>) issue.getCustomFieldValue(customField);
             for (Label label : treeSet) {
-                if ("latenottogo".equalsIgnoreCase(label.getLabel())){
+                if ("latenottogo".equalsIgnoreCase(label.getLabel())) {
                     contextMap.put("labelnottogo", true);
                 }
             }
         } catch (ClassCastException e) {
-            e.printStackTrace();
+            //ignore
+        } catch (NullPointerException e) {
+            //ignore
         }
         return contextMap;
     }
