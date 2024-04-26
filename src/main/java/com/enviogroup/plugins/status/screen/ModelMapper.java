@@ -86,18 +86,20 @@ public class ModelMapper {
         return model;
     }
 
-    public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long cfId) {
-        List<BaseLetterModel> lettersList = new LinkedList<>();
-        if (!issueWorker.getMutableIssuesList(issue, cfId).isEmpty()) {
-            for (Issue letterIssue : (issueWorker.getMutableIssuesList(issue, cfId))) {
+    public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long customFieldId) {
+        ArrayList<MutableIssue> mutableLettersList = issueWorker.getMutableIssuesList(issue, customFieldId);
+        HashMap<String, BaseLetterModel> lettersHashMap= new HashMap<>();
+        if (!mutableLettersList.isEmpty()) {
+            List<BaseLetterModel> lettersList = new LinkedList<>();
+            for (Issue letterIssue : mutableLettersList) {
                 String letterTypeId = Objects.requireNonNull(letterIssue.getIssueType()).getId();
                 if (letterTypeId.equals(INPUT_LETTER_ISSUE_TYPE_ID)) {
-                    InputLetterModel inputLetter = inputLetterModelFactory(letterIssue, null);
+                    InputLetterModel inputLetter = inputLetterModelFactory(lettersHashMap, letterIssue, null);
                     if (inputLetter != null) {
                         lettersList.add(inputLetter);
                     }
                 } else if (letterTypeId.equals(OUTPUT_LETTER_ISSUE_TYPE_ID)) {
-                    OutputLetterModel outputLetter = outputLetterModelFactory(letterIssue, null);
+                    OutputLetterModel outputLetter = outputLetterModelFactory(lettersHashMap, letterIssue, null);
                     if (outputLetter != null) {
                         lettersList.add(outputLetter);
                     }
@@ -111,44 +113,44 @@ public class ModelMapper {
 
     private final List<String> letterModels = new ArrayList<>();
 
-    private OutputLetterModel outputLetterModelFactory(Issue issue, InputLetterModel parentModel) {
-        if (letterModels.contains(issue.getKey())) {
+    private OutputLetterModel outputLetterModelFactory(HashMap<String, BaseLetterModel> lettersHashMap, Issue issue, InputLetterModel parentModel) {
+        if (lettersHashMap.containsKey(issue.getKey())) {
             return null;
         }
         OutputLetterModel outputLetter = new OutputLetterModel();
         outputLetter.setKey(issue.getKey());
         outputLetter.setStatus(issue.getStatus());
         outputLetter.setSummary(issue.getSummary());
+        lettersHashMap.put(outputLetter.getKey(), outputLetter);
         if (parentModel != null) {
             outputLetter.setParentLetter(parentModel);
         } else if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).isEmpty()) {
-            outputLetter.setParentLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), null));
+            outputLetter.setParentLetter(inputLetterModelFactory(lettersHashMap, issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10541).get(0), null));
         }
         if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).isEmpty()) {
-            outputLetter.setChildLetter(inputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0), outputLetter));
+            outputLetter.setChildLetter(inputLetterModelFactory(lettersHashMap, issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0), outputLetter));
         }
-        letterModels.add(outputLetter.getKey());
         return outputLetter;
 
     }
 
-    private InputLetterModel inputLetterModelFactory(Issue issue, OutputLetterModel parentModel) {
-        if (letterModels.contains(issue.getKey())) {
+    private InputLetterModel inputLetterModelFactory(HashMap<String, BaseLetterModel> lettersHashMap, Issue issue, OutputLetterModel parentModel) {
+        if (lettersHashMap.containsKey(issue.getKey())) {
             return null;
         }
         InputLetterModel inputLetter = new InputLetterModel();
         inputLetter.setKey(issue.getKey());
         inputLetter.setStatus(issue.getStatus());
         inputLetter.setSummary(issue.getSummary());
+        lettersHashMap.put(inputLetter.getKey(), inputLetter);
         if (parentModel != null) {
             inputLetter.setParentLetter(parentModel);
         } else if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).isEmpty()) {
-            inputLetter.setParentLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), null));
+            inputLetter.setParentLetter(outputLetterModelFactory(lettersHashMap, issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12301).get(0), null));
         }
         if (!issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).isEmpty()) {
-            inputLetter.setChildLetter(outputLetterModelFactory(issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0), inputLetter));
+            inputLetter.setChildLetter(outputLetterModelFactory(lettersHashMap, issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10542).get(0), inputLetter));
         }
-        letterModels.add(inputLetter.getKey());
         return inputLetter;
     }
 

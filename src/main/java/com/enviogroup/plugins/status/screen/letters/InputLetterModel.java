@@ -2,7 +2,7 @@ package com.enviogroup.plugins.status.screen.letters;
 
 import com.enviogroup.plugins.status.screen.OrganisationModel;
 
-public class InputLetterModel extends OutputLetterModel {
+public class InputLetterModel extends BaseLetterModel {
 
     private OrganisationModel senderOrg;
 
