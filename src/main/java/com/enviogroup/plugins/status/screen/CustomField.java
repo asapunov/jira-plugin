@@ -146,6 +146,16 @@ public class CustomField {
      */
     public static final Long CUSTOM_FIELD_10229 = 10229L;
 
+
+    /**
+     * Письмо входящее отправитель
+     */
+    public static final Long CUSTOM_FIELD_10504 = 10504L;
+    /**
+     * Письмо исходящее получатель
+     */
+    public static final Long CUSTOM_FIELD_10502 = 10502L;
+
     /**
      * OGR-1 ЭНВИОГРУПП
      */

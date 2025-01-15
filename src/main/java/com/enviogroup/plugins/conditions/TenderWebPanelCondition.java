@@ -9,10 +9,12 @@ import java.util.Objects;
 
 public class TenderWebPanelCondition extends AbstractWebCondition {
 
+    public static final String TENDERS = "Тендеры";
+
     @Override
     public boolean shouldDisplay(ApplicationUser user, JiraHelper helper) {
         Issue currentIssue = (Issue) helper.getContextParams().get("issue");
         String issueTypeName = Objects.requireNonNull(currentIssue.getIssueType()).getName();
-        return issueTypeName.equals("Тендеры");
+        return issueTypeName.equals(TENDERS);
     }
 }

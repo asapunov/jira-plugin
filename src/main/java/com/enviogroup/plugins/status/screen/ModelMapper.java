@@ -88,7 +88,7 @@ public class ModelMapper {
 
     public List<BaseLetterModel> lettersModelListFactory(Issue issue, IssueWorker issueWorker, Long customFieldId) {
         ArrayList<MutableIssue> mutableLettersList = issueWorker.getMutableIssuesList(issue, customFieldId);
-        HashMap<String, BaseLetterModel> lettersHashMap= new HashMap<>();
+        HashMap<String, BaseLetterModel> lettersHashMap = new HashMap<>();
         if (!mutableLettersList.isEmpty()) {
             List<BaseLetterModel> lettersList = new LinkedList<>();
             for (Issue letterIssue : mutableLettersList) {
@@ -121,6 +121,12 @@ public class ModelMapper {
         outputLetter.setKey(issue.getKey());
         outputLetter.setStatus(issue.getStatus());
         outputLetter.setSummary(issue.getSummary());
+        outputLetter.setCreated(issue.getCreated());
+
+        for(Issue org : issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10502)) {
+            outputLetter.addOrganisation(organisationModelFactory(org, issueWorker));
+        }
+
         lettersHashMap.put(outputLetter.getKey(), outputLetter);
         if (parentModel != null) {
             outputLetter.setParentLetter(parentModel);
@@ -131,7 +137,6 @@ public class ModelMapper {
             outputLetter.setChildLetter(inputLetterModelFactory(lettersHashMap, issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_12300).get(0), outputLetter));
         }
         return outputLetter;
-
     }
 
     private InputLetterModel inputLetterModelFactory(HashMap<String, BaseLetterModel> lettersHashMap, Issue issue, OutputLetterModel parentModel) {
@@ -142,6 +147,10 @@ public class ModelMapper {
         inputLetter.setKey(issue.getKey());
         inputLetter.setStatus(issue.getStatus());
         inputLetter.setSummary(issue.getSummary());
+        inputLetter.setCreated(issue.getCreated());
+        for(Issue org : issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10504)) {
+            inputLetter.addOrganisation(organisationModelFactory(org, issueWorker));
+        }
         lettersHashMap.put(inputLetter.getKey(), inputLetter);
         if (parentModel != null) {
             inputLetter.setParentLetter(parentModel);
@@ -338,12 +347,12 @@ public class ModelMapper {
             return null;
         }
         letterModels.replaceAll(BaseLetterModel::getFirstParent);
-        letterModels.sort(Comparator.comparingInt(BaseLetterModel::getSize).reversed());
+        letterModels.sort(Comparator.comparingLong(BaseLetterModel::getLongCreated));
         List<List<BaseLetterModel>> lettersChains = new ArrayList<>();
         for (BaseLetterModel letterModel : letterModels) {
             List<BaseLetterModel> chain = new LinkedList<>();
             while (letterModel != null) {
-                chain.add(new BaseLetterModel(letterModel));
+                chain.add(BaseLetterModel.createBaseLetterModel(letterModel));
                 letterModel = letterModel.getChildLetter();
             }
             lettersChains.add(chain);

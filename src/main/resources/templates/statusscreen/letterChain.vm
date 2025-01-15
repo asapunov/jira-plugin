@@ -1,0 +1,24 @@
+#set($firstLetter = $letterChain.get(0))
+<h3 class="centered">$firstLetter.getSummary()</h3>
+
+#if($firstLetter.getOrganisations())
+    #foreach($organisation in $firstLetter.getOrganisations())
+        #parse("templates/statusscreen/organisation.vm")
+    #end
+#end
+
+#foreach($letter in $letterChain)
+<div class="aui-group">
+    #if($letter.getLetterType() == "Входящее письмо")
+        <div class="aui-item">
+
+        </div>
+        #parse("templates/statusscreen/letter.vm")
+
+    #else
+        #parse("templates/statusscreen/letter.vm")
+        <div class="aui-item">
+        </div>
+    #end
+</div>
+#end
