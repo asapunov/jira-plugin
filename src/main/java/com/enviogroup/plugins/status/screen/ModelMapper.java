@@ -123,8 +123,8 @@ public class ModelMapper {
         outputLetter.setSummary(issue.getSummary());
         outputLetter.setCreated(issue.getCreated());
         outputLetter.setResolution(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10607, issue));
-        outputLetter.setInNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10208, issue));
-        outputLetter.setOutNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10207, issue));
+        outputLetter.setOutNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10208, issue));
+        outputLetter.setInNumber(issueWorker.getStringCustomFieldValue(CUSTOM_FIELD_10207, issue));
         outputLetter.setType(issueWorker.getStringValueFromLazyLoadedOptionCustomField(CUSTOM_FIELD_10210, issue));
         for (Issue org : issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10502)) {
             outputLetter.addOrganisation(organisationModelFactory(org, issueWorker));

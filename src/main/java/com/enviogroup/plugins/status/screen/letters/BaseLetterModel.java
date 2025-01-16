@@ -3,18 +3,20 @@ package com.enviogroup.plugins.status.screen.letters;
 import com.enviogroup.plugins.status.screen.IssueModel;
 import com.enviogroup.plugins.status.screen.OrganisationModel;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class BaseLetterModel extends IssueModel {
     private Timestamp created;
     private List<OrganisationModel> organisations;
     private String resolution;
     private String type;
-
     private String inNumber;
     private String outNumber;
 

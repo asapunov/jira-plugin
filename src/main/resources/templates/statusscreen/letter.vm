@@ -9,7 +9,7 @@
                 'isSubtle': true,
                 'isCompact': false,
                 'maxWidth': 150
-            })<a href="$baseURL/browse/$letter.getKey()">$letter.getKey()</a>
+            })<a href="$baseURL/browse/$letter.getKey()" target="_blank">$letter.getKey()</a>
             $letter.getType()
             <br/>
         <h3 style="margin: 0px"> $letter.getSummary()</h3>
@@ -25,11 +25,11 @@
             #end
 
         #else
-            #if($letter.getInNumber())
-                <h5 style="margin: 0px">№ Входящего: $letter.getInNumber()</h5>
-            #end
             #if($letter.getOutNumber())
                 <h5 style="margin: 0px">№ Исходящего: $letter.getOutNumber()</h5>
+            #end
+            #if($letter.getInNumber())
+                <h5 style="margin: 0px">№ Входящего: $letter.getInNumber()</h5>
             #end
         #end
 
