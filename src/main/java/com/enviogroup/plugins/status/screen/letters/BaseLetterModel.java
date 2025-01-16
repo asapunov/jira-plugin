@@ -15,6 +15,9 @@ public class BaseLetterModel extends IssueModel {
     private String resolution;
     private String type;
 
+    private String inNumber;
+    private String outNumber;
+
     public BaseLetterModel() {
 
     }
@@ -31,6 +34,8 @@ public class BaseLetterModel extends IssueModel {
         this.organisations = that.getOrganisations();
         this.resolution = that.getResolution();
         this.type = that.getType();
+        this.inNumber = that.getInNumber();
+        this.outNumber = that.getOutNumber();
     }
 
     private String letterType;
@@ -167,5 +172,21 @@ public class BaseLetterModel extends IssueModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getInNumber() {
+        return inNumber;
+    }
+
+    public void setInNumber(String inNumber) {
+        this.inNumber = inNumber;
+    }
+
+    public String getOutNumber() {
+        return outNumber;
+    }
+
+    public void setOutNumber(String outNumber) {
+        this.outNumber = outNumber;
     }
 }

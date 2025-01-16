@@ -163,6 +163,14 @@ public class CustomField {
      * Тип письма
      */
     public static final Long CUSTOM_FIELD_10210 = 10210L;
+    /**
+     * № Исходящего
+     */
+    public static final Long CUSTOM_FIELD_10208 = 10208L;
+    /**
+     * № Входящего
+     */
+    public static final Long CUSTOM_FIELD_10207 = 10207L;
 
     /**
      * OGR-1 ЭНВИОГРУПП
