@@ -12,6 +12,8 @@ import java.util.List;
 public class BaseLetterModel extends IssueModel {
     private Timestamp created;
     private List<OrganisationModel> organisations;
+    private String resolution;
+    private String type;
 
     public BaseLetterModel() {
 
@@ -27,6 +29,8 @@ public class BaseLetterModel extends IssueModel {
         this.setStatus(that.getStatus());
         this.created = that.getCreated();
         this.organisations = that.getOrganisations();
+        this.resolution = that.getResolution();
+        this.type = that.getType();
     }
 
     private String letterType;
@@ -147,5 +151,21 @@ public class BaseLetterModel extends IssueModel {
             this.organisations = new ArrayList<>();
         }
         organisations.add(organisation);
+    }
+
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

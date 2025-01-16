@@ -1,26 +1,26 @@
-<div class="aui-item" style="border: 1px solid #0052cc;">
-    #if($letter.getLetterType() == "Входящее письмо")
-        <span class="aui-icon aui-icon-small aui-iconfont-arrow-left">arrow</span>
-    #end
-
-
-    <p>
-        <span class="aui-icon aui-icon-small aui-iconfont-email">$letter.getLetterType()</span>
-    $soyRenderer.render(
-        'jira.webresources:issue-statuses',
-        'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
-        'issueStatus': $letter.getStatus(),
-        'isSubtle': true,
-        'isCompact': false,
-        'maxWidth': 150
-    })<a href="$baseURL/browse/$letter.getKey()">$letter.getKey()</a> $letter.getSummary()
-    </p>
-    #if($letter.getLetterType() == "Входящее письмо")
-        <span class="aui-icon aui-icon-small aui-iconfont-arrow-left">arrow</span>
-    #end
-
-    $letter.getCreatedString()
-    #if($letter.getLetterType() != "Входящее письмо")
-        <span class="aui-icon aui-icon-small aui-iconfont-arrow-right">arrow</span>
-    #end
+<div class="aui-item">
+    <div class="zonedlight">
+        <p>
+            <span class="aui-icon aui-icon-small aui-iconfont-email">$letter.getLetterType()</span>
+            $soyRenderer.render(
+                'jira.webresources:issue-statuses',
+                'JIRA.Template.Util.Issue.Status.issueStatusResolver', {
+                'issueStatus': $letter.getStatus(),
+                'isSubtle': true,
+                'isCompact': false,
+                'maxWidth': 150
+            })<a href="$baseURL/browse/$letter.getKey()">$letter.getKey()</a>
+            $letter.getType()
+            <br/> $letter.getSummary()
+        </p>
+        $letter.getCreatedString()
+        #if($letter.getOrganisations())
+            #foreach($organisation in $letter.getOrganisations())
+                #parse("templates/statusscreen/organisation.vm")
+            #end
+        #end
+        #if($letter.getResolution())
+            <h5>Резолюция: $letter.getResolution()</h5>
+        #end
+    </div>
 </div>
