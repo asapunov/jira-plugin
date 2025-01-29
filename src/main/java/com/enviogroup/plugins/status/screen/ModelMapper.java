@@ -19,12 +19,12 @@ public class ModelMapper {
     public ModelMapper() {
     }
 
-    public TenderModel getModel(String issueId) {
+    public TenderModel getTenderModel(String issueId) {
         Issue issue = issueWorker.getIssue(issueId);
-        return getModel(issue);
+        return getTenderModel(issue);
     }
 
-    public TenderModel getModel(Issue issue) {
+    public TenderModel getTenderModel(Issue issue) {
         if (issue == null) {
             return new TenderModel();
         }
@@ -83,6 +83,35 @@ public class ModelMapper {
         } catch (Exception ignored) {
 
         }
+        return model;
+    }
+
+    public AgreementModel getAgreementModel(Issue issue) {
+        if (issue == null) {
+            return new AgreementModel();
+        }
+        AgreementModel model = new AgreementModel();
+        model.setTender(getTenderModel( issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10326).get(0)));
+        model.setKey(issue.getKey());
+        model.setSummary(issue.getSummary());
+        model.setStatus(issue.getStatus());
+        Issue org = (issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10069)).get(0);
+        if (isOrgOurs(org)) {
+            org = (issueWorker.getMutableIssuesList(issue, CUSTOM_FIELD_10067)).get(0);
+        }
+        model.setOrganisation(organisationModelFactory(org, issueWorker));
+        String vatString = issueWorker.getStringValueFromLazyLoadedOptionCustomField(CUSTOM_FIELD_10113, issue);
+        double vatDouble;
+        try {
+            vatDouble = Double.parseDouble(vatString) / 100;
+        } catch (Exception e) {
+            vatDouble = 0D;
+        }
+        model.setValueAddedTax(vatDouble);
+        model.setAmount((issueWorker.getDoubleCustomFieldValue(CUSTOM_FIELD_10072, issue)));
+        model.setSpecificationsList(specificationModelListFactory(issue, issueWorker));
+        model.setInputInvoicesList(invoiceModelListFactory(issue, issueWorker, CUSTOM_FIELD_11201));
+        model.setShipmentsList(shipmentModelListFactory(issue, issueWorker));
         return model;
     }
 

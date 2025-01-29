@@ -6,6 +6,10 @@ public class CustomField {
      */
     public static final Long CUSTOM_FIELD_10327 = 10327L;
     /**
+     * Тендер договоры
+     */
+    public static final Long CUSTOM_FIELD_10326 = 10326L;
+    /**
      * Предложения поставщиков
      */
     public static final Long CUSTOM_FIELD_11411 = 11411L;
@@ -145,8 +149,6 @@ public class CustomField {
      * Счета входящие тендеры
      */
     public static final Long CUSTOM_FIELD_10229 = 10229L;
-
-
     /**
      * Письмо входящее отправитель
      */
